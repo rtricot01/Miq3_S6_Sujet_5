@@ -1,0 +1,94 @@
+import sys
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QCalendarWidget, QLabel, \
+                              QPushButton, QCheckBox, QSpinBox, QLCDNumber, QLineEdit, \
+                              QSlider, QProgressBar
+
+class fenetre_reservation (QMainWindow):
+
+    def __init__(self):
+        ## ----fenetre_principale----- ##
+        super().__init__()
+        self.setWindowTitle("Réservation d'une Chambre")
+        self.setWindowIcon(QIcon("icone_chambre.png"))
+        self.resize(600, 300)
+        fenetre_principale = QWidget()
+        fenetre_principale.setStyleSheet("background: #C6B7D1")
+        self.setCentralWidget(fenetre_principale)
+
+        ##  -------Calendrier-------- ##
+        calendrier = QCalendarWidget(fenetre_principale)
+        calendrier.setGeometry(10, 10, 300, 200)
+        label_date_debut = QLabel("This is a label", fenetre_principale)
+        label_date_debut.setGeometry(320, 10, 270, 30)
+        date_debut = QLineEdit("This is a text box", fenetre_principale)
+        date_debut.setGeometry(320, 90, 270, 30)
+        label_date_fin = QLabel("This is a label", fenetre_principale)
+        label_date_fin.setGeometry(320, 10, 270, 30)
+        date_fin = QLineEdit("This is a text box", fenetre_principale)
+        date_fin.setGeometry(320, 90, 270, 30)
+
+        ##  ----------Prix----------- ##
+        label_prix_maximal = QLabel("This is a label", fenetre_principale)
+        label_prix_maximal.setGeometry(320, 10, 270, 30)
+        slider_prix_maximal = QSlider(Qt.Horizontal, fenetre_principale)
+        slider_prix_maximal.setValue(50)
+        slider_prix_maximal.setGeometry(320, 220, 270, 30)
+        label_prix_minimal = QLabel("This is a label", fenetre_principale)
+        label_prix_minimal.setGeometry(320, 10, 270, 30)
+        slider_prix_minimal = QSlider(Qt.Horizontal, fenetre_principale)
+        slider_prix_minimal.setValue(50)
+        slider_prix_minimal.setGeometry(320, 220, 270, 30)
+
+        ##--------Nbr_Personne-----------##
+        label = QLabel("This is a label", fenetre_principale)
+        label.setGeometry(320, 10, 270, 30)
+        spinBox_nbr_personne = QSpinBox(fenetre_principale)
+        spinBox_nbr_personne.setValue(50)
+        spinBox_nbr_personne.setGeometry(320, 170, 270, 30)
+        textBox_nbr_adulte = QLineEdit("This is a text box", fenetre_principale)
+        textBox_nbr_adulte.setGeometry(320, 90, 270, 30)
+
+        ##  -------Service-------- ##
+        button_service = QPushButton("Services", fenetre_principale)
+        button_service.setGeometry(320, 50, 270, 30)
+
+        label_piscine = QLabel("This is a label", fenetre_principale)
+        label_piscine.setGeometry(320, 10, 270, 30)
+        checkBox_piscine = QCheckBox("This is a check box", fenetre_principale)
+        checkBox_piscine.setGeometry(320, 130, 270, 30)
+        label_sauna = QLabel("This is a label", fenetre_principale)
+        label_sauna.setGeometry(320, 10, 270, 30)
+        checkBox_sauna = QCheckBox("This is a check box", fenetre_principale)
+        checkBox_sauna.setGeometry(320, 130, 270, 30)
+        label_hammam = QLabel("This is a label", fenetre_principale)
+        label_hammam.setGeometry(320, 10, 270, 30)
+        checkBox_hammam = QCheckBox("This is a check box", fenetre_principale)
+        checkBox_hammam.setGeometry(320, 130, 270, 30)
+        label_voiture = QLabel("This is a label", fenetre_principale)
+        label_voiture.setGeometry(320, 10, 270, 30)
+        checkBox_voiture = QCheckBox("This is a check box", fenetre_principale)
+        checkBox_voiture.setGeometry(320, 130, 270, 30)
+        label_fumeur = QLabel("This is a label", fenetre_principale)
+        label_fumeur.setGeometry(320, 10, 270, 30)
+        checkBox_fumeur = QCheckBox("This is a check box", fenetre_principale)
+        checkBox_fumeur.setGeometry(320, 130, 270, 30)
+        label_animaux = QLabel("This is a label", fenetre_principale)
+        label_animaux.setGeometry(320, 10, 270, 30)
+        checkBox_animaux = QCheckBox("This is a check box", fenetre_principale)
+        checkBox_animaux.setGeometry(320, 130, 270, 30)
+
+        #créer une méthode qui créer une fenetre et renvoie une liste avec tous les services qui ont été selectionné
+
+        
+
+
+
+
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    myWindow = fenetre_reservation()
+    myWindow.show()
+    sys.exit(app.exec())
