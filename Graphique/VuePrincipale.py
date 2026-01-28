@@ -10,8 +10,8 @@ class MyWindow(QMainWindow):
 
     def __init__(self):
         QMainWindow.__init__(self)
-        self.setWindowTitle("Some widgets")
-        self.setWindowIcon(QIcon("icons/file.png"))
+        self.setWindowTitle("Application de gestion de reservation")
+        self.setWindowIcon(QIcon("hotel.jpg"))
         self.resize(570, 600)
 
         # Le type QWidget représente un conteneur de widgets (et il est lui-même un widget).
