@@ -9,7 +9,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget,  QLabel, QPush
 class MyWindow(QMainWindow):
 
     def __init__(self):
-        QMainWindow.__init__(self)
+        QMainWindow.__init__(self)   #TODO faire avec super() (remarque du prof)
         self.setWindowTitle("Application de gestion de reservation")
         self.setWindowIcon(QIcon("hotel.jpg"))
         self.resize(570, 600)
