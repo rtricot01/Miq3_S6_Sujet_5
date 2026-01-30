@@ -54,7 +54,6 @@ class Calendrier(QWidget):
     def actionneur_date(self):
         envoyeur = self.sender()
         
-        # On détermine quel calendrier et quelle variable de suivi utiliser
         if envoyeur == self.calendrier_debut:
             widget_texte = self.date_debut
             ancienne_date = self.ancienne_date_debut
@@ -66,26 +65,13 @@ class Calendrier(QWidget):
         string_date = date_selectionnee.toString("dd/MM/yyyy")
         couleur = "#86459C"
 
-        # CAS 1 : Désélection (on clique sur la date déjà active)
-        if string_date == widget_texte.text():
-            widget_texte.setText("")
-            envoyeur.setDateTextFormat(date_selectionnee, QTextCharFormat())
-            # On remet le suivi à zéro
-            if envoyeur == self.calendrier_debut: self.ancienne_date_debut = None
-            else: self.ancienne_date_fin = None
-        
-        # CAS 2 : Nouvelle sélection
+        if ancienne_date:
+            envoyeur.setDateTextFormat(ancienne_date, QTextCharFormat())
+
+        envoyeur.setDateTextFormat(date_selectionnee, self.typo_case(couleur))
+        widget_texte.setText(string_date)
+
+        if envoyeur == self.calendrier_debut:
+            self.ancienne_date_debut = date_selectionnee
         else:
-            # 1. On nettoie l'ancienne date si elle existe
-            if ancienne_date:
-                envoyeur.setDateTextFormat(ancienne_date, QTextCharFormat())
-
-            # 2. On applique le format à la nouvelle date
-            envoyeur.setDateTextFormat(date_selectionnee, self.typo_case(couleur))
-            widget_texte.setText(string_date)
-
-            # 3. On met à jour le suivi de l'ancienne date
-            if envoyeur == self.calendrier_debut:
-                self.ancienne_date_debut = date_selectionnee
-            else:
-                self.ancienne_date_fin = date_selectionnee
+            self.ancienne_date_fin = date_selectionnee
