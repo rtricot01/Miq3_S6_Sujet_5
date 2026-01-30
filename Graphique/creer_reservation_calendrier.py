@@ -3,8 +3,8 @@ from PySide6.QtGui import QTextCharFormat, QFont, QColor
 
 class Calendrier (QWidget):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None): 
+        super().__init__(parent)
 
         self.calendrier_debut = QCalendarWidget(self)
         self.calendrier_debut.resize(300, 200)
@@ -15,13 +15,13 @@ class Calendrier (QWidget):
         self.label_date_debut = QLabel("Date de début:", self)
         self.label_date_debut.resize(270, 30)
         self.date_debut = QLineEdit(None, self)
-        self.date_debut.resize(270, 30)
+        self.date_debut.resize(300, 50)
 
         box_date_fin = QHBoxLayout()
         self.label_date_fin = QLabel("Date de fin:", self)
         self.label_date_fin.resize(270, 30)
         self.date_fin = QLineEdit(None, self)
-        self.date_fin.resize(270, 30)
+        self.date_fin.resize(300, 50)
 
         box_date_debut.addWidget(self.label_date_debut)
         box_date_debut.addWidget(self.date_debut)
@@ -30,18 +30,18 @@ class Calendrier (QWidget):
         box_date_fin.addWidget(self.date_fin)
 
         box_horizontal_dates = QHBoxLayout()
-        box_horizontal_dates.addWidget(box_date_debut)
+        box_horizontal_dates.addLayout(box_date_debut)
         box_horizontal_dates.addSpacing(20)
-        box_horizontal_dates.addWidget(box_date_fin)
+        box_horizontal_dates.addLayout(box_date_fin)
 
         box_calendrier = QHBoxLayout()
         box_calendrier.addWidget(self.calendrier_debut)
         box_calendrier.addWidget(self.calendrier_fin)
 
         box_vertical_calendrier_dates = QVBoxLayout()
-        box_vertical_calendrier_dates.addWidget(box_calendrier)
+        box_vertical_calendrier_dates.addLayout(box_calendrier)
         box_vertical_calendrier_dates.addSpacing(10)
-        box_vertical_calendrier_dates.addWidget(box_horizontal_dates)
+        box_vertical_calendrier_dates.addLayout(box_horizontal_dates)
 
         self.setLayout(box_vertical_calendrier_dates)
 
@@ -52,9 +52,9 @@ class Calendrier (QWidget):
         date_de_debut = self.calendrier_debut.selectedDate()
         self.date_debut.setText(date_de_debut.toString("dd/MM/yyyy"))
 
-        fmt = QTextCharFormat()
-        fmt.setFontWeight(QFont.Bold)
-        fmt.setBackground(QColor("#284856"))
+        case = QTextCharFormat()
+        case.setFontWeight(QFont.Bold)
+        case.setBackground(QColor("#284856"))
         self.calendrier_debut.setDateTextFormat(date_de_debut, fmt)
 
     def actionneur_date_fin (self) : 
