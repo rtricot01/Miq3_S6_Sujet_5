@@ -3,10 +3,8 @@ from sqlalchemy.orm import Mapped, mapped_column, sessionmaker, declarative_base
 from sqlalchemy import Date 
 from sqlalchemy import ForeignKey
 from datetime import date
+from Creation_db import Session
 
-
-db = sa.create_engine("sqlite:///:memory:")
-Session = sessionmaker(bind=db)
 Base = declarative_base()
 
 """Ajout de n'importe quel objet à la BDD"""
@@ -51,38 +49,18 @@ class Client(Base):
     def __repr__(self) -> str:
         return f"<Client(client_id={self.client_id}, client_firstname={self.client_firstname}, client_lastname={self.client_lastname}, client_tel={self.client_tel}, client_mail={self.client_mail})>"
 
-"""Creation des chambres présentes au lancement de l'application"""
-def init_client() -> None:
+"""Table Client et classe python"""
+class Option(Base):
+    """Une table contenant deux colonnes, une première avec l'id de la reservation et un seconde avec l'id des options.
+    On peut avoir plusieurs lignes avec le même id de reservation mais avec de id d'option différent"""
+    __tablename__="option"
+    reservation_id:Mapped[int]=mapped_column(ForeignKey("reservation.reservation_id"))
+    option_id:Mapped[int]  
 
-    client_1 = Client(client_firstname = "ahmet", client_lastname= "tunc",client_tel="0102030405",client_mail="bogoss@gmail.com")
-    add_to_db(client_1)
-
-def init_chambre() -> None:
-
-    chambre_1 = Chambre(max_people = 2, prize= 60.99, room_size = 30)
-    add_to_db(chambre_1)
-
-def init_reservation() -> None:
-
-    reservation_1 = Reservation(room_id=1,client_id=1,start_date=date(2026,1,8),end_date=date(2026,2,5))
-    add_to_db(reservation_1)
-"""Fonction Main"""
-def main() -> None:
-
-    Base.metadata.create_all(db)
+    def __repr__(self)->str:
+        return f"Option(reservation_id={self.reservation_id}, option_id={self.option_id})"
     
-   
-    init_chambre()
-    init_client()
-    init_reservation()
-    
-    with Session() as session:
-        print(session.query(Chambre).all())
-        print(session.query(Client).all())
-        print(session.query(Reservation).all())
 
-if __name__ == "__main__":
-    main()
 
 
 
