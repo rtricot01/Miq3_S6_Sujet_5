@@ -1,31 +1,27 @@
 from PySide6.QtWidgets import QWidget, QCalendarWidget, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
 from PySide6.QtGui import QTextCharFormat, QFont, QColor
+from PySide6.QtCore import Qt
 
-class Calendrier (QWidget):
-
+class Calendrier(QWidget):
     def __init__(self, parent=None): 
         super().__init__(parent)
 
+        self.ancienne_date_debut = None
+        self.ancienne_date_fin = None
+
         self.calendrier_debut = QCalendarWidget(self)
-        self.calendrier_debut.resize(300, 200)
         self.calendrier_fin = QCalendarWidget(self)
-        self.calendrier_fin.resize(300, 200)
 
         box_date_debut = QHBoxLayout()
         self.label_date_debut = QLabel("Date de début:", self)
-        self.label_date_debut.resize(270, 30)
-        self.date_debut = QLineEdit(None, self)
-        self.date_debut.resize(300, 50)
+        self.date_debut = QLineEdit(self)
 
         box_date_fin = QHBoxLayout()
         self.label_date_fin = QLabel("Date de fin:", self)
-        self.label_date_fin.resize(270, 30)
-        self.date_fin = QLineEdit(None, self)
-        self.date_fin.resize(300, 50)
+        self.date_fin = QLineEdit(self)
 
         box_date_debut.addWidget(self.label_date_debut)
         box_date_debut.addWidget(self.date_debut)
-
         box_date_fin.addWidget(self.label_date_fin)
         box_date_fin.addWidget(self.date_fin)
 
@@ -38,34 +34,58 @@ class Calendrier (QWidget):
         box_calendrier.addWidget(self.calendrier_debut)
         box_calendrier.addWidget(self.calendrier_fin)
 
-        box_vertical_calendrier_dates = QVBoxLayout()
-        box_vertical_calendrier_dates.addLayout(box_calendrier)
-        box_vertical_calendrier_dates.addSpacing(10)
-        box_vertical_calendrier_dates.addLayout(box_horizontal_dates)
+        layout_principal = QVBoxLayout()
+        layout_principal.addLayout(box_calendrier)
+        layout_principal.addSpacing(10)
+        layout_principal.addLayout(box_horizontal_dates)
 
-        self.setLayout(box_vertical_calendrier_dates)
+        self.setLayout(layout_principal)
 
-        self.calendrier_debut.selectionChanged.connect(self.actionneur_date_debut)
-        self.calendrier_fin.selectionChanged.connect(self.actionneur_date_fin)
+        self.calendrier_debut.selectionChanged.connect(self.actionneur_date)
+        self.calendrier_fin.selectionChanged.connect(self.actionneur_date)
+    
+    def typo_case(self, couleur: str):
+        format_case = QTextCharFormat()
+        format_case.setFontWeight(QFont.Weight.Bold)
+        format_case.setBackground(QColor(couleur))
+        format_case.setForeground(QColor("white")) 
+        return format_case 
 
-    def actionneur_date_debut (self) : 
-        date_de_debut = self.calendrier_debut.selectedDate()
-        self.date_debut.setText(date_de_debut.toString("dd/MM/yyyy"))
-
-        case = QTextCharFormat()
-        case.setFontWeight(QFont.Bold)
-        case.setBackground(QColor("#284856"))
-        self.calendrier_debut.setDateTextFormat(date_de_debut, fmt)
-
-    def actionneur_date_fin (self) : 
-        date_de_fin = self.calendrier_fin.selectedDate()
-        self.date_fin.setText(date_de_fin.toString("dd/MM/yyyy"))
-
-        fmt = QTextCharFormat()
-        fmt.setFontWeight(QFont.Bold)
-        fmt.setBackground(QColor("#284856"))
-        self.calendrier_fin.setDateTextFormat(date_de_fin, fmt)
-
-    # TODO: Regrouper les deux fonctions avec .sender()
+    def actionneur_date(self):
+        envoyeur = self.sender()
         
+        # On détermine quel calendrier et quelle variable de suivi utiliser
+        if envoyeur == self.calendrier_debut:
+            widget_texte = self.date_debut
+            ancienne_date = self.ancienne_date_debut
+        else:
+            widget_texte = self.date_fin
+            ancienne_date = self.ancienne_date_fin
 
+        date_selectionnee = envoyeur.selectedDate()
+        string_date = date_selectionnee.toString("dd/MM/yyyy")
+        couleur = "#86459C"
+
+        # CAS 1 : Désélection (on clique sur la date déjà active)
+        if string_date == widget_texte.text():
+            widget_texte.setText("")
+            envoyeur.setDateTextFormat(date_selectionnee, QTextCharFormat())
+            # On remet le suivi à zéro
+            if envoyeur == self.calendrier_debut: self.ancienne_date_debut = None
+            else: self.ancienne_date_fin = None
+        
+        # CAS 2 : Nouvelle sélection
+        else:
+            # 1. On nettoie l'ancienne date si elle existe
+            if ancienne_date:
+                envoyeur.setDateTextFormat(ancienne_date, QTextCharFormat())
+
+            # 2. On applique le format à la nouvelle date
+            envoyeur.setDateTextFormat(date_selectionnee, self.typo_case(couleur))
+            widget_texte.setText(string_date)
+
+            # 3. On met à jour le suivi de l'ancienne date
+            if envoyeur == self.calendrier_debut:
+                self.ancienne_date_debut = date_selectionnee
+            else:
+                self.ancienne_date_fin = date_selectionnee
