@@ -1,6 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QCalendarWidget, QLabel, \
-                              QPushButton, QCheckBox, QSpinBox, QLCDNumber, QLineEdit, \
-                              QSlider, QProgressBar, QHBoxLayout, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QCalendarWidget, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
 from PySide6.QtGui import QTextCharFormat, QFont, QColor
 
 class Calendrier (QWidget):
@@ -68,6 +66,6 @@ class Calendrier (QWidget):
         fmt.setBackground(QColor("#284856"))
         self.calendrier_fin.setDateTextFormat(date_de_fin, fmt)
 
-
+    # TODO: Regrouper les deux fonctions avec .sender()
         
 

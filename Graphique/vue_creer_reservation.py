@@ -17,6 +17,9 @@ class FenetreReservation (QMainWindow):
         fenetre_principale.setStyleSheet("background: #C6B7D1")
         self.setCentralWidget(fenetre_principale)
 
+        # TODO: définir chaque objet et les placer ici dedans
+
+
 
 
 if __name__ == "__main__":
