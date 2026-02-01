@@ -7,7 +7,9 @@ from enum import IntEnum
 
 """Creation de la connection"""
 db = sa.create_engine("sqlite:///hotel.db")
-Session = sessionmaker(bind=db)
+
+#expire_on_commit permet de récupéré des infos même après le commit avant que la session se ferme
+Session = sessionmaker(bind=db, expire_on_commit=False)
 Base = declarative_base()
 
 """Creation de la BDD"""
@@ -18,10 +20,13 @@ def init_db():
     init_option()
 
 """Ajout de n'importe quel objet à la BDD"""
-def add_to_db(object)-> None:
+def add_to_db(object):
     with Session() as session:
         session.add(object)
         session.commit()
+#on retourne l'objet qui continent l'id de l'objet créé
+    return object
+         
 
 """Table chambre"""
 class ChambreDB(Base):
