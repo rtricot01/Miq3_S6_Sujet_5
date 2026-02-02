@@ -39,7 +39,7 @@ class VueReservationTotal(QMainWindow):
         self.initUI()
         
         
-   def initUI(self):
+   def initUI(self) : 
         for i, s in enumerate(self.listItem):
             chk = QCheckBox(f"Objet {i}")
             chk.setChecked(False)
