@@ -1,11 +1,14 @@
 import sys
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QCalendarWidget, QLabel, \
-                              QPushButton, QCheckBox, QSpinBox, QLCDNumber, QLineEdit, \
-                              QSlider, QProgressBar
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout
+
+from creer_reservation_calendrier import Calendrier
+from creer_reservation_prix import Prix
 
 
 class FenetreReservation (QMainWindow):
+
+    PRIX_MAXIMAL = 500.0
 
     def __init__(self,parent=None):
         super(FenetreReservation, self).__init__(parent)
@@ -16,6 +19,17 @@ class FenetreReservation (QMainWindow):
         fenetre_principale = QWidget()
         fenetre_principale.setStyleSheet("background: #C6B7D1")
         self.setCentralWidget(fenetre_principale)
+
+        # TODO: définir chaque objet et les placer ici dedans
+
+        layout_global = QHBoxLayout(fenetre_principale)
+
+        self.calendrier = Calendrier()
+        self.prix = Prix(self.PRIX_MAXIMAL)
+
+        layout_global.addWidget(self.calendrier)
+        layout_global.addWidget(self.prix)
+
 
 
 
