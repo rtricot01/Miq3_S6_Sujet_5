@@ -17,7 +17,8 @@ def init_db():
     init_chambre()
     init_client()
     init_reservation()
-    init_option()
+    init_option_chambre()
+    init_option_reservation()
 
 """Ajout de n'importe quel objet à la BDD"""
 def add_to_db(object):
@@ -87,30 +88,55 @@ def init_client() -> None:
     add_to_db(client)
 
 """Table Option"""
-class OptionDB(Base):
+class OptionReservationDB(Base):
     """Une table contenant deux colonnes, une première avec l'id de la reservation et un seconde avec l'id des options.
     On peut avoir plusieurs lignes avec le même id de reservation mais avec de id d'option différent"""
-    __tablename__="option"
-    option_id: Mapped[int]=mapped_column(primary_key=True)
+    __tablename__="optionreservation"
+    id: Mapped[int]=mapped_column(primary_key=True)
     reservation_id:Mapped[int]=mapped_column(ForeignKey("reservation.reservation_id"))
     option_id:Mapped[int]  
 
     def __repr__(self)->str:
-        return f"Option(reservation_id={self.reservation_id}, option_id={self.option_id})"
+        return f"OptionReservation(id ={self.id}, reservation_id={self.reservation_id}, option_id={self.option_id})"
 
-"""Differentes options possibles"""
-class OptionsPossibles(IntEnum):
+"""Differentes options possibles pour une réservation"""
+class OptionsReservationPossibles(IntEnum):
     SPA = 1
     PETIT_DEJEUNER = 2
     PARKING = 3
     WIFI = 4
 
-"""Creation des Options présents au lancement de l'application"""
-def init_option() -> None:
+"""Creation des Options de Réservation présentes au lancement de l'application"""
+def init_option_reservation() -> None:
 
-    option= OptionDB(reservation_id = 1,option_id = OptionsPossibles.SPA)
+    option= OptionReservationDB(reservation_id = 1,option_id = OptionsReservationPossibles.SPA)
     add_to_db(option)
-    option = OptionDB(reservation_id = 1,option_id = OptionsPossibles.PETIT_DEJEUNER)
+    option = OptionReservationDB(reservation_id = 1,option_id = OptionsReservationPossibles.PETIT_DEJEUNER)
+    add_to_db(option)
+
+"""Differentes options possibles pour une chambre"""
+class OptionsChambrePossibles(IntEnum):
+    FUMEUR = 1
+    ANIMAUX_TOLERES = 2
+    CLIMATISATION = 3
+
+class OptionChambreDB(Base):
+    """Une table contenant deux colonnes, une première avec l'id de la chambre et un seconde avec l'id des options.
+    On peut avoir plusieurs lignes avec le même id de reservation mais avec de id d'option différent"""
+    __tablename__="optionchambre"
+    id: Mapped[int]=mapped_column(primary_key=True)
+    room_id:Mapped[int]=mapped_column(ForeignKey("chambre.room_id"))
+    option_chambre_id:Mapped[int] 
+
+    def __repr__(self)->str:
+        return f"OptionChambre(id={self.id}, room_id={self.room_id}, option_id={self.option_chambre_id})"
+
+"""Creation des Options de Chambres présentes au lancement de l'application"""
+def init_option_chambre() -> None:
+
+    option= OptionChambreDB(room_id = 1,option_chambre_id = OptionsChambrePossibles.FUMEUR)
+    add_to_db(option)
+    option = OptionChambreDB(room_id = 9,option_chambre_id = OptionsChambrePossibles.CLIMATISATION)
     add_to_db(option)
 
 if __name__ == "__main__":
@@ -120,4 +146,5 @@ if __name__ == "__main__":
         print(session.query(ChambreDB).all())
         print(session.query(ClientDB).all())
         print(session.query(ReservationDB).all())
-        print(session.query(OptionDB).all())
+        print(session.query(OptionReservationDB).all())
+        print(session.query(OptionChambreDB).all())
