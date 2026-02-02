@@ -76,3 +76,8 @@ class Calendrier(QWidget):
             self.ancienne_date_debut = date_selectionnee
         else:
             self.ancienne_date_fin = date_selectionnee
+
+    
+    #TODO: Créer une fonction qui permet d'avoir la date de fin forcmeent apres la date de debut
+
+    

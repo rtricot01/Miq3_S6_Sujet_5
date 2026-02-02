@@ -1,10 +1,11 @@
 import sys
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout
 
 from reservation_calendrier import Calendrier
 from reservation_prix import Prix
 from reservation_personne import NombrePersonne
+from reservation_services import Services
 
 
 class FenetreReservation (QMainWindow):
@@ -21,17 +22,25 @@ class FenetreReservation (QMainWindow):
         fenetre_principale.setStyleSheet("background: #C6B7D1")
         self.setCentralWidget(fenetre_principale)
 
-        layout_global = QHBoxLayout(fenetre_principale)
+        layout_global = QVBoxLayout (fenetre_principale)
+        layout_top = QHBoxLayout()
+
 
         self.calendrier = Calendrier()
         self.prix = Prix(self.PRIX_MAXIMAL)
         self.personne = NombrePersonne()
-        
-        layout_global.setSpacing(40)
-        layout_global.addWidget(self.calendrier)
-        layout_global.addWidget(self.prix)
-        layout_global.addWidget(self.personne)
+        self.services = Services()
 
+        layout_global.addWidget(self.services)
+        
+        layout_top.setSpacing(40)
+        layout_top.addWidget(self.calendrier)
+        layout_top.addWidget(self.prix)
+        layout_top.addWidget(self.personne)
+
+        layout_global.addLayout(layout_top)
+        layout_global.setSpacing(20)
+        layout_global.addWidget(self.services)
 
 
 

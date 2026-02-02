@@ -12,7 +12,7 @@ class Prix (QWidget):
         self.slider_prix_maximal = QSlider(Qt.Horizontal, self)
         self.slider_prix_maximal.setRange(0,prix_journee_maximal)
         self.slider_prix_maximal.setValue(0.8 * prix_journee_maximal)
-        self.slider_prix_maximal.resize(400, 50)
+        self.slider_prix_maximal.setFixedWidth(400)
         
 
         self.label_prix_minimal = QLabel(f"Prix minimal :  {0}", self)
@@ -20,7 +20,7 @@ class Prix (QWidget):
         self.slider_prix_minimal = QSlider(Qt.Horizontal, self)
         self.slider_prix_minimal.setRange(0,prix_journee_maximal)
         self.slider_prix_minimal.setValue(0)
-        self.slider_prix_minimal.resize(400, 50)
+        self.slider_prix_minimal.setFixedWidth(400)
 
         box_prix_minimal = QHBoxLayout()
         box_prix_minimal.addWidget(self.label_prix_minimal)
