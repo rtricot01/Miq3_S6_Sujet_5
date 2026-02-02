@@ -3,6 +3,7 @@ from PySide6.QtGui import QTextCharFormat, QFont, QColor
 from PySide6.QtCore import Qt
 
 class Calendrier(QWidget):
+    
     def __init__(self, parent=None): 
         super().__init__(parent)
 

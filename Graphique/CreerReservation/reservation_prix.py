@@ -4,8 +4,8 @@ from PySide6.QtGui import  Qt
 
 class Prix (QWidget):
 
-    def __init__(self, prix_journee_maximal:float):
-        super().__init__()
+    def __init__(self, prix_journee_maximal:float, parent=None):
+        super().__init__(parent)
 
         self.label_prix_maximal = QLabel(f"Prix maximal :  {prix_journee_maximal}", self)
         self.label_prix_maximal.resize(270, 30)
@@ -34,7 +34,7 @@ class Prix (QWidget):
 
         box_prix = QVBoxLayout()
         box_prix.addLayout(box_prix_maximal)
-        box_prix.setSpacing(20)
+        box_prix.setSpacing(10)
         box_prix.addLayout(box_prix_minimal)
 
         self.setLayout(box_prix)
