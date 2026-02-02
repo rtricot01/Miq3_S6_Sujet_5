@@ -1,5 +1,5 @@
 from datetime import date
-from Gestion_db import OptionsPossibles,Session,ChambreDB,ReservationDB,add_to_db
+from Gestion_db import OptionsReservationPossibles,Session,ChambreDB,ReservationDB,add_to_db
 
 class Client:
 
@@ -34,11 +34,17 @@ class Chambre:
     def __repr__(self):
         return f"Chambre({self.room_id},{self.max_people},{self.price},{self.room_size})"
 
-class Option:
+class OptionReservation:
 
-    def __init__(self, reservation_id:int, option_id:OptionsPossibles):
+    def __init__(self, reservation_id:int, option_reservation_id:OptionsReservationPossibles):
         self.reservation_id=reservation_id
-        self.option_id=option_id
+        self.option_reservation_id=option_reservation_id
+
+class OptionChambre:
+
+    def __init__(self, room_id:int, option_chambre_id:OptionsReservationPossibles):
+        self.room_id=room_id
+        self.option_chambre_id=option_chambre_id
 
 
 def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None) -> list[Chambre]:
