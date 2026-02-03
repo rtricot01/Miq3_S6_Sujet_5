@@ -3,7 +3,6 @@ from sqlalchemy.orm import Mapped, mapped_column, sessionmaker, declarative_base
 from sqlalchemy import Date 
 from sqlalchemy import ForeignKey
 from datetime import date
-from enum import IntEnum
 
 """Creation de la connection"""
 db = sa.create_engine("sqlite:///hotel.db")
@@ -12,91 +11,68 @@ db = sa.create_engine("sqlite:///hotel.db")
 Session = sessionmaker(bind=db, expire_on_commit=False)
 Base = declarative_base()
 
-"""Creation de la BDD"""
 def init_db():
+    """Creation de la BDD"""
     init_chambre()
     init_client()
     init_reservation()
-    init_option_chambre()
-    init_option_reservation()
 
-"""Ajout de n'importe quel objet à la BDD"""
 def add_to_db(object):
+    """Ajout de n'importe quel objet à la BDD"""
     with Session() as session:
         session.add(object)
         session.commit()
 #on retourne l'objet qui continent l'id de l'objet créé
     return object
-
-"""Ajout des options de chambre à la DBB"""
-def add_to_db_room_option(id_room:int, fumeur:bool, animaux:bool, climatisation:bool):
-    with Session() as session:
-        if fumeur:
-            session.add(OptionChambreDB(room_id=id_room,option_chambre_id=OptionsChambrePossibles.FUMEUR))
-        if animaux:
-            session.add(OptionChambreDB(room_id=id_room,option_chambre_id=OptionsChambrePossibles.ANIMAUX_TOLERES))
-        if climatisation:
-            session.add(OptionChambreDB(room_id=id_room,option_chambre_id=OptionsChambrePossibles.CLIMATISATION))
-        session.commit()
-    return 
          
-"""Ajout des options de reservation à la BDD"""
-def add_to_db_reservation_option(id_reservation:int, spa:bool, petit_dejeuner:bool, parking:bool, wifi:bool):
-    with Session() as session:
-        if spa:
-            session.add(OptionReservationDB(reservation_id=id_reservation,option_id =OptionsReservationPossibles.SPA))      
-        if petit_dejeuner:
-            session.add(OptionReservationDB(reservation_id=id_reservation,option_id =OptionsReservationPossibles.PETIT_DEJEUNER))    
-        if parking:
-            session.add(OptionReservationDB(reservation_id=id_reservation,option_id =OptionsReservationPossibles.PARKING))    
-        if wifi:
-            session.add(OptionReservationDB(reservation_id=id_reservation,option_id =OptionsReservationPossibles.WIFI))    
-        session.commit()
-    return
-
-
-"""Table chambre"""
 class ChambreDB(Base):
+    """Table chambre"""
     __tablename__ = "chambre"
     room_id: Mapped[int] = mapped_column(primary_key = True)
     max_people: Mapped[int]
     prize: Mapped[float]
     room_size: Mapped[int]
+    animaux_toleres: Mapped[bool]
+    fumeur: Mapped[bool]
+    climatisation: Mapped[bool]
 
     def __repr__(self) -> str: 
-      return f"<Chambre(id={self.room_id}, nblit={self.max_people}, prix={self.prize}, superficie={self.room_size})>"
+      return f"<Chambre(id={self.room_id}, nblit={self.max_people}, prix={self.prize}, superficie={self.room_size}, animaux_toleres={self.animaux_toleres}, fumeur={self.fumeur}, climatisation={self.climatisation})>"
 
-"""Creation des chambres présents au lancement de l'application"""
 def init_chambre() -> None:
-
+    """Creation des chambres présents au lancement de l'application"""
     for i in range(4):
-        chambre = ChambreDB(max_people = 2, prize= 60.99, room_size = 30)
+        chambre = ChambreDB(max_people = 2, prize= 60.99, room_size = 30, animaux_toleres = False, fumeur = True, climatisation = True)
         add_to_db(chambre)
-        chambre = ChambreDB(max_people = 3, prize = 70.99, room_size = 35)
+        chambre = ChambreDB(max_people = 3, prize = 70.99, room_size = 35, animaux_toleres = True, fumeur = False, climatisation = False)
         add_to_db(chambre)
-        chambre = ChambreDB(max_people = 4, prize = 80.99, room_size = 40)
+        chambre = ChambreDB(max_people = 4, prize = 80.99, room_size = 40, animaux_toleres = True, fumeur = True, climatisation = False)
         add_to_db(chambre)   
 
-"""Table reservation"""
 class ReservationDB(Base):
+    """Table reservation"""
     __tablename__="reservation"
     reservation_id:Mapped[int]=mapped_column(primary_key=True)
     room_id:Mapped[int]=mapped_column(ForeignKey("chambre.room_id"))
     client_id:Mapped[int]=mapped_column(ForeignKey("client.client_id"))
+    nombre_personnes : Mapped[int]
     start_date:Mapped[date]=mapped_column(Date, nullable=False)
     end_date:Mapped[date]=mapped_column(Date, nullable=False)
+    spa : Mapped[bool]
+    petit_dejeuner : Mapped[bool]
+    parking: Mapped[bool]
+    wifi: Mapped[bool]
 
     def __repr__(self) -> str:
-        return f"<Reservation(id={self.reservation_id}, id_chambre={self.room_id}, date_debut={self.start_date}, date_fin={self.end_date})>"
+        return f"<Reservation(id={self.reservation_id}, id_chambre={self.room_id}, id_client={self.client_id}, nombre de personnes={self.nombre_personnes}, date_debut={self.start_date}, date_fin={self.end_date}, spa={self.spa}, petit déjeuner={self.petit_dejeuner}, parking={self.parking},wifi={self.wifi})>"
 
-"""Creation des réservations présents au lancement de l'application"""
 def init_reservation() -> None:
-
-    reservation = ReservationDB(room_id=1,client_id=1,start_date=date(2026,1,8),end_date=date(2026,2,5))
+    """Creation des réservations présents au lancement de l'application"""
+    reservation = ReservationDB(room_id=1,client_id=1,nombre_personnes=2,start_date=date(2026,1,8),end_date=date(2026,2,5), spa=True, petit_dejeuner =True, parking = True, wifi = False)
     add_to_db(reservation)
 
-"""Table Client"""
 class ClientDB(Base):
+    """Table Client"""
     __tablename__="client"
     client_id:Mapped[int]=mapped_column(primary_key=True)
     client_firstname:Mapped[str]
@@ -107,63 +83,10 @@ class ClientDB(Base):
     def __repr__(self) -> str:
         return f"<Client(client_id={self.client_id}, client_firstname={self.client_firstname}, client_lastname={self.client_lastname}, client_tel={self.client_tel}, client_mail={self.client_mail})>"
     
-"""Creation des clients présents au lancement de l'application"""
 def init_client() -> None:
-
+    """Creation des clients présents au lancement de l'application"""
     client = ClientDB(client_firstname = "Quentin", client_lastname= "LEVEQUE",client_tel="0102030405",client_mail="bogoss@gmail.com")
     add_to_db(client)
-
-"""Table Option"""
-class OptionReservationDB(Base):
-    """Une table contenant deux colonnes, une première avec l'id de la reservation et un seconde avec l'id des options.
-    On peut avoir plusieurs lignes avec le même id de reservation mais avec de id d'option différent"""
-    __tablename__="optionreservation"
-    id: Mapped[int]=mapped_column(primary_key=True)
-    reservation_id:Mapped[int]=mapped_column(ForeignKey("reservation.reservation_id"))
-    option_id:Mapped[int]  
-
-    def __repr__(self)->str:
-        return f"OptionReservation(id ={self.id}, reservation_id={self.reservation_id}, option_id={self.option_id})"
-
-"""Differentes options possibles pour une réservation"""
-class OptionsReservationPossibles(IntEnum):
-    SPA = 1
-    PETIT_DEJEUNER = 2
-    PARKING = 3
-    WIFI = 4
-
-"""Creation des Options de Réservation présentes au lancement de l'application"""
-def init_option_reservation() -> None:
-
-    option= OptionReservationDB(reservation_id = 1,option_id = OptionsReservationPossibles.SPA)
-    add_to_db(option)
-    option = OptionReservationDB(reservation_id = 1,option_id = OptionsReservationPossibles.PETIT_DEJEUNER)
-    add_to_db(option)
-
-"""Differentes options possibles pour une chambre"""
-class OptionsChambrePossibles(IntEnum):
-    FUMEUR = 1
-    ANIMAUX_TOLERES = 2
-    CLIMATISATION = 3
-
-class OptionChambreDB(Base):
-    """Une table contenant deux colonnes, une première avec l'id de la chambre et un seconde avec l'id des options.
-    On peut avoir plusieurs lignes avec le même id de reservation mais avec de id d'option différent"""
-    __tablename__="optionchambre"
-    id: Mapped[int]=mapped_column(primary_key=True)
-    room_id:Mapped[int]=mapped_column(ForeignKey("chambre.room_id"))
-    option_chambre_id:Mapped[int] 
-
-    def __repr__(self)->str:
-        return f"OptionChambre(id={self.id}, room_id={self.room_id}, option_id={self.option_chambre_id})"
-
-"""Creation des Options de Chambres présentes au lancement de l'application"""
-def init_option_chambre() -> None:
-
-    option= OptionChambreDB(room_id = 1,option_chambre_id = OptionsChambrePossibles.FUMEUR)
-    add_to_db(option)
-    option = OptionChambreDB(room_id = 9,option_chambre_id = OptionsChambrePossibles.CLIMATISATION)
-    add_to_db(option)
 
 if __name__ == "__main__":
     Base.metadata.create_all(db)
@@ -172,5 +95,3 @@ if __name__ == "__main__":
         print(session.query(ChambreDB).all())
         print(session.query(ClientDB).all())
         print(session.query(ReservationDB).all())
-        print(session.query(OptionReservationDB).all())
-        print(session.query(OptionChambreDB).all())
