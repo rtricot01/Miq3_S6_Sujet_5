@@ -5,7 +5,8 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushB
 
 from VueReservationTotal import VueReservationTotal 
 from VueCreerChambre import VueCreerChambre
-#TODO rajouter les impport des vues PrendreRésa et voir chambretot
+from VueChambreTot import VueChambreTot
+#TODO rajouter les impport des vues PrendreRésa 
 
 
 class VuePrincipale(QMainWindow):
@@ -64,7 +65,8 @@ class VuePrincipale(QMainWindow):
        
     @Slot()
     def ouvrir_liste_chambres(self):
-        print("Bouton 'Voir les chambres' cliqué. (Classe vue à créer)")
+    self.fenetre_secondaire = VueChambreTot()
+    self.fenetre_secondaire.show()
         
 
 
