@@ -27,7 +27,33 @@ def add_to_db(object):
         session.commit()
 #on retourne l'objet qui continent l'id de l'objet créé
     return object
+
+"""Ajout des options de chambre à la DBB"""
+def add_to_db_room_option(id_room:int, fumeur:bool, animaux:bool, climatisation:bool):
+    with Session() as session:
+        if fumeur:
+            session.add(OptionChambreDB(room_id=id_room,option_chambre_id=OptionsChambrePossibles.FUMEUR))
+        if animaux:
+            session.add(OptionChambreDB(room_id=id_room,option_chambre_id=OptionsChambrePossibles.ANIMAUX_TOLERES))
+        if climatisation:
+            session.add(OptionChambreDB(room_id=id_room,option_chambre_id=OptionsChambrePossibles.CLIMATISATION))
+        session.commit()
+    return 
          
+"""Ajout des options de reservation à la BDD"""
+def add_to_db_reservation_option(id_reservation:int, spa:bool, petit_dejeuner:bool, parking:bool, wifi:bool):
+    with Session() as session:
+        if spa:
+            session.add(OptionReservationDB(reservation_id=id_reservation,option_id =OptionsReservationPossibles.SPA))      
+        if petit_dejeuner:
+            session.add(OptionReservationDB(reservation_id=id_reservation,option_id =OptionsReservationPossibles.PETIT_DEJEUNER))    
+        if parking:
+            session.add(OptionReservationDB(reservation_id=id_reservation,option_id =OptionsReservationPossibles.PARKING))    
+        if wifi:
+            session.add(OptionReservationDB(reservation_id=id_reservation,option_id =OptionsReservationPossibles.WIFI))    
+        session.commit()
+    return
+
 
 """Table chambre"""
 class ChambreDB(Base):
