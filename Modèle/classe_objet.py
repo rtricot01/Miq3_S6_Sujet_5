@@ -1,5 +1,5 @@
 from datetime import date
-from Gestion_db import OptionsReservationPossibles,Session,ChambreDB,ReservationDB,add_to_db,add_to_db_room_option,add_to_db_reservation_option
+from Gestion_db import Session,ChambreDB,ReservationDB,add_to_db
 
 class Client:
 
@@ -15,10 +15,11 @@ class Client:
 
 class Reservation:
 
-    def __init__(self, reservation_id:int,room_id:int,client_id:int,start_date:date, end_date:date, spa, petit_dejeuner, parking, wifi):
+    def __init__(self, reservation_id:int,room_id:int,client_id:int,nombre_personnes: int, start_date:date, end_date:date, spa: bool, petit_dejeuner: bool, parking: bool, wifi: bool):
         self.reservation_id=reservation_id
         self.room_id=room_id
         self.client_id=client_id
+        self.nombre_personnes = nombre_personnes
         self.start_date=start_date
         self.end_date=end_date
         self.spa=spa
@@ -26,6 +27,8 @@ class Reservation:
         self.petit_dejeuner=petit_dejeuner
         self.wifi=wifi
 
+    def __str__(self):
+        return f"Reservation({self.reservation_id},{self.room_id},{self.client_id},{self.nombre_personnes},{self.start_date},{self.end_date},{self.spa},{self.parking},{self.petit_dejeuner},{self.wifi})"
 
 
 
@@ -42,54 +45,53 @@ class Chambre:
 
 
     def __repr__(self):
-        return f"Chambre({self.room_id},{self.max_people},{self.price},{self.room_size})"
-
-class OptionReservation:
-
-    def __init__(self, reservation_id:int, option_reservation_id:OptionsReservationPossibles):
-        self.reservation_id=reservation_id
-        self.option_reservation_id=option_reservation_id
-
-class OptionChambre:
-
-    def __init__(self, room_id:int, option_chambre_id:OptionsReservationPossibles):
-        self.room_id=room_id
-        self.option_chambre_id=option_chambre_id
+        return f"Chambre({self.room_id},{self.max_people},{self.price},{self.room_size},{self.fumeur},{self.animaux_toleres},{self.climatisation})"
 
 
-# def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None) -> list[Chambre]:
-#     """Cette fonction permet de récupérer une liste de chambre disponible pour une période donnée en argument et eventuellement un nombre de voyageur.
-#     Cette fonction doit être appelé avec comme premier argument la date de début de reservation souhaitée et puis la date de fin souhaitée, tout deux de type 'date' en python, et le nombre de personne:int
-#     (i.e. recuperer_chambre_libre(date(annee,mois,jour),date(annne,mois,jour), nbr_voyageur) """
-#     room_id_list=[]
-#     with Session() as session:
-#         chambres = (session.query(ChambreDB).filter( 
-#                     ~session.query(ReservationDB).filter(
-#                                                   ReservationDB.room_id == ChambreDB.room_id,
-#                                                   ReservationDB.start_date <= date_end,
-#                                                   ReservationDB.end_date >=date_start,
-#                                                   ).exists()))
+def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None, fumeur: bool = None, animaux_toleres: bool = None, climatisation: bool = None) -> list[Chambre]:
+    """Cette fonction permet de récupérer une liste de chambres disponibles pour une période donnée en argument et eventuellement un nombre de voyageur.
+     Cette fonction doit être appelé avec comme premier argument la date de début de reservation souhaitée et puis la date de fin souhaitée, tout deux de type 'date' en python, et le nombre de personne:int
+     (i.e. recuperer_chambre_libre(date(annee,mois,jour),date(annne,mois,jour), nbr_voyageur) """
+    room_list=[]
+    with Session() as session:
+        chambres = (session.query(ChambreDB).filter( 
+                     ~session.query(ReservationDB).filter(
+                                                ReservationDB.room_id == ChambreDB.room_id,
+                                                ReservationDB.start_date <= date_end,
+                                                ReservationDB.end_date >=date_start,
+                                                ).exists()))
         
-#     if min_people is not None:
-#         chambres=chambres.filter(ChambreDB.max_people>=min_people)
+        if min_people is not None:
+            chambres=chambres.filter(ChambreDB.max_people>=min_people)
+        if fumeur is not None:
+            if fumeur is True:
+                chambres=chambres.filter(ChambreDB.fumeur == True)
+            else:
+                chambres=chambres.filter(ChambreDB.fumeur == False)
+        if animaux_toleres is not None:
+            if animaux_toleres is True:
+                chambres=chambres.filter(ChambreDB.animaux_toleres == True)
+            else:
+                chambres=chambres.filter(ChambreDB.animaux_toleres == False)
+        if climatisation is not None:
+            if climatisation is True:
+                chambres=chambres.filter(ChambreDB.climatisation == True)
+            else:
+                chambres=chambres.filter(ChambreDB.climatisation == False)
 
-#     rows=chambres.all() 
-#     for room in rows:
-#         room_id_list.append(Chambre(room.room_id, room.max_people, room.prize, room.room_size, ))
+        rows=chambres.all() 
+        for room in rows:
+            room_list.append(Chambre(room.room_id, room.max_people, room.prize, room.room_size,room.fumeur, room.animaux_toleres, room.climatisation ))
 
-#     return room_id_list
-
-
-# print(recuperer_chambre_libre(date(2026,1,4),date(2026,1,8),3))
+    return room_list
 
 
 def creer_chambre(max_person:int, price:int, room_area:int, fumeur:bool, animaux_toleres:bool, climatisation:bool) -> Chambre:
-    """Foncion qui permet de créer une instance chambre tout en l'enregistrant dans la base de donnée, et en remplissant le table liée aux options de chambre"""
+    """Fonction qui permet de créer une instance chambre tout en l'enregistrant dans la base de donnée"""
     try:
-        chambre=ChambreDB(max_people=max_person, prize=price, room_size=room_area)
+        chambre=ChambreDB(max_people=max_person, prize=price, room_size=room_area,fumeur=fumeur,animaux_toleres= animaux_toleres,climatisation=climatisation)
         chambre=add_to_db(chambre)
         print(chambre.room_id)
-        add_to_db_room_option(chambre.room_id,fumeur,animaux_toleres,climatisation)
         return Chambre(chambre.room_id, chambre.max_people, chambre.prize, chambre.room_size, fumeur, animaux_toleres, climatisation)
     #TODO Exception à changer
     except :
@@ -99,19 +101,23 @@ def creer_chambre(max_person:int, price:int, room_area:int, fumeur:bool, animaux
 def creer_reservation(id_room:int,id_client:int,date_start:date, date_end:date, spa:bool, petit_dejeuner:bool, parking:bool, wifi:bool):
     """Foncion qui permet de créer une instance de reservation tout en l'enregistrant dans la base de donnée, et en remplissant le table liée aux options de reservation"""
     try:
-        reservation=ReservationDB(room_id=id_room, client_id=id_client, start_date=date_start, end_date=date_end)
+        reservation=ReservationDB(room_id=id_room, client_id=id_client, start_date=date_start, end_date=date_end, spa = spa, petit_dejeuner =petit_dejeuner, parking= parking, wifi = wifi)
         reservation=add_to_db(reservation)
-        add_to_db_reservation_option(reservation.reservation_id, spa, petit_dejeuner, parking, wifi)
         return Reservation(reservation.reservation_id,id_room,id_client,date_start, date_end, spa, petit_dejeuner, parking, wifi)
     #TODO Exception à trouver
     except :
         raise
 
-
-
-print(creer_chambre(5,80.99,40,True,False,True))
-print(creer_reservation(13,1,date(2026,1,4),date(2026,1,8),True,False,True,False))
-
+def toutes_les_reservations() -> list[Reservation]:
+    """Fonction permettant d'afficher toutes les reservations de la BDD"""
+    list_reservation =[]
+    with Session() as session:
+        reservations = session.query(ReservationDB).all()
+    for reservation in reservations:
+        list_reservation.append(Reservation(reservation.reservation_id, reservation.room_id, reservation.client_id, reservation.nombre_personnes, reservation.start_date, reservation.end_date, reservation.spa, reservation.petit_dejeuner, reservation.parking, reservation.wifi))
+    return list_reservation   
+       
+print(recuperer_chambre_libre(date(2026,1,8), date(2026,1,8), 2, climatisation=True))
 
 
 
