@@ -1,6 +1,11 @@
 from datetime import date
 from Modele.gestion_db import Session,ChambreDB,ReservationDB,add_to_db
-from Modele.exceptions import ReservationDateException
+from Controleur.exceptions import ReservationDateException
+import logging
+
+#TODO à mettre dans le 'main' du fichier qui va lancer l'application
+from utils.logging_config import setup_logging 
+setup_logging()
 
 
 
@@ -12,6 +17,9 @@ class Client:
         self.client_lastname=client_lastname
         self.client_tel=client_tel
         self.client_mail=client_mail
+
+    
+
 
     def __str__(self):
         return f"Client({self.client_id},{self.client_firstname},{self.client_lastname},{self.client_tel},{self.client_mail})"
@@ -42,7 +50,7 @@ class Reservation:
 
 class Chambre:
 
-    def __init__(self, room_id:int, max_people:int, price:int, room_size:int, fumeur:bool, animaux_toleres:bool, climatisation:bool):
+    def __init__(self, room_id:int, max_people:int, price:float, room_size:int, fumeur:bool, animaux_toleres:bool, climatisation:bool):
         self.room_id=room_id
         self.max_people=max_people
         self.price=price
@@ -60,6 +68,8 @@ def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None,
     """Cette fonction permet de récupérer une liste de chambres disponibles pour une période donnée en argument et eventuellement un nombre de voyageur.
      Cette fonction doit être appelé avec comme premier argument la date de début de reservation souhaitée et puis la date de fin souhaitée, tout deux de type 'date' en python, et le nombre de personne:int
      (i.e. recuperer_chambre_libre(date(annee,mois,jour),date(annne,mois,jour), nbr_voyageur) """
+    logging.info("START recuperer_chambre_libre")
+
     room_list=[]
     with Session() as session:
         chambres = (session.query(ChambreDB).filter( 
@@ -90,16 +100,17 @@ def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None,
         rows=chambres.all() 
         for room in rows:
             room_list.append(Chambre(room.room_id, room.max_people, room.prize, room.room_size,room.fumeur, room.animaux_toleres, room.climatisation ))
-
+    logging.info(f"Récupération des chambres libres pour la période {date_start}/{date_end}")
     return room_list
 
 
-def creer_chambre(max_person:int, price:int, room_area:int, fumeur:bool, animaux_toleres:bool, climatisation:bool) -> Chambre:
+def creer_chambre(max_person:int, price:float, room_area:int, fumeur:bool, animaux_toleres:bool, climatisation:bool) -> Chambre:
     """Fonction qui permet de créer une instance chambre tout en l'enregistrant dans la base de donnée"""
     try:
         chambre=ChambreDB(max_people=max_person, prize=price, room_size=room_area,fumeur=fumeur,animaux_toleres= animaux_toleres,climatisation=climatisation)
         chambre=add_to_db(chambre)
         print(chambre.room_id)
+        logging.info(f"Chambre créée, id:{chambre.room_id}")
         return Chambre(chambre.room_id, chambre.max_people, chambre.prize, chambre.room_size, fumeur, animaux_toleres, climatisation)
     #TODO Exception à changer
     except :
@@ -111,6 +122,7 @@ def creer_reservation(id_room:int,id_client:int,date_start:date, date_end:date, 
     try:
         reservation=ReservationDB(room_id=id_room, client_id=id_client, start_date=date_start, end_date=date_end, spa = spa, petit_dejeuner =petit_dejeuner, parking= parking, wifi = wifi)
         reservation=add_to_db(reservation)
+        logging.info(f"Réservation créée, id:{reservation.reservation_id}")
         return Reservation(reservation.reservation_id,id_room,id_client,date_start, date_end, spa, petit_dejeuner, parking, wifi)
     #TODO Exception à trouver
     except :
@@ -123,10 +135,13 @@ def toutes_les_reservations() -> list[Reservation]:
         reservations = session.query(ReservationDB).all()
     for reservation in reservations:
         list_reservation.append(Reservation(reservation.reservation_id, reservation.room_id, reservation.client_id, reservation.nombre_personnes, reservation.start_date, reservation.end_date, reservation.spa, reservation.petit_dejeuner, reservation.parking, reservation.wifi))
+    logging.info(f"Récupération de la liste des réservations.")
     return list_reservation   
        
-print(recuperer_chambre_libre(date(2026,1,8), date(2026,1,8), 2, climatisation=True))
+logging.info("loggeur fonctionne")
+print(recuperer_chambre_libre(date(2026,1,2), date(2026,1,8), 2, climatisation=True))
 
+creer_chambre(4, 89.99, 35, True, False, True)
 
 
 print(Reservation(1, 1, 1, 3, date(2026,2,2), date(2026,2,8), False, True, False, True))

@@ -1,7 +1,10 @@
 import pytest
 from datetime import date 
-from Modele.classe_objet import Client, Reservation, Chambre
-from Modele.exceptions import ReservationDateException
+from Controleur.classe_objet import Client, Reservation, Chambre, recuperer_chambre_libre, creer_chambre, creer_reservation, toutes_les_reservations
+from Controleur.exceptions import ReservationDateException
+
+
+
 
 @pytest.mark.parametrize("id, firstname, lastname, tel, mail, expected_id, expected_firstname, expected_lastname, expected_tel, expected_mail",[
     (1, "Ahmet", "Tunc", "0607080910", "mail@mail.com", 1, "Ahmet", "Tunc", "0607080910", "mail@mail.com"),
@@ -40,13 +43,22 @@ def test_constructeur_reservation(id:int, room_id:int, client_id:int, nombre_per
     assert reservation.parking==expected_parking
     assert reservation.wifi==expected_wifi
 
+
+
+
+
 def test_constructeur_reservation_date():
     with pytest.raises(ReservationDateException):
         Reservation(1, 1, 1, 1, date(2026,8,3), date(2026,8,1), True, False, False, True)
 
+
+
+
 def test_constructeur_reservation_sans_option():
     with pytest.raises(TypeError):
         Reservation(1, 1, 1, 1, date(2026,8,3), date(2026,8,1))
+
+
 
 @pytest.mark.parametrize("room_id, max_people, price, room_size, fumeur, animaux_toleres, climatisation, expected_room_id, " \
                          "expected_max_people, expected_price, expected_room_size, expected_fumeur, expected_animaux_toleres, " \
@@ -63,3 +75,4 @@ def test_constructeur_chambre(room_id:int, max_people:int, price:float, room_siz
     assert chambre.fumeur==expected_fumeur
     assert chambre.animaux_toleres==expected_animaux_toleres
     assert chambre.climatisation==expected_climatisation
+
