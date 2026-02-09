@@ -12,8 +12,8 @@ from VueChambreTot import VueChambreTot
 class VuePrincipale(QMainWindow):
 
     def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Gestion Hotel - Menu principale")
+        QMainWindow.__init__(self)   #TODO faire avec super() (remarque du prof)
+        self.setWindowTitle("Application de gestion de reservation")
         self.setWindowIcon(QIcon("hotel.jpg"))
         self.resize(570, 600)
 
