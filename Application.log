@@ -1,0 +1,23 @@
+2026-02-08 18:26:40,477 - INFO - loggeur fonctionne
+2026-02-08 18:26:40,477 - INFO - START recuperer_chambre_libre
+2026-02-08 18:26:40,485 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-08 18:27:09,011 - INFO - loggeur fonctionne
+2026-02-08 18:27:09,011 - INFO - START recuperer_chambre_libre
+2026-02-08 18:27:09,027 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-08 18:27:09,031 - INFO - Ajout de <class 'Modele.gestion_db.ChambreDB'> dans la bdd
+2026-02-08 18:27:09,031 - INFO - Chambre créée, id:39
+2026-02-08 18:29:40,093 - INFO - loggeur fonctionne
+2026-02-08 18:29:40,103 - INFO - START recuperer_chambre_libre
+2026-02-08 18:29:40,103 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-08 18:29:40,113 - INFO - Ajout de <Chambre(id=40, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
+2026-02-08 18:29:40,113 - INFO - Chambre créée, id:40
+2026-02-08 18:34:12,754 - INFO - loggeur fonctionne
+2026-02-08 18:34:12,756 - INFO - START recuperer_chambre_libre
+2026-02-08 18:34:12,760 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-08 18:34:12,769 - INFO - Ajout de <Chambre(id=43, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
+2026-02-08 18:34:12,769 - INFO - Chambre créée, id:43
+2026-02-08 18:35:42,157 - INFO - loggeur fonctionne
+2026-02-08 18:35:42,157 - INFO - START recuperer_chambre_libre
+2026-02-08 18:35:42,162 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-08 18:35:42,179 - INFO - Ajout de <Chambre(id=13, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
+2026-02-08 18:35:42,179 - INFO - Chambre créée, id:13

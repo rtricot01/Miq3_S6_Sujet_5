@@ -3,6 +3,8 @@ from sqlalchemy.orm import Mapped, mapped_column, sessionmaker, declarative_base
 from sqlalchemy import Date 
 from sqlalchemy import ForeignKey
 from datetime import date
+import logging
+
 
 """Creation de la connection"""
 db = sa.create_engine("sqlite:///hotel.db")
@@ -22,6 +24,7 @@ def add_to_db(object):
     with Session() as session:
         session.add(object)
         session.commit()
+    logging.info(f"Ajout de {object} dans la bdd")
 #on retourne l'objet qui continent l'id de l'objet créé
     return object
          
