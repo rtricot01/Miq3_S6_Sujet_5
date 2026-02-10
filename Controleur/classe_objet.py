@@ -1,7 +1,8 @@
 from datetime import date
-from Modele.gestion_db import Session,ChambreDB,ReservationDB,add_to_db
-from Controleur.exceptions import ReservationDateException
+from Modele.gestion_db import session_db,ChambreDB,ReservationDB,ClientDB,add_to_db
+from Controleur.exceptions import ReservationDateException, ObjectNotFoundException
 import logging
+from tests.db_test import session_test
 
 #TODO à mettre dans le 'main' du fichier qui va lancer l'application
 from utils.logging_config import setup_logging 
@@ -21,7 +22,7 @@ class Client:
     
 
 
-    def __str__(self):
+    def __repr__(self):
         return f"Client({self.client_id},{self.client_firstname},{self.client_lastname},{self.client_tel},{self.client_mail})"
 
 class Reservation:
@@ -43,7 +44,7 @@ class Reservation:
             
 
 
-    def __str__(self):
+    def __repr__(self):
         return f"Reservation({self.reservation_id},{self.room_id},{self.client_id},{self.nombre_personnes},{self.start_date},{self.end_date},{self.spa},{self.petit_dejeuner},{self.parking},{self.wifi})"
 
 
@@ -64,7 +65,7 @@ class Chambre:
         return f"Chambre({self.room_id},{self.max_people},{self.price},{self.room_size},{self.fumeur},{self.animaux_toleres},{self.climatisation})"
 
 
-def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None, fumeur: bool = None, animaux_toleres: bool = None, climatisation: bool = None, price_min: float = None, price_max: float = None) -> list[Chambre]:
+def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None, fumeur: bool = None, animaux_toleres: bool = None, climatisation: bool = None, price_min: float = None, price_max: float = None, Session = session_db) -> list[Chambre]:
     """Cette fonction permet de récupérer une liste de chambres disponibles pour une période donnée en argument et eventuellement un nombre de voyageur.
      Cette fonction doit être appelé avec comme premier argument la date de début de reservation souhaitée et puis la date de fin souhaitée, tout deux de type 'date' en python, et le nombre de personne:int
      (i.e. recuperer_chambre_libre(date(annee,mois,jour),date(annne,mois,jour), nbr_voyageur) """
@@ -109,11 +110,11 @@ def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None,
     return room_list
 
 
-def creer_chambre(max_person:int, price:float, room_area:int, fumeur:bool, animaux_toleres:bool, climatisation:bool) -> Chambre:
+def creer_chambre(max_person:int, price:float, room_area:int, fumeur:bool, animaux_toleres:bool, climatisation:bool, Session = session_db) -> Chambre:
     """Fonction qui permet de créer une instance chambre tout en l'enregistrant dans la base de donnée"""
     try:
         chambre=ChambreDB(max_people=max_person, prize=price, room_size=room_area,fumeur=fumeur,animaux_toleres= animaux_toleres,climatisation=climatisation)
-        chambre=add_to_db(chambre)
+        chambre=add_to_db(chambre, Session)
         print(chambre.room_id)
         logging.info(f"Chambre créée, id:{chambre.room_id}")
         return Chambre(chambre.room_id, chambre.max_people, chambre.prize, chambre.room_size, fumeur, animaux_toleres, climatisation)
@@ -122,18 +123,73 @@ def creer_chambre(max_person:int, price:float, room_area:int, fumeur:bool, anima
         raise 
 
 
-def creer_reservation(id_room:int,id_client:int,date_start:date, date_end:date, spa:bool, petit_dejeuner:bool, parking:bool, wifi:bool):
+def creer_reservation(id_room:int,id_client:int, nombre_personnes:int, date_start:date, date_end:date, spa:bool, petit_dejeuner:bool, parking:bool, wifi:bool, Session = session_db):
     """Foncion qui permet de créer une instance de reservation tout en l'enregistrant dans la base de donnée, et en remplissant le table liée aux options de reservation"""
     try:
-        reservation=ReservationDB(room_id=id_room, client_id=id_client, start_date=date_start, end_date=date_end, spa = spa, petit_dejeuner =petit_dejeuner, parking= parking, wifi = wifi)
-        reservation=add_to_db(reservation)
+        reservation=ReservationDB(room_id=id_room, client_id=id_client, nombre_personnes=nombre_personnes, start_date=date_start, end_date=date_end, spa = spa, petit_dejeuner =petit_dejeuner, parking= parking, wifi = wifi)
+        reservation=add_to_db(reservation, Session)
         logging.info(f"Réservation créée, id:{reservation.reservation_id}")
-        return Reservation(reservation.reservation_id,id_room,id_client,date_start, date_end, spa, petit_dejeuner, parking, wifi)
+        return Reservation(reservation.reservation_id,id_room,id_client, nombre_personnes, date_start, date_end, spa, petit_dejeuner, parking, wifi)
     #TODO Exception à trouver
     except :
         raise
 
-def toutes_les_reservations() -> list[Reservation]:
+def supprimer_reservation(id_reservation, Session = session_db):
+    """Fonction permettant de supprimer une réservation à partir de son id"""
+    try:
+        with Session() as session:
+            resa_a_supprimer = session.query(ReservationDB).filter(ReservationDB.reservation_id == id_reservation).first()
+        if resa_a_supprimer:
+                session.delete(resa_a_supprimer)
+                session.commit()
+                logging.info(f"Réservation {id_reservation} supprimée.")
+        else:
+                raise ObjectNotFoundException
+    except Exception as e:
+        if isinstance(e, ObjectNotFoundException):
+            raise e
+        logging.error(f"Erreur technique lors de la suppression : {e}")
+        raise
+
+def supprimer_chambre(id_chambre, Session = session_db):
+    """Fonction permettant la suppression de la chambre ainsi que des réservations qui en dépendent à partir de son id"""
+    try:
+        with Session() as session:
+            #Suppression des dépéendances de la chambre
+            session.query(ReservationDB).filter(ReservationDB.room_id == id_chambre).delete()
+            chambre_a_supprimer = session.query(ChambreDB).filter(ChambreDB.room_id == id_chambre).first()
+            if chambre_a_supprimer:
+                session.delete(chambre_a_supprimer)
+                session.commit()
+                logging.info(f"Chambre {id_chambre} supprimée.")
+            else:
+                raise ObjectNotFoundException
+    except Exception as e:
+        if isinstance(e, ObjectNotFoundException):
+            raise e
+        logging.error(f"Erreur technique lors de la suppression : {e}")
+        raise
+
+def supprimer_client(id_client, Session = session_db):
+    """Fonction permettant la suppression d'un client ainsi que des réservations qui en dépendent à partir de son id"""
+    try:
+        with Session() as session:
+            #Suppression des dépéendances du client
+            session.query(ReservationDB).filter(ReservationDB.client_id == id_client).delete()
+            client_a_supprimer = session.query(ClientDB).filter(ClientDB.client_id == id_client).first()
+            if client_a_supprimer:
+                session.delete(client_a_supprimer)
+                session.commit()
+                logging.info(f"Client {id_client} supprimé.")
+            else:
+                raise ObjectNotFoundException
+    except Exception as e:
+        if isinstance(e, ObjectNotFoundException):
+            raise e
+        logging.error(f"Erreur technique lors de la suppression : {e}")
+        raise
+
+def toutes_les_reservations(Session = session_db) -> list[Reservation]:
     """Fonction permettant d'afficher toutes les reservations de la BDD"""
     list_reservation =[]
     with Session() as session:
@@ -142,11 +198,25 @@ def toutes_les_reservations() -> list[Reservation]:
         list_reservation.append(Reservation(reservation.reservation_id, reservation.room_id, reservation.client_id, reservation.nombre_personnes, reservation.start_date, reservation.end_date, reservation.spa, reservation.petit_dejeuner, reservation.parking, reservation.wifi))
     logging.info(f"Récupération de la liste des réservations.")
     return list_reservation   
-       
-logging.info("loggeur fonctionne")
-print(recuperer_chambre_libre(date(2026,1,2), date(2026,1,8),price_min=65,price_max=72))
 
-creer_chambre(4, 89.99, 35, True, False, True)
+def toutes_les_chambres(Session = session_db) -> list[Chambre]:
+    """Fonction permettant d'afficher toutes les chambres de la BDD"""
+    list_chambre =[]
+    with Session() as session:
+        chambres = session.query(ChambreDB).all()
+    for chambre in chambres:
+        list_chambre.append(Chambre(chambre.room_id, chambre.max_people, chambre.prize, chambre.room_size, chambre.fumeur, chambre.animaux_toleres, chambre.climatisation))
+    logging.info(f"Récupération de la liste des chambres.")
+    return list_chambre
 
+def tous_les_clients(Session = session_db) -> list[Client]:
+    """Fonction permettant d'afficher tous les clients de la BDD"""
+    list_client =[]
+    with Session() as session:
+        clients = session.query(ClientDB).all()
+    for client in clients:
+        list_client.append(Client(client.client_id ,client.client_firstname, client.client_lastname, client.client_tel, client.client_mail))
+    logging.info(f"Récupération de la liste des clients.")
+    return list_client
 
-print(Reservation(1, 1, 1, 3, date(2026,2,2), date(2026,2,8), False, True, False, True))
+print(toutes_les_reservations(session_test))
