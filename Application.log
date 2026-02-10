@@ -21,3 +21,8 @@
 2026-02-08 18:35:42,162 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
 2026-02-08 18:35:42,179 - INFO - Ajout de <Chambre(id=13, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
 2026-02-08 18:35:42,179 - INFO - Chambre créée, id:13
+2026-02-09 18:16:41,215 - INFO - loggeur fonctionne
+2026-02-09 18:16:41,216 - INFO - START recuperer_chambre_libre
+2026-02-09 18:16:41,223 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-09 18:16:41,228 - INFO - Ajout de <Chambre(id=14, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
+2026-02-09 18:16:41,228 - INFO - Chambre créée, id:14
