@@ -4,15 +4,15 @@ from PySide6.QtGui import  Qt
 
 class Prix (QWidget):
 
-    def __init__(self, prix_journee_maximal:float):
-        super().__init__()
+    def __init__(self, prix_journee_maximal:float, parent=None):
+        super().__init__(parent)
 
         self.label_prix_maximal = QLabel(f"Prix maximal :  {prix_journee_maximal}", self)
         self.label_prix_maximal.resize(270, 30)
         self.slider_prix_maximal = QSlider(Qt.Horizontal, self)
         self.slider_prix_maximal.setRange(0,prix_journee_maximal)
         self.slider_prix_maximal.setValue(0.8 * prix_journee_maximal)
-        self.slider_prix_maximal.resize(400, 50)
+        self.slider_prix_maximal.setFixedWidth(400)
         
 
         self.label_prix_minimal = QLabel(f"Prix minimal :  {0}", self)
@@ -20,7 +20,7 @@ class Prix (QWidget):
         self.slider_prix_minimal = QSlider(Qt.Horizontal, self)
         self.slider_prix_minimal.setRange(0,prix_journee_maximal)
         self.slider_prix_minimal.setValue(0)
-        self.slider_prix_minimal.resize(400, 50)
+        self.slider_prix_minimal.setFixedWidth(400)
 
         box_prix_minimal = QHBoxLayout()
         box_prix_minimal.addWidget(self.label_prix_minimal)
@@ -34,7 +34,7 @@ class Prix (QWidget):
 
         box_prix = QVBoxLayout()
         box_prix.addLayout(box_prix_maximal)
-        box_prix.setSpacing(20)
+        box_prix.setSpacing(10)
         box_prix.addLayout(box_prix_minimal)
 
         self.setLayout(box_prix)
