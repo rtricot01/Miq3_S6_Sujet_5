@@ -1,12 +1,12 @@
 import sys
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton
 
 from reservation_calendrier import Calendrier
 from reservation_prix import Prix
 from reservation_personne import NombrePersonne
 from reservation_services import Services
-
+from Controleur.classe_objet import recuperer_chambre_libre
 
 class FenetreReservation (QMainWindow):
 
@@ -25,6 +25,8 @@ class FenetreReservation (QMainWindow):
         layout_global = QVBoxLayout (fenetre_principale)
         layout_top = QHBoxLayout()
 
+        bouton_valider = QPushButton("Valider")
+        bouton_valider.clicked.connect(self.action_bouton)
 
         self.calendrier = Calendrier()
         self.prix = Prix(self.PRIX_MAXIMAL)
@@ -41,8 +43,20 @@ class FenetreReservation (QMainWindow):
         layout_global.addLayout(layout_top)
         layout_global.setSpacing(20)
         layout_global.addWidget(self.services)
+        layout_global.addWidget(self.bouton_valider)
 
+    def action_bouton (self) :
+        date_debut = self.calendrier.date_debut.text()
+        date_fin = self.calendrier.date_fin.text()
+        min_people = self.personne.textBox_nbr_adulte.text() + self.personne.textBox_nbr_enfant.text()
+        fumeur = self.services.checkBox_fumeur.isChecked()
+        animaux_toleres = self.services.checkBox_animaux.isChecked()
+        climatisation = self.services.checkBox_climatisation.isChecked()
+        prix_min = self.prix.slider_prix_minimal.value()
+        prix_max = self.prix.slider_prix_maximal.value()
 
+        chambres_disponible = recuperer_chambre_libre(date_debut,date_fin, min_people, fumeur, animaux_toleres, climatisation)
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

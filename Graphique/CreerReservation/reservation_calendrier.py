@@ -16,7 +16,7 @@ class Calendrier(QWidget):
         box_date_debut = QHBoxLayout()
         self.label_date_debut = QLabel("Date de début:", self)
         self.date_debut = QLineEdit(self)
-
+        
         box_date_fin = QHBoxLayout()
         self.label_date_fin = QLabel("Date de fin:", self)
         self.date_fin = QLineEdit(self)
