@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QWidget, QCalendarWidget, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
 from PySide6.QtGui import QTextCharFormat, QFont, QColor
-from PySide6.QtCore import Qt
 
 class Calendrier(QWidget):
     
@@ -77,7 +76,5 @@ class Calendrier(QWidget):
         else:
             self.ancienne_date_fin = date_selectionnee
 
-    
-    #TODO: Créer une fonction qui permet d'avoir la date de fin forcmeent apres la date de debut
 
     
