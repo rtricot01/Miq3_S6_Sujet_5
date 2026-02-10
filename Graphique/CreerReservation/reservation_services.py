@@ -3,15 +3,15 @@ from PySide6.QtWidgets import QWidget, QLabel, QCheckBox, QHBoxLayout, QVBoxLayo
 class Services(QWidget):
     
     def label_creation(self, nom: str):
-        self.label = QLabel(f"{nom}", self)
-        self.label.setFixedWidth(100)
-        return self.label
+        label = QLabel(f"{nom}", self)
+        label.setFixedWidth(100)
+        return label
 
     def checkbox_creation(self):
-        self.checkbox = QCheckBox("non", self)
-        self.checkbox.setFixedWidth(50)
-        self.checkbox.clicked.connect(lambda: self.changement_checkbox(self.checkbox))  
-        return self.checkbox
+        checkbox = QCheckBox("non", self)
+        checkbox.setFixedWidth(50)
+        checkbox.clicked.connect(lambda checked: self.changement_checkbox(checkbox))  
+        return checkbox
         
     def __init__(self):
         super().__init__()
@@ -66,8 +66,11 @@ class Services(QWidget):
 
         self.setLayout(box_service)
 
+
     def changement_checkbox(self, checkbox):
         if checkbox.isChecked():
             checkbox.setText("oui")
+            print("oui")
         else:
             checkbox.setText("non")
+            print("non")

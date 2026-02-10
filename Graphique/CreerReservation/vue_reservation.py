@@ -1,4 +1,5 @@
 import sys
+import os
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton
 
@@ -6,7 +7,9 @@ from reservation_calendrier import Calendrier
 from reservation_prix import Prix
 from reservation_personne import NombrePersonne
 from reservation_services import Services
-from Controleur.classe_objet import recuperer_chambre_libre
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from Controleur import classe_objet
 
 class FenetreReservation (QMainWindow):
 
@@ -43,7 +46,7 @@ class FenetreReservation (QMainWindow):
         layout_global.addLayout(layout_top)
         layout_global.setSpacing(20)
         layout_global.addWidget(self.services)
-        layout_global.addWidget(self.bouton_valider)
+        layout_global.addWidget(bouton_valider)
 
     def action_bouton (self) :
         date_debut = self.calendrier.date_debut.text()
@@ -55,8 +58,8 @@ class FenetreReservation (QMainWindow):
         prix_min = self.prix.slider_prix_minimal.value()
         prix_max = self.prix.slider_prix_maximal.value()
 
-        chambres_disponible = recuperer_chambre_libre(date_debut,date_fin, min_people, fumeur, animaux_toleres, climatisation)
-        
+        chambres_disponibles = classe_objet.recuperer_chambre_libre(date_debut,date_fin, min_people, fumeur, animaux_toleres, climatisation, prix_min, prix_max)
+        print(chambres_disponibles)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

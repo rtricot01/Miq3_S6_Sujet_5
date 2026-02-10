@@ -26,3 +26,69 @@
 2026-02-09 18:16:41,223 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
 2026-02-09 18:16:41,228 - INFO - Ajout de <Chambre(id=14, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
 2026-02-09 18:16:41,228 - INFO - Chambre créée, id:14
+2026-02-10 10:34:18,544 - INFO - loggeur fonctionne
+2026-02-10 10:34:18,544 - INFO - START recuperer_chambre_libre
+2026-02-10 10:34:18,554 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-10 10:34:18,565 - INFO - Ajout de <Chambre(id=14, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
+2026-02-10 10:34:18,565 - INFO - Chambre créée, id:14
+2026-02-10 10:35:24,069 - INFO - loggeur fonctionne
+2026-02-10 10:35:24,069 - INFO - START recuperer_chambre_libre
+2026-02-10 10:35:24,076 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-10 10:35:24,085 - INFO - Ajout de <Chambre(id=15, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
+2026-02-10 10:35:24,086 - INFO - Chambre créée, id:15
+2026-02-10 10:36:06,982 - INFO - START recuperer_chambre_libre
+2026-02-10 10:36:06,988 - INFO - Récupération des chambres libres pour la période 20/02/2026/06/03/2026
+2026-02-10 10:36:09,162 - INFO - START recuperer_chambre_libre
+2026-02-10 10:36:09,165 - INFO - Récupération des chambres libres pour la période 20/02/2026/06/03/2026
+2026-02-10 10:36:19,068 - INFO - START recuperer_chambre_libre
+2026-02-10 10:36:19,076 - INFO - Récupération des chambres libres pour la période 20/02/2026/06/03/2026
+2026-02-10 10:36:20,064 - INFO - START recuperer_chambre_libre
+2026-02-10 10:36:20,066 - INFO - Récupération des chambres libres pour la période 20/02/2026/06/03/2026
+2026-02-10 10:36:25,499 - INFO - START recuperer_chambre_libre
+2026-02-10 10:36:25,502 - INFO - Récupération des chambres libres pour la période 20/02/2026/06/03/2026
+2026-02-10 10:36:28,675 - INFO - START recuperer_chambre_libre
+2026-02-10 10:36:28,680 - INFO - Récupération des chambres libres pour la période 20/02/2026/02/03/2026
+2026-02-10 10:36:32,146 - INFO - START recuperer_chambre_libre
+2026-02-10 10:36:32,150 - INFO - Récupération des chambres libres pour la période 20/02/2026/02/03/2026
+2026-02-10 10:36:37,503 - INFO - START recuperer_chambre_libre
+2026-02-10 10:36:37,507 - INFO - Récupération des chambres libres pour la période 20/02/2026/02/03/2026
+2026-02-10 10:36:38,620 - INFO - START recuperer_chambre_libre
+2026-02-10 10:36:38,624 - INFO - Récupération des chambres libres pour la période 20/02/2026/02/03/2026
+2026-02-10 10:38:29,249 - INFO - loggeur fonctionne
+2026-02-10 10:38:29,250 - INFO - START recuperer_chambre_libre
+2026-02-10 10:38:29,255 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-10 10:38:29,267 - INFO - Ajout de <Chambre(id=16, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
+2026-02-10 10:38:29,268 - INFO - Chambre créée, id:16
+2026-02-10 10:39:42,005 - INFO - loggeur fonctionne
+2026-02-10 10:39:42,005 - INFO - START recuperer_chambre_libre
+2026-02-10 10:39:42,011 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-10 10:39:42,018 - INFO - Ajout de <Chambre(id=17, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
+2026-02-10 10:39:42,018 - INFO - Chambre créée, id:17
+2026-02-10 10:40:00,866 - INFO - START recuperer_chambre_libre
+2026-02-10 10:40:00,870 - INFO - Récupération des chambres libres pour la période /
+2026-02-10 10:40:04,816 - INFO - START recuperer_chambre_libre
+2026-02-10 10:40:04,820 - INFO - Récupération des chambres libres pour la période /
+2026-02-10 10:40:05,554 - INFO - START recuperer_chambre_libre
+2026-02-10 10:40:05,557 - INFO - Récupération des chambres libres pour la période /
+2026-02-10 10:40:24,148 - INFO - START recuperer_chambre_libre
+2026-02-10 10:40:24,151 - INFO - Récupération des chambres libres pour la période 11/02/2026/18/02/2026
+2026-02-10 10:40:24,804 - INFO - START recuperer_chambre_libre
+2026-02-10 10:40:24,807 - INFO - Récupération des chambres libres pour la période 11/02/2026/18/02/2026
+2026-02-10 10:40:27,188 - INFO - START recuperer_chambre_libre
+2026-02-10 10:40:27,193 - INFO - Récupération des chambres libres pour la période 11/02/2026/18/02/2026
+2026-02-10 10:49:59,723 - INFO - loggeur fonctionne
+2026-02-10 10:49:59,723 - INFO - START recuperer_chambre_libre
+2026-02-10 10:49:59,730 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-10 10:49:59,735 - INFO - Ajout de <Chambre(id=18, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
+2026-02-10 10:49:59,735 - INFO - Chambre créée, id:18
+2026-02-10 10:50:26,546 - INFO - START recuperer_chambre_libre
+2026-02-10 10:50:26,551 - INFO - Récupération des chambres libres pour la période 12/02/2026/26/02/2026
+2026-02-10 10:50:27,233 - INFO - START recuperer_chambre_libre
+2026-02-10 10:50:27,236 - INFO - Récupération des chambres libres pour la période 12/02/2026/26/02/2026
+2026-02-10 10:50:27,774 - INFO - START recuperer_chambre_libre
+2026-02-10 10:50:27,776 - INFO - Récupération des chambres libres pour la période 12/02/2026/26/02/2026
+2026-02-10 10:51:37,188 - INFO - loggeur fonctionne
+2026-02-10 10:51:37,188 - INFO - START recuperer_chambre_libre
+2026-02-10 10:51:37,194 - INFO - Récupération des chambres libres pour la période 2026-01-02/2026-01-08
+2026-02-10 10:51:37,221 - INFO - Ajout de <Chambre(id=19, nblit=4, prix=89.99, superficie=35, animaux_toleres=False, fumeur=True, climatisation=True)> dans la bdd
+2026-02-10 10:51:37,225 - INFO - Chambre créée, id:19

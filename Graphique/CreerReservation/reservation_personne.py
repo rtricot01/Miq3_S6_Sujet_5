@@ -8,12 +8,12 @@ class NombrePersonne (QWidget):
 
         label_enfant = QLabel("Nombre d'enfant : ", self)
         label_enfant.resize(270, 30)
-        self.textBox_nbr_enfant = QLineEdit("", self)
+        self.textBox_nbr_enfant = QLineEdit("0", self)
         self.textBox_nbr_enfant.resize(270, 30)
 
         label_adulte = QLabel("Nombre d'adulte : ", self)
         label_adulte.resize(270, 30)
-        self.textBox_nbr_adulte = QLineEdit("", self)
+        self.textBox_nbr_adulte = QLineEdit("0", self)
         self.textBox_nbr_adulte.resize(270, 30)
 
         box_enfant = QHBoxLayout()
