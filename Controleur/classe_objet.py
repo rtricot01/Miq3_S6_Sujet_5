@@ -64,10 +64,11 @@ class Chambre:
         return f"Chambre({self.room_id},{self.max_people},{self.price},{self.room_size},{self.fumeur},{self.animaux_toleres},{self.climatisation})"
 
 
-def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None, fumeur: bool = None, animaux_toleres: bool = None, climatisation: bool = None) -> list[Chambre]:
+def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None, fumeur: bool = None, animaux_toleres: bool = None, climatisation: bool = None, price_min: float = None, price_max: float = None) -> list[Chambre]:
     """Cette fonction permet de récupérer une liste de chambres disponibles pour une période donnée en argument et eventuellement un nombre de voyageur.
      Cette fonction doit être appelé avec comme premier argument la date de début de reservation souhaitée et puis la date de fin souhaitée, tout deux de type 'date' en python, et le nombre de personne:int
      (i.e. recuperer_chambre_libre(date(annee,mois,jour),date(annne,mois,jour), nbr_voyageur) """
+    
     logging.info("START recuperer_chambre_libre")
 
     room_list=[]
@@ -96,6 +97,10 @@ def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None,
                 chambres=chambres.filter(ChambreDB.climatisation == True)
             else:
                 chambres=chambres.filter(ChambreDB.climatisation == False)
+        if price_min is not None:
+            chambres=chambres.filter(ChambreDB.prize >= price_min)
+        if price_max is not None:
+            chambres=chambres.filter(ChambreDB.prize <= price_max)
 
         rows=chambres.all() 
         for room in rows:
@@ -139,7 +144,7 @@ def toutes_les_reservations() -> list[Reservation]:
     return list_reservation   
        
 logging.info("loggeur fonctionne")
-print(recuperer_chambre_libre(date(2026,1,2), date(2026,1,8), 2, climatisation=True))
+print(recuperer_chambre_libre(date(2026,1,2), date(2026,1,8),price_min=65,price_max=72))
 
 creer_chambre(4, 89.99, 35, True, False, True)
 
