@@ -2,7 +2,7 @@ from datetime import date
 from Modele.gestion_db import session_db,ReservationDB,add_to_db
 from Modele.exceptions import ReservationDateException
 import logging
-from Modele.classe_objet import Reservation, supprimer_reservation, toutes_les_reservations
+from Modele.classe_objet import Reservation, supprimer_reservation_db, toutes_les_reservations
 
 
 def creer_reservation(id_room:int,id_client:int, nombre_personnes:int, date_start:date, date_end:date, spa:bool, petit_dejeuner:bool, parking:bool, wifi:bool, Session = session_db):
@@ -16,11 +16,12 @@ def creer_reservation(id_room:int,id_client:int, nombre_personnes:int, date_star
     except :
         raise
 
-#TODO Docstring
 def suppression_reservation(id_reservation, Session = session_db):
-    return supprimer_reservation(id_reservation, Session = session_db)
+    """Fonction qui permet de supprimer une réservation à partir de son id"""
+    supprimer_reservation_db(id_reservation, Session)
 
 #TODO Docstring
 def afficher_toutes_les_reservations(Session = session_db):
-    return toutes_les_reservations(Session = session_db)
+    """Fonction qui permet d'afficher toutes les réservations"""
+    return toutes_les_reservations(Session)
 

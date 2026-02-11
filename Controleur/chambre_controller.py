@@ -16,14 +16,14 @@ def creer_chambre(max_person:int, price:float, room_area:int, fumeur:bool, anima
     except :
         raise 
 
-#TODO Docstring
 def suppression_chambre(id_chambre, Session = session_db):
-    return supprimer_chambre_db(id_chambre, Session = session_db)
+    """Fonction permettant de supprimer une chambre à partir de son id"""
+    return supprimer_chambre_db(id_chambre, Session)
 
-#TODO Docstring
 def afficher_toutes_les_chambres(Session=session_db):
-    return toutes_les_chambres(Session = session_db)
+    """Fonction permettant d'afficher toutes les chambres"""
+    return toutes_les_chambres(Session)
 
-#TODO Docstring
 def recuperer_chambre_libre(date_start, date_end, min_people=None, fumeur= None, animaux_toleres = None, climatisation = None, price_min= None, price_max = None, Session = session_db):
-    return recuperer_chambre_libre_db(date_start, date_end, min_people, fumeur, animaux_toleres, climatisation, price_min, price_max, Session = session_db)
+    """Fonction permettant de récupérer les chambres libres selon les critères d'options et les dates"""
+    return recuperer_chambre_libre_db(date_start, date_end, min_people, fumeur, animaux_toleres, climatisation, price_min, price_max, Session)
