@@ -1,6 +1,6 @@
 from datetime import date
 from Modele.gestion_db import session_db,ChambreDB,ReservationDB,ClientDB,add_to_db
-from Controleur.exceptions import ReservationDateException, ObjectNotFoundException
+from Modele.exceptions import ReservationDateException, ObjectNotFoundException
 import logging
 from tests.db_test import session_test
 
@@ -65,7 +65,7 @@ class Chambre:
         return f"Chambre({self.room_id},{self.max_people},{self.price},{self.room_size},{self.fumeur},{self.animaux_toleres},{self.climatisation})"
 
 
-def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None, fumeur: bool = None, animaux_toleres: bool = None, climatisation: bool = None, price_min: float = None, price_max: float = None, Session = session_db) -> list[Chambre]:
+def recuperer_chambre_libre_db(date_start:date, date_end:date, min_people:int, fumeur: bool, animaux_toleres: bool , climatisation: bool , price_min: float , price_max: float, Session = session_db) -> list[Chambre]:
     """Cette fonction permet de récupérer une liste de chambres disponibles pour une période donnée en argument et eventuellement un nombre de voyageur.
      Cette fonction doit être appelé avec comme premier argument la date de début de reservation souhaitée et puis la date de fin souhaitée, tout deux de type 'date' en python, et le nombre de personne:int
      (i.e. recuperer_chambre_libre(date(annee,mois,jour),date(annne,mois,jour), nbr_voyageur) """
@@ -110,31 +110,8 @@ def recuperer_chambre_libre(date_start:date, date_end:date, min_people:int=None,
     return room_list
 
 
-def creer_chambre(max_person:int, price:float, room_area:int, fumeur:bool, animaux_toleres:bool, climatisation:bool, Session = session_db) -> Chambre:
-    """Fonction qui permet de créer une instance chambre tout en l'enregistrant dans la base de donnée"""
-    try:
-        chambre=ChambreDB(max_people=max_person, prize=price, room_size=room_area,fumeur=fumeur,animaux_toleres= animaux_toleres,climatisation=climatisation)
-        chambre=add_to_db(chambre, Session)
-        print(chambre.room_id)
-        logging.info(f"Chambre créée, id:{chambre.room_id}")
-        return Chambre(chambre.room_id, chambre.max_people, chambre.prize, chambre.room_size, fumeur, animaux_toleres, climatisation)
-    #TODO Exception à changer
-    except :
-        raise 
 
-
-def creer_reservation(id_room:int,id_client:int, nombre_personnes:int, date_start:date, date_end:date, spa:bool, petit_dejeuner:bool, parking:bool, wifi:bool, Session = session_db):
-    """Foncion qui permet de créer une instance de reservation tout en l'enregistrant dans la base de donnée, et en remplissant le table liée aux options de reservation"""
-    try:
-        reservation=ReservationDB(room_id=id_room, client_id=id_client, nombre_personnes=nombre_personnes, start_date=date_start, end_date=date_end, spa = spa, petit_dejeuner =petit_dejeuner, parking= parking, wifi = wifi)
-        reservation=add_to_db(reservation, Session)
-        logging.info(f"Réservation créée, id:{reservation.reservation_id}")
-        return Reservation(reservation.reservation_id,id_room,id_client, nombre_personnes, date_start, date_end, spa, petit_dejeuner, parking, wifi)
-    #TODO Exception à trouver
-    except :
-        raise
-
-def supprimer_reservation(id_reservation, Session = session_db):
+def supprimer_reservation_db(id_reservation, Session = session_db):
     """Fonction permettant de supprimer une réservation à partir de son id"""
     try:
         with Session() as session:
@@ -151,7 +128,7 @@ def supprimer_reservation(id_reservation, Session = session_db):
         logging.error(f"Erreur technique lors de la suppression : {e}")
         raise
 
-def supprimer_chambre(id_chambre, Session = session_db):
+def supprimer_chambre_db(id_chambre, Session = session_db):
     """Fonction permettant la suppression de la chambre ainsi que des réservations qui en dépendent à partir de son id"""
     try:
         with Session() as session:
@@ -170,7 +147,7 @@ def supprimer_chambre(id_chambre, Session = session_db):
         logging.error(f"Erreur technique lors de la suppression : {e}")
         raise
 
-def supprimer_client(id_client, Session = session_db):
+def supprimer_client_db(id_client, Session = session_db):
     """Fonction permettant la suppression d'un client ainsi que des réservations qui en dépendent à partir de son id"""
     try:
         with Session() as session:
