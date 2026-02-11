@@ -1,10 +1,17 @@
 import sys
+import os 
+
+root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+if root_path not in sys.path:
+    sys.path.insert(0, root_path)
+
+from Controleur.classe_objet import creer_chambre
 from PySide6.QtCore import Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, \
                              QPushButton, QCheckBox, QLineEdit, QVBoxLayout
 
-from classe_objet import creer_chambre
 
 class VueCreerChambre(QMainWindow):
 
@@ -16,7 +23,7 @@ class VueCreerChambre(QMainWindow):
 
         centralArea = QWidget()
         self.setCentralWidget(centralArea)
-        layout = QVBoxLayout(central_area)
+        layout = QVBoxLayout(centralArea)
 
 
         label = QLabel("Formulaire de création de chambre", centralArea)

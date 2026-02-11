@@ -12,7 +12,7 @@ from VueChambreTot import VueChambreTot
 class VuePrincipale(QMainWindow):
 
     def __init__(self):
-        QMainWindow.__init__(self)   #TODO faire avec super() (remarque du prof)
+        super().__init__()
         self.setWindowTitle("Application de gestion de reservation")
         self.setWindowIcon(QIcon("hotel.jpg"))
         self.resize(570, 600)
@@ -65,8 +65,8 @@ class VuePrincipale(QMainWindow):
        
     @Slot()
     def ouvrir_liste_chambres(self):
-    self.fenetre_secondaire = VueChambreTot()
-    self.fenetre_secondaire.show()
+        self.fenetre_secondaire = VueChambreTot()
+        self.fenetre_secondaire.show()
         
 
 

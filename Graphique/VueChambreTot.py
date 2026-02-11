@@ -1,10 +1,16 @@
 import sys
+import os
 from PySide6.QtWidgets import (QWidget, QLabel, QVBoxLayout, QTableWidget, 
                              QTableWidgetItem, QApplication, QMainWindow, QHeaderView)
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 
-from Gestion_db import Session, ChambreDB, OptionChambreDB, OptionsChambrePossibles
+root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if root_path not in sys.path:
+    sys.path.insert(0, root_path)
+
+
+from Modele.gestion_db import Session, ChambreDB
 
 class VueChambreTot(QMainWindow):
 
@@ -30,28 +36,25 @@ class VueChambreTot(QMainWindow):
         ])
         
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        layout.addWidget(self.table)
+        main_layout.addWidget(self.table)
 
         self.charger_donnees()
         
 
-   def charger_donnees(self):
+    def charger_donnees(self):
         with Session() as session:
             chambres = session.query(ChambreDB).all()
             self.table.setRowCount(len(chambres))
 
             for row, chambre in enumerate(chambres):
-                options_db = session.query(OptionChambreDB).filter_by(room_id=chambre.room_id).all()
-                ids_actifs = [opt.option_chambre_id for opt in options_db]
-
                 self.table.setItem(row, 0, QTableWidgetItem(str(chambre.room_id)))
                 self.table.setItem(row, 1, QTableWidgetItem(str(chambre.max_people)))
-                self.table.setItem(row, 2, QTableWidgetItem(str(chambre.prize)))
+                self.table.setItem(row, 2, QTableWidgetItem(f"{chambre.prize:.2f}"))
                 self.table.setItem(row, 3, QTableWidgetItem(str(chambre.room_size)))
 
-                clim = "Oui" if OptionsChambrePossibles.CLIMATISATION in ids_actifs else "Non"
-                fumeur = "Oui" if OptionsChambrePossibles.FUMEUR in ids_actifs else "Non"
-                animaux = "Oui" if OptionsChambrePossibles.ANIMAUX_TOLERES in ids_actifs else "Non"
+                clim = "Oui" if chambre.climatisation else "Non"
+                fumeur = "Oui" if chambre.fumeur else "Non"
+                animaux = "Oui" if chambre.animaux_toleres else "Non"
 
                 self.table.setItem(row, 4, QTableWidgetItem(clim))
                 self.table.setItem(row, 5, QTableWidgetItem(fumeur))
@@ -59,8 +62,9 @@ class VueChambreTot(QMainWindow):
 
                 for col in range(7):
                     item = self.table.item(row, col)
-                    item.setTextAlignment(Qt.AlignCenter)
-                    item.setFlags(Qt.ItemIsEnabled)
+                    if item:
+                        item.setTextAlignment(Qt.AlignCenter)
+                        item.setFlags(Qt.ItemIsEnabled)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

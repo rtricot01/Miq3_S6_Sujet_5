@@ -1,10 +1,15 @@
 from PySide6.QtWidgets import (QWidget, QLabel, QCheckBox, QVBoxLayout, 
                              QScrollArea, QApplication, QMainWindow)
-from PySide6.QtCore import Signal, Slot
+from PySide6.QtCore import Signal, Slot, Qt
 from PySide6.QtGui import QIcon
 import sys
+import os
 
-from Gestion_db import Session, ReservationDB, ClientDB
+root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if root_path not in sys.path:
+    sys.path.insert(0, root_path)
+
+from Modele.gestion_db import Session, ReservationDB, ClientDB
 
 class VueReservationTotal(QMainWindow):
     changeItem = Signal(list)
