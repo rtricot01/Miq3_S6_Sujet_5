@@ -2,3 +2,21 @@
 2026-02-10 17:22:51,857 - INFO - Client 1 supprimé.
 2026-02-10 17:22:51,858 - INFO - Récupération de la liste des clients.
 2026-02-10 17:23:26,423 - INFO - Récupération de la liste des réservations.
+2026-02-11 14:18:46,884 - WARNING - L'objet demandé n'existe pas dans la base de donnée
+2026-02-11 14:18:46,884 - ERROR - Erreur technique lors de la suppression : descriptor '__init__' requires a 'super' object but received a 'str'
+2026-02-11 14:19:42,227 - WARNING - L'objet demandé n'existe pas dans la base de donnée
+2026-02-11 14:21:32,615 - WARNING - L'objet demandé n'existe pas dans la base de donnée
+2026-02-11 14:22:00,845 - WARNING - L'objet demandé n'existe pas dans la base de donnée
+2026-02-11 14:22:25,027 - WARNING - L'objet demandé n'existe pas dans la base de donnée
+2026-02-11 14:29:35,187 - WARNING - L'objet demande n'existe pas dans la base de donnee
+2026-02-11 14:31:32,244 - WARNING - L'objet demande n'existe pas dans la base de donnee
+2026-02-11 14:32:38,459 - WARNING - L'objet demande n'existe pas dans la base de donnee
+2026-02-11 15:36:51,710 - WARNING - Le numéro de telephone renseigne n'est pas valide
+2026-02-11 15:37:09,980 - WARNING - Le numero de telephone renseigne n'est pas valide
+2026-02-11 15:37:39,547 - WARNING - L'adresse email renseignee n'est pas valide
+2026-02-11 15:38:09,836 - WARNING - L'adresse email renseignee n'est pas valide
+2026-02-11 15:40:51,593 - WARNING - L'adresse email renseignee n'est pas valide
+2026-02-11 15:41:24,336 - INFO - Ajout de <Client(client_id=1, client_firstname=Quentin, client_lastname=LEGOAT, client_tel=0101040506, client_mail=quentin.legoat@gmail.co)> dans la bdd
+2026-02-11 15:41:24,336 - INFO - Client créée, id:1
+2026-02-11 15:41:24,342 - INFO - Recuperation de la liste des clients.
+2026-02-11 15:42:00,104 - INFO - Recuperation de la liste des clients.

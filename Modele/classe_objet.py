@@ -123,10 +123,7 @@ def supprimer_reservation_db(id_reservation, Session = session_db):
         else:
                 raise ObjectNotFoundException
     except Exception as e:
-        if isinstance(e, ObjectNotFoundException):
-            raise e
-        logging.error(f"Erreur technique lors de la suppression : {e}")
-        raise
+        raise e
 
 def supprimer_chambre_db(id_chambre, Session = session_db):
     """Fonction permettant la suppression de la chambre ainsi que des réservations qui en dépendent à partir de son id"""
@@ -142,10 +139,7 @@ def supprimer_chambre_db(id_chambre, Session = session_db):
             else:
                 raise ObjectNotFoundException
     except Exception as e:
-        if isinstance(e, ObjectNotFoundException):
-            raise e
-        logging.error(f"Erreur technique lors de la suppression : {e}")
-        raise
+        raise e
 
 def supprimer_client_db(id_client, Session = session_db):
     """Fonction permettant la suppression d'un client ainsi que des réservations qui en dépendent à partir de son id"""
@@ -160,11 +154,8 @@ def supprimer_client_db(id_client, Session = session_db):
                 logging.info(f"Client {id_client} supprimé.")
             else:
                 raise ObjectNotFoundException
-    except Exception as e:
-        if isinstance(e, ObjectNotFoundException):
-            raise e
-        logging.error(f"Erreur technique lors de la suppression : {e}")
-        raise
+    except Exception as e :
+        raise e
 
 def toutes_les_reservations(Session = session_db) -> list[Reservation]:
     """Fonction permettant d'afficher toutes les reservations de la BDD"""
@@ -173,7 +164,7 @@ def toutes_les_reservations(Session = session_db) -> list[Reservation]:
         reservations = session.query(ReservationDB).all()
     for reservation in reservations:
         list_reservation.append(Reservation(reservation.reservation_id, reservation.room_id, reservation.client_id, reservation.nombre_personnes, reservation.start_date, reservation.end_date, reservation.spa, reservation.petit_dejeuner, reservation.parking, reservation.wifi))
-    logging.info(f"Récupération de la liste des réservations.")
+    logging.info(f"Recuperation de la liste des reservations.")
     return list_reservation   
 
 def toutes_les_chambres(Session = session_db) -> list[Chambre]:
@@ -183,7 +174,7 @@ def toutes_les_chambres(Session = session_db) -> list[Chambre]:
         chambres = session.query(ChambreDB).all()
     for chambre in chambres:
         list_chambre.append(Chambre(chambre.room_id, chambre.max_people, chambre.prize, chambre.room_size, chambre.fumeur, chambre.animaux_toleres, chambre.climatisation))
-    logging.info(f"Récupération de la liste des chambres.")
+    logging.info(f"Recuperation de la liste des chambres.")
     return list_chambre
 
 def tous_les_clients(Session = session_db) -> list[Client]:
@@ -193,7 +184,5 @@ def tous_les_clients(Session = session_db) -> list[Client]:
         clients = session.query(ClientDB).all()
     for client in clients:
         list_client.append(Client(client.client_id ,client.client_firstname, client.client_lastname, client.client_tel, client.client_mail))
-    logging.info(f"Récupération de la liste des clients.")
+    logging.info(f"Recuperation de la liste des clients.")
     return list_client
-
-print(toutes_les_reservations(session_test))
