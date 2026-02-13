@@ -1,7 +1,7 @@
 import pytest
 from datetime import date 
-from Modele.classe_objet import Client, Reservation, Chambre, recuperer_chambre_libre, creer_chambre, creer_reservation, toutes_les_reservations
-from Modele.exceptions import ReservationDateException
+from src.hotel_manager.modele.classe_objet import Client, Reservation, Chambre
+from src.hotel_manager.modele.exceptions import ReservationDateException
 
 
 

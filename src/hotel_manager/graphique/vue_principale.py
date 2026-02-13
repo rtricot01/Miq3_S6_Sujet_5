@@ -2,10 +2,9 @@ import sys
 from PySide6.QtCore import Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushButton
-
-from VueReservationTotal import VueReservationTotal 
-from VueCreerChambre import VueCreerChambre
-from VueChambreTot import VueChambreTot
+from hotel_manager.graphique.vue_reservation_total import VueReservationTotal 
+from hotel_manager.graphique.vue_creer_chambre import VueCreerChambre
+from hotel_manager.graphique.vue_chambre_tot import VueChambreTot
 #TODO rajouter les impport des vues PrendreRésa 
 
 

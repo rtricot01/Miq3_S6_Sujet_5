@@ -8,8 +8,10 @@ from reservation_prix import Prix
 from reservation_personne import NombrePersonne
 from reservation_services import Services
 
+from controleur import chambre_controller
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from Controleur import classe_objet
+
 
 class FenetreReservation (QMainWindow):
 
@@ -58,7 +60,7 @@ class FenetreReservation (QMainWindow):
         prix_min = self.prix.slider_prix_minimal.value()
         prix_max = self.prix.slider_prix_maximal.value()
 
-        chambres_disponibles = classe_objet.recuperer_chambre_libre(date_debut,date_fin, min_people, fumeur, animaux_toleres, climatisation, prix_min, prix_max)
+        chambres_disponibles = chambre_controller.recuperer_chambre_libre(date_debut,date_fin, min_people, fumeur, animaux_toleres, climatisation, prix_min, prix_max)
         print(chambres_disponibles)
 
 if __name__ == "__main__":
