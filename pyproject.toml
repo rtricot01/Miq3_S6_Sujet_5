@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hotel_manager"
+version = "0.1.0"
+authors = [
+  { name="LEVEQUE Quentin", email="quentin.leveque@insa-strasbourg.fr" },
+  { name="SIALELLI Louane", email="louane.sialelli@insa-strasbourg.fr" },
+  { name="TRICOT Raphael", email="raphael.tricot@insa-strasbourg.fr" },
+  { name="TUNC Ahmet", email="ahmet.tunc@insa-strasbourg.fr" }
+]
+description = "Application de gestion d'hotel et de reservations de chambres"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "PySide6",
+    "sqlalchemy",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "build"]
+
+[project.scripts]
+hotel-app = "hotel_manager.__main__:main"

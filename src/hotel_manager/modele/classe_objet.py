@@ -1,12 +1,7 @@
 from datetime import date
-from Modele.gestion_db import session_db,ChambreDB,ReservationDB,ClientDB,add_to_db
-from Modele.exceptions import ReservationDateException, ObjectNotFoundException
+from hotel_manager.modele.gestion_db import session_db,ChambreDB,ReservationDB,ClientDB
+from hotel_manager.modele.exceptions import ReservationDateException, ObjectNotFoundException
 import logging
-from tests.db_test import session_test
-
-#TODO à mettre dans le 'main' du fichier qui va lancer l'application
-from utils.logging_config import setup_logging 
-setup_logging()
 
 
 
@@ -22,7 +17,7 @@ class Client:
     
 
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Client({self.client_id},{self.client_firstname},{self.client_lastname},{self.client_tel},{self.client_mail})"
 
 class Reservation:
@@ -44,7 +39,7 @@ class Reservation:
             
 
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Reservation({self.reservation_id},{self.room_id},{self.client_id},{self.nombre_personnes},{self.start_date},{self.end_date},{self.spa},{self.petit_dejeuner},{self.parking},{self.wifi})"
 
 
@@ -61,7 +56,7 @@ class Chambre:
         self.climatisation=climatisation
 
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Chambre({self.room_id},{self.max_people},{self.price},{self.room_size},{self.fumeur},{self.animaux_toleres},{self.climatisation})"
 
 
@@ -80,24 +75,24 @@ def recuperer_chambre_libre_db(date_start:date, date_end:date, min_people:int, f
                                                 ReservationDB.start_date <= date_end,
                                                 ReservationDB.end_date >=date_start,
                                                 ).exists()))
-        
+        #Filtre en fonction des paramètres donnés par l'utilisateur
         if min_people is not None:
             chambres=chambres.filter(ChambreDB.max_people>=min_people)
         if fumeur is not None:
             if fumeur is True:
-                chambres=chambres.filter(ChambreDB.fumeur == True)
+                chambres=chambres.filter(ChambreDB.fumeur.is_(True))
             else:
-                chambres=chambres.filter(ChambreDB.fumeur == False)
+                chambres=chambres.filter(ChambreDB.fumeur.is_(False))
         if animaux_toleres is not None:
             if animaux_toleres is True:
-                chambres=chambres.filter(ChambreDB.animaux_toleres == True)
+                chambres=chambres.filter(ChambreDB.animaux_toleres.is_(True))
             else:
-                chambres=chambres.filter(ChambreDB.animaux_toleres == False)
+                chambres=chambres.filter(ChambreDB.animaux_toleres.is_(False))
         if climatisation is not None:
             if climatisation is True:
-                chambres=chambres.filter(ChambreDB.climatisation == True)
+                chambres=chambres.filter(ChambreDB.climatisation.is_(True))
             else:
-                chambres=chambres.filter(ChambreDB.climatisation == False)
+                chambres=chambres.filter(ChambreDB.climatisation.is_(False))
         if price_min is not None:
             chambres=chambres.filter(ChambreDB.prize >= price_min)
         if price_max is not None:
@@ -111,7 +106,7 @@ def recuperer_chambre_libre_db(date_start:date, date_end:date, min_people:int, f
 
 
 
-def supprimer_reservation_db(id_reservation, Session = session_db):
+def supprimer_reservation_db(id_reservation: int, Session = session_db) -> None:
     """Fonction permettant de supprimer une réservation à partir de son id"""
     try:
         with Session() as session:
@@ -125,7 +120,7 @@ def supprimer_reservation_db(id_reservation, Session = session_db):
     except Exception as e:
         raise e
 
-def supprimer_chambre_db(id_chambre, Session = session_db):
+def supprimer_chambre_db(id_chambre: int, Session = session_db) -> None:
     """Fonction permettant la suppression de la chambre ainsi que des réservations qui en dépendent à partir de son id"""
     try:
         with Session() as session:
@@ -141,7 +136,7 @@ def supprimer_chambre_db(id_chambre, Session = session_db):
     except Exception as e:
         raise e
 
-def supprimer_client_db(id_client, Session = session_db):
+def supprimer_client_db(id_client: int, Session = session_db) -> None:
     """Fonction permettant la suppression d'un client ainsi que des réservations qui en dépendent à partir de son id"""
     try:
         with Session() as session:
@@ -164,7 +159,7 @@ def toutes_les_reservations(Session = session_db) -> list[Reservation]:
         reservations = session.query(ReservationDB).all()
     for reservation in reservations:
         list_reservation.append(Reservation(reservation.reservation_id, reservation.room_id, reservation.client_id, reservation.nombre_personnes, reservation.start_date, reservation.end_date, reservation.spa, reservation.petit_dejeuner, reservation.parking, reservation.wifi))
-    logging.info(f"Recuperation de la liste des reservations.")
+    logging.info("Recuperation de la liste des reservations.")
     return list_reservation   
 
 def toutes_les_chambres(Session = session_db) -> list[Chambre]:
@@ -174,7 +169,7 @@ def toutes_les_chambres(Session = session_db) -> list[Chambre]:
         chambres = session.query(ChambreDB).all()
     for chambre in chambres:
         list_chambre.append(Chambre(chambre.room_id, chambre.max_people, chambre.prize, chambre.room_size, chambre.fumeur, chambre.animaux_toleres, chambre.climatisation))
-    logging.info(f"Recuperation de la liste des chambres.")
+    logging.info("Recuperation de la liste des chambres.")
     return list_chambre
 
 def tous_les_clients(Session = session_db) -> list[Client]:
@@ -184,5 +179,5 @@ def tous_les_clients(Session = session_db) -> list[Client]:
         clients = session.query(ClientDB).all()
     for client in clients:
         list_client.append(Client(client.client_id ,client.client_firstname, client.client_lastname, client.client_tel, client.client_mail))
-    logging.info(f"Recuperation de la liste des clients.")
+    logging.info("Recuperation de la liste des clients.")
     return list_client

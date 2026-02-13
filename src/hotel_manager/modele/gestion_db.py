@@ -9,17 +9,17 @@ import logging
 """Creation de la connection"""
 db = sa.create_engine("sqlite:///hotel.db")
 
-#expire_on_commit permet de récupéré des infos même après le commit avant que la session se ferme
+#expire_on_commit permet de récupérer des infos même après le commit avant que la session se ferme
 session_db = sessionmaker(bind=db, expire_on_commit=False)
 Base = declarative_base()
 
-def init_db(Session = session_db):
+def init_db(Session = session_db) -> None:
     """Creation de la BDD"""
     init_chambre(Session)
     init_client(Session)
     init_reservation(Session)
 
-def add_to_db(object, Session = session_db):
+def add_to_db(object, Session = session_db) -> object:
     """Ajout de n'importe quel objet à la BDD"""
     with Session() as session:
         session.add(object)
@@ -90,11 +90,3 @@ def init_client(Session = session_db) -> None:
     """Creation des clients présents au lancement de l'application"""
     client = ClientDB(client_firstname = "Quentin", client_lastname= "LEVEQUE",client_tel="0102030405",client_mail="bogoss@gmail.com")
     add_to_db(client, Session)
-
-if __name__ == "__main__":
-    Base.metadata.create_all(db)
-    init_db()
-    with session_db() as session:
-        print(session.query(ChambreDB).all())
-        print(session.query(ClientDB).all())
-        print(session.query(ReservationDB).all())

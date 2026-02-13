@@ -20,3 +20,7 @@
 2026-02-11 15:41:24,336 - INFO - Client créée, id:1
 2026-02-11 15:41:24,342 - INFO - Recuperation de la liste des clients.
 2026-02-11 15:42:00,104 - INFO - Recuperation de la liste des clients.
+2026-02-12 16:33:18,602 - INFO - Ajout de <Chambre(id=13, nblit=5, prix=105.99, superficie=42, animaux_toleres=True, fumeur=True, climatisation=True)> dans la bdd
+2026-02-12 16:33:18,602 - INFO - Chambre créée, id:13
+2026-02-13 16:25:45,401 - INFO - Ajout de <Chambre(id=13, nblit=4, prix=72.0, superficie=44, animaux_toleres=True, fumeur=True, climatisation=True)> dans la bdd
+2026-02-13 16:25:45,401 - INFO - Chambre créée, id:13

@@ -1,16 +1,8 @@
 import sys
-import os
-from PySide6.QtWidgets import (QWidget, QLabel, QVBoxLayout, QTableWidget, 
-                             QTableWidgetItem, QApplication, QMainWindow, QHeaderView)
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QTableWidget, QTableWidgetItem, QApplication, QMainWindow, QHeaderView
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
-
-root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if root_path not in sys.path:
-    sys.path.insert(0, root_path)
-
-
-from Modele.gestion_db import Session, ChambreDB
+from modele.gestion_db import session_db, ChambreDB
 
 class VueChambreTot(QMainWindow):
 
@@ -42,7 +34,7 @@ class VueChambreTot(QMainWindow):
         
 
     def charger_donnees(self):
-        with Session() as session:
+        with session_db() as session:
             chambres = session.query(ChambreDB).all()
             self.table.setRowCount(len(chambres))
 
