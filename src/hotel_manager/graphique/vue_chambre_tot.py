@@ -2,7 +2,7 @@ import sys
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QTableWidget, QTableWidgetItem, QApplication, QMainWindow, QHeaderView
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
-from modele.gestion_db import session_db, ChambreDB
+from hotel_manager.modele.gestion_db import session_db, ChambreDB
 
 class VueChambreTot(QMainWindow):
 
@@ -58,8 +58,3 @@ class VueChambreTot(QMainWindow):
                         item.setTextAlignment(Qt.AlignCenter)
                         item.setFlags(Qt.ItemIsEnabled)
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = VueChambreTot()
-    window.show()
-    sys.exit(app.exec())

@@ -22,3 +22,20 @@ def afficher_toutes_les_reservations(Session = session_db) -> list[Reservation]:
     """Fonction qui permet d'afficher toutes les réservations"""
     return toutes_les_reservations(Session)
 
+def modifier_reservation(id_res, id_room, nombre_pers, date_start, date_end, spa, petit_dej, parking, wifi, Session = session_db):
+    """Fonction qui met à jour les informations d'une réservation existante"""
+    with Session() as session:
+        res_db = session.query(ReservationDB).filter(ReservationDB.reservation_id == id_res).first()
+        if res_db:
+            res_db.room_id = id_room
+            res_db.nombre_personnes = nombre_pers
+            res_db.start_date = date_start
+            res_db.end_date = date_end
+            res_db.spa = spa
+            res_db.petit_dejeuner = petit_dej
+            res_db.parking = parking
+            res_db.wifi = wifi
+            session.commit()
+            logging.info(f"Réservation {id_res} mise à jour.")
+        else:
+            raise Exception("Réservation non trouvée")

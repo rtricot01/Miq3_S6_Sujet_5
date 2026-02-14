@@ -1,15 +1,12 @@
-from PySide6.QtWidgets import (QWidget, QLabel, QCheckBox, QVBoxLayout, 
-                             QScrollArea, QApplication, QMainWindow)
-from PySide6.QtCore import Signal, Qt
+from PySide6.QtWidgets import (QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout,
+                               QScrollArea, QMainWindow)
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QIcon
 import sys
 import os
 
 from hotel_manager.modele.gestion_db import session_db, ReservationDB, ClientDB
-
-root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if root_path not in sys.path:
-    sys.path.insert(0, root_path)
+from hotel_manager.graphique.vue_detail_reservation import VueDetailReservation
 
 class VueReservationTotal(QMainWindow):
     changeItem = Signal(list)
@@ -22,15 +19,15 @@ class VueReservationTotal(QMainWindow):
 
         central_area = QWidget()
         self.setCentralWidget(central_area)
-        main_layout = QVBoxLayout(central_area)
+        self.main_layout = QVBoxLayout(central_area)
 
         self.label = QLabel("Liste des Réservations")
         self.label.setStyleSheet("font-weight: bold; font-size: 16px; margin: 10px;")
-        main_layout.addWidget(self.label)
+        self.main_layout.addWidget(self.label)
 
         self.scroll = QScrollArea()
         self.scroll.setWidgetResizable(True)
-        main_layout.addWidget(self.scroll)
+        self.main_layout.addWidget(self.scroll)
 
         self.container = QWidget()
         self.scroll_layout = QVBoxLayout(self.container)
@@ -38,9 +35,6 @@ class VueReservationTotal(QMainWindow):
         self.scroll.setWidget(self.container)
 
         self.listItem = items if items is not None else self.recuperer_reservations_db()
-        self.listState = [False] * len(self.listItem)
-        self.itemChk = []
-
         self.initUI()
 
     def recuperer_reservations_db(self):
@@ -50,43 +44,29 @@ class VueReservationTotal(QMainWindow):
             ).all()
             return resultats
         
-    def initUI(self): 
-
+    def initUI(self):
         for i in reversed(range(self.scroll_layout.count())): 
-            self.scroll_layout.itemAt(i).widget().setParent(None)
+            widget = self.scroll_layout.itemAt(i).widget()
+            if widget: widget.setParent(None)
 
-        if not self.listItem:
-            self.scroll_layout.addWidget(QLabel("Aucune réservation trouvée."))
-            return
-
-        for i, (res, client) in enumerate(self.listItem):
-            texte = (f"Réf: {res.reservation_id} | {client.client_firstname} {client.client_lastname} "
-                     f"| Du {res.start_date} au {res.end_date}")
+        for res, client in self.listItem:
+            row_widget = QWidget()
+            row_layout = QHBoxLayout(row_widget)
             
-            chk = QCheckBox(texte)
-            chk.stateChanged.connect(self.changeChk)
+            infos = f"<b>#{res.reservation_id}</b> | {client.client_firstname} {client.client_lastname} (Chambre {res.room_id})"
+            row_layout.addWidget(QLabel(infos))
             
-            chk.setProperty("index", i)
+            btn_detail = QPushButton("Détails")
+            btn_detail.clicked.connect(lambda checked=False, r=res: self.ouvrir_detail(r))
             
-            self.itemChk.append(chk)
-            self.scroll_layout.addWidget(chk)
-        
-    
-    def changeChk(self, state):
-        sender = self.sender()
-        index = sender.property("index")
-        is_checked = state > 0
-        
-        if index is not None:
-            self.listState[index] = is_checked
-            print(f"Réservation {index} cochée : {is_checked}")
-        
-        self.changeItem.emit(self.listState)
+            row_layout.addWidget(btn_detail)
+            self.scroll_layout.addWidget(row_widget)
 
+    def ouvrir_detail(self, reservation_obj):
+        self.fenetre_detail = VueDetailReservation(reservation_obj)
+        self.fenetre_detail.demande_rafraichissement.connect(self.rafraichir_liste)
+        self.fenetre_detail.show()
 
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = VueReservationTotal()
-    window.show()
-    sys.exit(app.exec())
+    def rafraichir_liste(self):
+        self.listItem = self.recuperer_reservations_db()
+        self.initUI()
