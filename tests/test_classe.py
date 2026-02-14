@@ -2,7 +2,9 @@ import pytest
 from datetime import date 
 from src.hotel_manager.modele.classe_objet import Client, Reservation, Chambre
 from src.hotel_manager.modele.exceptions import ReservationDateException, ObjectNotFoundException
-from src.hotel_manager.controleur.chambre_controller import creer_chambre, suppression_chambre
+from src.hotel_manager.controleur.chambre_controller import creer_chambre, suppression_chambre, afficher_toutes_les_chambres
+from src.hotel_manager.controleur.reservation_controller import creer_reservation, suppression_reservation
+from src.hotel_manager.controleur.client_controller import creer_client, suppression_client
 from tests.db_test import sessiontest
 from src.hotel_manager.modele.gestion_db import ChambreDB, ReservationDB, ClientDB
 
@@ -101,22 +103,108 @@ def test_creer_chambre(sessiontest):
         assert chambre_db.climatisation is True
 
 
+def test_creer_client(sessiontest):
+        client=creer_client("Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr", sessiontest)
+        with sessiontest() as session:
+            client_db=session.get(ClientDB, client.client_id)
+            assert client_db.client_id == client.client_id
+            assert client_db.client_firstname == client.client_firstname
+            assert client_db.client_lastname == client.client_lastname
+            assert client_db.client_tel == client.client_tel
+            assert client_db.client_mail == client.client_mail
+
+
+def test_creer_reservation(sessiontest):
+    chambre=creer_chambre(2,50.09,35,True, True,True,sessiontest)
+    client=creer_client("Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr", sessiontest)
+    reservation=creer_reservation(chambre.room_id,client.client_id,2,date(2026,1,8),date(2026,1,20),True, True, False, True, sessiontest)
+    
+    with sessiontest() as session:
+        reservation_db=session.get(ReservationDB, reservation.reservation_id)
+        assert reservation_db is not None
+        assert reservation_db.reservation_id == reservation.reservation_id
+        assert reservation_db.room_id == reservation.room_id
+        assert reservation_db.client_id == reservation.client_id
+        assert reservation_db.nombre_personnes == reservation.nombre_personnes
+        assert reservation_db.start_date == reservation.start_date
+        assert reservation_db.end_date == reservation.end_date
+        assert reservation_db.spa == reservation.spa
+        assert reservation_db.petit_dejeuner == reservation.petit_dejeuner
+        assert reservation_db.parking == reservation.parking
+        assert reservation_db.wifi == reservation.wifi
+
+
 def test_suppression_chambre(sessiontest):
     chambre=creer_chambre(2,80.99,35,True, False,True,sessiontest)
+    chambre_2=creer_chambre(2,80.99,35,True, False,True,sessiontest)
     with sessiontest() as session:
         chambre_db=session.get(ChambreDB,chambre.room_id)
-        assert chambre_db is not None
+        chambre_2_db=session.get(ChambreDB,chambre_2.room_id)
+        assert chambre_db != None
+        assert chambre_2_db != None
 
     suppression_chambre(chambre.room_id,sessiontest)
 
     with sessiontest() as session:
         chambre_db=session.get(ChambreDB, chambre.room_id)
-        assert chambre_db is None
+        chambre_2_db=session.get(ChambreDB, chambre_2.room_id)
+        assert chambre_db == None
+        assert chambre_2_db != None
+
+
+
+def test_suppression_reservation(sessiontest):
+    chambre=creer_chambre(2,50.09,35,True, True,True,sessiontest)
+    client=creer_client("Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr", sessiontest)
+    reservation=creer_reservation(chambre.room_id,client.client_id,2,date(2026,1,8),date(2026,1,20),True, True, False, True, sessiontest)
+    reservation_2=creer_reservation(chambre.room_id,client.client_id,2,date(2026,1,8),date(2026,1,20),True, True, False, True, sessiontest)
+    with sessiontest() as session:
+        reservation_db=session.get(ReservationDB, reservation.reservation_id)
+        reservation_2_db=session.get(ReservationDB, reservation_2.reservation_id)
+        assert reservation_db != None 
+        assert reservation_2_db != None
+        
+
+    suppression_reservation(reservation.reservation_id, sessiontest)
+
+    with sessiontest() as session:
+        reservation_db=session.get(ReservationDB, reservation.reservation_id)
+        reservation_2_db=session.get(ReservationDB, reservation_2.reservation_id)
+        assert reservation_db == None
+        assert reservation_2_db != None
+
+
+
+def test_suppression_client(sessiontest):
+    client=creer_client("Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr", sessiontest)
+    client_2=creer_client("Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr", sessiontest)
+
+    with sessiontest() as session:
+        client_db=session.get(ClientDB, client.client_id)
+        client_2_db=session.get(ClientDB, client_2.client_id)
+        assert client_db != None
+        assert client_2_db != None
+
+    suppression_client(client.client_id, sessiontest)
+
+    with sessiontest() as session:
+        client_db=session.get(ClientDB, client.client_id)
+        client_2_db=session.get(ClientDB, client_2.client_id)
+        assert client_db == None
+        assert client_2_db != None
 
     
 def test_suppression_chambre_id_incorrect(sessiontest):
     with pytest.raises(ObjectNotFoundException):
         suppression_chambre(10,sessiontest)
+
+def test_suppression_reservation_id_incorrect(sessiontest):
+    with pytest.raises(ObjectNotFoundException):
+        suppression_reservation(10,sessiontest)
+
+def test_suppression_client_id_incorrect(sessiontest):
+    with pytest.raises(ObjectNotFoundException):
+        suppression_client(10,sessiontest)
 
 def test_recuperer_toutes_les_chambres(sessiontest):
     chambres=[]
@@ -125,34 +213,31 @@ def test_recuperer_toutes_les_chambres(sessiontest):
     chambres.append(creer_chambre(4,70.99,35,False, False,True,sessiontest))
     chambres.append(creer_chambre(5,80.99,60,True, True,True,sessiontest))
     chambres.append(creer_chambre(6,90.99,35,True, False,True,sessiontest))
-
-    with sessiontest() as session:
-        #il faut trier les chambres par id, en fonction de leur ordre d'ajout pour que les bons objets soit comparés pendant les tests
-        chambres_db=session.query(ChambreDB).order_by(ChambreDB.room_id).all()  
-        assert len(chambres_db)==len(chambres)
-        for chambre_db, chambre in zip(chambres_db,chambres):
-            assert chambre_db.room_id ==chambre.room_id
-            assert chambre_db.max_people == chambre.max_people
-            assert chambre_db.prize == chambre.price
-            assert chambre_db.room_size == chambre.room_size
-            assert chambre_db.fumeur == chambre.fumeur
-            assert chambre_db.animaux_toleres == chambre.animaux_toleres
-            assert chambre_db.climatisation == chambre.climatisation
-
-
-def test_creer_reservation(sessiontest):
-    pass
+    chambres_db=afficher_toutes_les_chambres(sessiontest)
+    assert len(chambres_db)==len(chambres)
+    for chambre_db, chambre in zip(chambres_db,chambres):
+        assert chambre_db.room_id ==chambre.room_id
+        assert chambre_db.max_people == chambre.max_people
+        assert chambre_db.price == chambre.price
+        assert chambre_db.room_size == chambre.room_size
+        assert chambre_db.fumeur == chambre.fumeur
+        assert chambre_db.animaux_toleres == chambre.animaux_toleres
+        assert chambre_db.climatisation == chambre.climatisation
 
 
 
 
-def test_recuperer_chambres_libres(sessiontest):
-    chambres=[]
-    chambres.append(creer_chambre(2,50.09,35,True, True,True,sessiontest))
-    chambres.append(creer_chambre(3,60.99,45,True, False,True,sessiontest))
-    chambres.append(creer_chambre(4,70.99,35,False, False,True,sessiontest))
-    chambres.append(creer_chambre(5,80.99,60,True, True,True,sessiontest))
-    chambres.append(creer_chambre(6,90.99,35,True, False,True,sessiontest))
 
-    reservation=[]
-    pass
+
+    
+
+# def test_recuperer_chambres_libres(sessiontest):
+#     chambres=[]
+#     chambres.append(creer_chambre(2,50.09,35,True, True,True,sessiontest))
+#     chambres.append(creer_chambre(3,60.99,45,True, False,True,sessiontest))
+#     chambres.append(creer_chambre(4,70.99,35,False, False,True,sessiontest))
+#     chambres.append(creer_chambre(5,80.99,60,True, True,True,sessiontest))
+#     chambres.append(creer_chambre(6,90.99,35,True, False,True,sessiontest))
+
+#     reservation=[]
+#     pass
