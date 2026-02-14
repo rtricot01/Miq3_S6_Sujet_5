@@ -118,3 +118,41 @@ def test_suppression_chambre_id_incorrect(sessiontest):
     with pytest.raises(ObjectNotFoundException):
         suppression_chambre(10,sessiontest)
 
+def test_recuperer_toutes_les_chambres(sessiontest):
+    chambres=[]
+    chambres.append(creer_chambre(2,50.09,35,True, True,True,sessiontest))
+    chambres.append(creer_chambre(3,60.99,45,True, False,True,sessiontest))
+    chambres.append(creer_chambre(4,70.99,35,False, False,True,sessiontest))
+    chambres.append(creer_chambre(5,80.99,60,True, True,True,sessiontest))
+    chambres.append(creer_chambre(6,90.99,35,True, False,True,sessiontest))
+
+    with sessiontest() as session:
+        #il faut trier les chambres par id, en fonction de leur ordre d'ajout pour que les bons objets soit comparés pendant les tests
+        chambres_db=session.query(ChambreDB).order_by(ChambreDB.room_id).all()  
+        assert len(chambres_db)==len(chambres)
+        for chambre_db, chambre in zip(chambres_db,chambres):
+            assert chambre_db.room_id ==chambre.room_id
+            assert chambre_db.max_people == chambre.max_people
+            assert chambre_db.prize == chambre.price
+            assert chambre_db.room_size == chambre.room_size
+            assert chambre_db.fumeur == chambre.fumeur
+            assert chambre_db.animaux_toleres == chambre.animaux_toleres
+            assert chambre_db.climatisation == chambre.climatisation
+
+
+def test_creer_reservation(sessiontest):
+    pass
+
+
+
+
+def test_recuperer_chambres_libres(sessiontest):
+    chambres=[]
+    chambres.append(creer_chambre(2,50.09,35,True, True,True,sessiontest))
+    chambres.append(creer_chambre(3,60.99,45,True, False,True,sessiontest))
+    chambres.append(creer_chambre(4,70.99,35,False, False,True,sessiontest))
+    chambres.append(creer_chambre(5,80.99,60,True, True,True,sessiontest))
+    chambres.append(creer_chambre(6,90.99,35,True, False,True,sessiontest))
+
+    reservation=[]
+    pass
