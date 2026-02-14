@@ -1,5 +1,5 @@
 import re
-from hotel_manager.modele.exceptions import TelephoneNumberException, EmailException
+from src.hotel_manager.modele.exceptions import TelephoneNumberException, EmailException
 
 EMAIL_REGEX= r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 
