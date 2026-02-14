@@ -1,7 +1,10 @@
 import pytest
 from datetime import date 
 from src.hotel_manager.modele.classe_objet import Client, Reservation, Chambre
-from src.hotel_manager.modele.exceptions import ReservationDateException
+from src.hotel_manager.modele.exceptions import ReservationDateException, ObjectNotFoundException
+from src.hotel_manager.controleur.chambre_controller import creer_chambre, suppression_chambre
+from tests.db_test import sessiontest
+from src.hotel_manager.modele.gestion_db import ChambreDB, ReservationDB, ClientDB
 
 
 
@@ -75,4 +78,43 @@ def test_constructeur_chambre(room_id:int, max_people:int, price:float, room_siz
     assert chambre.fumeur==expected_fumeur
     assert chambre.animaux_toleres==expected_animaux_toleres
     assert chambre.climatisation==expected_climatisation
+
+
+def test_creer_chambre(sessiontest):
+    chambre=creer_chambre(2,80.99,35,True, False,True,sessiontest)
+    assert chambre.room_id is not None
+    assert chambre.max_people == 2
+    assert chambre.price == 80.99
+    assert chambre.room_size == 35
+    assert chambre.fumeur is True
+    assert chambre.animaux_toleres is False
+    assert chambre.climatisation is True
+
+    with sessiontest() as session:
+        chambre_db=session.get(ChambreDB,chambre.room_id)
+        assert chambre_db.room_id is not None
+        assert chambre_db.max_people == 2
+        assert chambre_db.prize == 80.99
+        assert chambre_db.room_size == 35
+        assert chambre_db.fumeur is True
+        assert chambre_db.animaux_toleres is False
+        assert chambre_db.climatisation is True
+
+
+def test_suppression_chambre(sessiontest):
+    chambre=creer_chambre(2,80.99,35,True, False,True,sessiontest)
+    with sessiontest() as session:
+        chambre_db=session.get(ChambreDB,chambre.room_id)
+        assert chambre_db is not None
+
+    suppression_chambre(chambre.room_id,sessiontest)
+
+    with sessiontest() as session:
+        chambre_db=session.get(ChambreDB, chambre.room_id)
+        assert chambre_db is None
+
+    
+def test_suppression_chambre_id_incorrect(sessiontest):
+    with pytest.raises(ObjectNotFoundException):
+        suppression_chambre(10,sessiontest)
 
