@@ -3,12 +3,12 @@ import os
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton
 
-from reservation_calendrier import Calendrier
-from reservation_prix import Prix
-from reservation_personne import NombrePersonne
-from reservation_services import Services
+from .reservation_calendrier import Calendrier
+from .reservation_prix import Prix
+from .reservation_personne import NombrePersonne
+from .reservation_services import Services
 
-from controleur import chambre_controller
+from hotel_manager.controleur import chambre_controller
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 

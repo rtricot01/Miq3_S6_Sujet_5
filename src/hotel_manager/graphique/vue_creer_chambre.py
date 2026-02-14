@@ -74,8 +74,3 @@ class VueCreerChambre(QMainWindow):
             self.statusBar().showMessage("Erreur : Format incorrect.", 5000)
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    ma_vue = VueCreerChambre()
-    ma_vue.show()
-    sys.exit(app.exec())

@@ -5,8 +5,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushB
 from hotel_manager.graphique.vue_reservation_total import VueReservationTotal 
 from hotel_manager.graphique.vue_creer_chambre import VueCreerChambre
 from hotel_manager.graphique.vue_chambre_tot import VueChambreTot
-#TODO rajouter les impport des vues PrendreRésa 
-
+from hotel_manager.graphique.creer_reservation.vue_reservation import FenetreReservation
 
 class VuePrincipale(QMainWindow):
 
@@ -67,7 +66,10 @@ class VuePrincipale(QMainWindow):
         self.fenetre_secondaire = VueChambreTot()
         self.fenetre_secondaire.show()
         
-
+    @Slot()
+    def ouvrir_prendre_reservation(self):
+        self.fenetre_secondaire = FenetreReservation()
+        self.fenetre_secondaire.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
