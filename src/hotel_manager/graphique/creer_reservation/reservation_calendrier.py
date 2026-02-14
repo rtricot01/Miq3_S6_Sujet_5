@@ -62,6 +62,17 @@ class Calendrier(QWidget):
             ancienne_date = self.ancienne_date_fin
 
         date_selectionnee = envoyeur.selectedDate()
+        
+        if envoyeur == self.calendrier_debut:
+            if self.calendrier_fin.selectedDate() < date_selectionnee:
+                self.calendrier_fin.setSelectedDate(date_selectionnee)
+                self.date_fin.setText(date_selectionnee.toString("dd/MM/yyyy"))
+    
+        elif envoyeur == self.calendrier_fin:
+            if date_selectionnee < self.calendrier_debut.selectedDate():
+                envoyeur.setSelectedDate(self.calendrier_debut.selectedDate())
+                date_selectionnee = self.calendrier_debut.selectedDate()
+
         string_date = date_selectionnee.toString("dd/MM/yyyy")
         couleur = "#86459C"
 
@@ -75,6 +86,5 @@ class Calendrier(QWidget):
             self.ancienne_date_debut = date_selectionnee
         else:
             self.ancienne_date_fin = date_selectionnee
-
 
     

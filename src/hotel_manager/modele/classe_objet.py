@@ -60,47 +60,46 @@ class Chambre:
         return f"Chambre({self.room_id},{self.max_people},{self.price},{self.room_size},{self.fumeur},{self.animaux_toleres},{self.climatisation})"
 
 
-def recuperer_chambre_libre_db(date_start:date, date_end:date, min_people:int, fumeur: bool, animaux_toleres: bool , climatisation: bool , price_min: float , price_max: float, Session = session_db) -> list[Chambre]:
-    """Cette fonction permet de récupérer une liste de chambres disponibles pour une période donnée en argument et eventuellement un nombre de voyageur.
-     Cette fonction doit être appelé avec comme premier argument la date de début de reservation souhaitée et puis la date de fin souhaitée, tout deux de type 'date' en python, et le nombre de personne:int
-     (i.e. recuperer_chambre_libre(date(annee,mois,jour),date(annne,mois,jour), nbr_voyageur) """
+def recuperer_chambre_libre_db(date_start:date, date_end:date, min_people:int, fumeur: bool, animaux_toleres: bool , climatisation: bool , price_min: float , price_max: float, Session = session_db) -> list[Chambre]:     
     
     logging.info("START recuperer_chambre_libre")
 
-    room_list=[]
+    room_list = []
     with Session() as session:
+        # Base de la requête : chambres qui n'ont pas de réservation sur ces dates
         chambres = (session.query(ChambreDB).filter( 
-                     ~session.query(ReservationDB).filter(
-                                                ReservationDB.room_id == ChambreDB.room_id,
-                                                ReservationDB.start_date <= date_end,
-                                                ReservationDB.end_date >=date_start,
-                                                ).exists()))
-        #Filtre en fonction des paramètres donnés par l'utilisateur
-        if min_people is not None:
-            chambres=chambres.filter(ChambreDB.max_people>=min_people)
-        if fumeur is not None:
-            if fumeur is True:
-                chambres=chambres.filter(ChambreDB.fumeur.is_(True))
-            else:
-                chambres=chambres.filter(ChambreDB.fumeur.is_(False))
-        if animaux_toleres is not None:
-            if animaux_toleres is True:
-                chambres=chambres.filter(ChambreDB.animaux_toleres.is_(True))
-            else:
-                chambres=chambres.filter(ChambreDB.animaux_toleres.is_(False))
-        if climatisation is not None:
-            if climatisation is True:
-                chambres=chambres.filter(ChambreDB.climatisation.is_(True))
-            else:
-                chambres=chambres.filter(ChambreDB.climatisation.is_(False))
-        if price_min is not None:
-            chambres=chambres.filter(ChambreDB.prize >= price_min)
-        if price_max is not None:
-            chambres=chambres.filter(ChambreDB.prize <= price_max)
+                    ~session.query(ReservationDB).filter(
+                        ReservationDB.room_id == ChambreDB.room_id,
+                        ReservationDB.start_date <= date_end,
+                        ReservationDB.end_date >= date_start,
+                    ).exists()))
 
-        rows=chambres.all() 
+        # --- FILTRES OBLIGATOIRES (Capacité et Prix) ---
+        if min_people:
+            chambres = chambres.filter(ChambreDB.max_people >= min_people)
+        
+        if price_min is not None:
+            chambres = chambres.filter(ChambreDB.prize >= price_min)
+        
+        if price_max is not None:
+            chambres = chambres.filter(ChambreDB.prize <= price_max)
+
+        # --- FILTRES OPTIONS (Logique : "Si coché, alors obligatoire") ---
+        # Si 'fumeur' est True, on ne veut QUE des chambres fumeurs.
+        # Si 'fumeur' est False (décoché), on ne filtre pas du tout (on montre tout).
+        if fumeur:
+            chambres = chambres.filter(ChambreDB.fumeur.is_(True))
+        
+        if animaux_toleres:
+            chambres = chambres.filter(ChambreDB.animaux_toleres.is_(True))
+            
+        if climatisation:
+            chambres = chambres.filter(ChambreDB.climatisation.is_(True))
+
+        rows = chambres.all() 
         for room in rows:
-            room_list.append(Chambre(room.room_id, room.max_people, room.prize, room.room_size,room.fumeur, room.animaux_toleres, room.climatisation ))
+            room_list.append(Chambre(room.room_id, room.max_people, room.prize, room.room_size, room.fumeur, room.animaux_toleres, room.climatisation))
+            
     logging.info(f"Récupération des chambres libres pour la période {date_start}/{date_end}")
     return room_list
 

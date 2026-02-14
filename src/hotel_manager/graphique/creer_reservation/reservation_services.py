@@ -1,31 +1,32 @@
-from PySide6.QtWidgets import QWidget, QLabel, QCheckBox, QHBoxLayout, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QLabel, QCheckBox, QGridLayout
+from PySide6.QtCore import Qt
 
 class Services(QWidget):
     
     def label_creation(self, nom: str):
         label = QLabel(f"{nom}", self)
-        label.setFixedWidth(100)
+        label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        label.setFixedWidth(110) 
         return label
 
     def checkbox_creation(self):
         checkbox = QCheckBox("non", self)
-        checkbox.setFixedWidth(50)
-        checkbox.clicked.connect(lambda checked: self.changement_checkbox(checkbox))  
+        checkbox.setFixedWidth(60) 
+        checkbox.setCursor(Qt.PointingHandCursor)
+        checkbox.clicked.connect(lambda: self.changement_checkbox(checkbox))  
         return checkbox
         
     def __init__(self):
         super().__init__()
 
-        label_piscine = self.label_creation("Piscine") 
-        self.checkbox_piscine = self.checkbox_creation()     
+        label_spa = self.label_creation("Spa") 
+        self.checkbox_spa = self.checkbox_creation()     
         label_petit_dej = self.label_creation("Petit Déjeuner") 
         self.checkBox_petit_dej = self.checkbox_creation()       
-        label_sauna = self.label_creation("Sauna") 
-        self.checkBox_sauna = self.checkbox_creation()    
-        label_hammam = self.label_creation("Hammam") 
-        self.checkBox_hammam = self.checkbox_creation()    
-        label_voiture = self.label_creation("Voiture") 
-        self.checkBox_voiture = self.checkbox_creation()
+        label_wifi = self.label_creation("Wifi") 
+        self.checkBox_wifi = self.checkbox_creation()        
+        label_parking = self.label_creation("Parking") 
+        self.checkBox_parking = self.checkbox_creation()
         label_fumeur = self.label_creation("Fumeur") 
         self.checkBox_fumeur = self.checkbox_creation()
         label_animaux = self.label_creation("Animaux") 
@@ -33,44 +34,31 @@ class Services(QWidget):
         label_climatisation = self.label_creation("Climatisation") 
         self.checkBox_climatisation = self.checkbox_creation()
         
-        box_services1 = QHBoxLayout()
-        box_services1.addWidget(label_animaux)
-        box_services1.addWidget(self.checkBox_animaux)
-        box_services1.addSpacing(30)
-        box_services1.addWidget(label_fumeur)
-        box_services1.addWidget(self.checkBox_fumeur)
-        box_services1.addSpacing(30)
-        box_services1.addWidget(label_climatisation)
-        box_services1.addWidget(self.checkBox_climatisation)
-        box_services1.addSpacing(30)
-        box_services1.addWidget(label_voiture)
-        box_services1.addWidget(self.checkBox_voiture)
+        layout_grille = QGridLayout()
+        layout_grille.setSpacing(15) 
 
-        box_services2 = QHBoxLayout()
-        box_services2.addWidget(label_petit_dej)
-        box_services2.addWidget(self.checkBox_petit_dej)
-        box_services2.addSpacing(30)
-        box_services2.addWidget(label_piscine)
-        box_services2.addWidget(self.checkbox_piscine)
-        box_services2.addSpacing(30)
-        box_services2.addWidget(label_sauna)
-        box_services2.addWidget(self.checkBox_sauna)
-        box_services2.addSpacing(30)
-        box_services2.addWidget(label_hammam)
-        box_services2.addWidget(self.checkBox_hammam)
+        layout_grille.addWidget(label_animaux, 0, 0)
+        layout_grille.addWidget(self.checkBox_animaux, 0, 1)
+        layout_grille.addWidget(label_fumeur, 0, 2)
+        layout_grille.addWidget(self.checkBox_fumeur, 0, 3)
+        layout_grille.addWidget(label_climatisation, 0, 4)
+        layout_grille.addWidget(self.checkBox_climatisation, 0, 5)
 
-        box_service = QVBoxLayout()
-        box_service.addLayout(box_services1)
-        box_service.setSpacing(20)
-        box_service.addLayout(box_services2)
+        layout_grille.addWidget(label_petit_dej, 1, 0)
+        layout_grille.addWidget(self.checkBox_petit_dej, 1, 1)
+        layout_grille.addWidget(label_wifi, 1, 2)
+        layout_grille.addWidget(self.checkBox_wifi, 1, 3)
+        layout_grille.addWidget(label_spa, 1, 4)
+        layout_grille.addWidget(self.checkbox_spa, 1, 5)
+        layout_grille.addWidget(label_parking, 1, 6)
+        layout_grille.addWidget(self.checkBox_parking, 1, 7)
 
-        self.setLayout(box_service)
-
+        self.setLayout(layout_grille)
 
     def changement_checkbox(self, checkbox):
         if checkbox.isChecked():
             checkbox.setText("oui")
-            print("oui")
+            checkbox.setStyleSheet("font-weight: bold; color: #4CAF50;")
         else:
             checkbox.setText("non")
-            print("non")
+            checkbox.setStyleSheet("font-weight: normal; color: black;")
