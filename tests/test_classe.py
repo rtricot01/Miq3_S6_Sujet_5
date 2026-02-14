@@ -3,7 +3,7 @@ from datetime import date
 from src.hotel_manager.modele.classe_objet import Client, Reservation, Chambre
 from src.hotel_manager.modele.exceptions import ReservationDateException, ObjectNotFoundException, EmailException, TelephoneNumberException
 from src.hotel_manager.controleur.chambre_controller import creer_chambre, suppression_chambre, afficher_toutes_les_chambres, recuperer_chambre_libre
-from src.hotel_manager.controleur.reservation_controller import creer_reservation, suppression_reservation, afficher_toutes_les_reservations
+from src.hotel_manager.controleur.reservation_controller import creer_reservation, suppression_reservation, afficher_toutes_les_reservations, modifier_reservation
 from src.hotel_manager.controleur.client_controller import creer_client, suppression_client, afficher_tous_les_clients
 from tests.db_test import sessiontest
 from src.hotel_manager.modele.gestion_db import ChambreDB, ReservationDB, ClientDB
@@ -364,3 +364,39 @@ def test_egalite_reservation(r1, r2, expected):
     """Fonction qui teste la méthode de classe '__eq__' pour la classe Reservation."""
 
     assert (r1 == r2) == expected
+
+def test_modifier_reservation(sessiontest):
+    """Fonction qui teste la modification de reservation en vérifiant le changement des attributs de l'objet stocké en base de donnée"""
+    client=creer_client("Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr", Session=sessiontest)
+    chambre=creer_chambre(2,50.09,35,True, False,True,Session=sessiontest)
+    reservation=creer_reservation(chambre.room_id,client.client_id,2,date(2026,9,1),date(2026,9,7),True, True, False, True, Session=sessiontest)
+
+    with sessiontest() as session:
+        reservation_db=session.get(ReservationDB,reservation.reservation_id)
+        assert reservation_db.reservation_id == reservation.reservation_id
+        assert reservation_db.room_id == reservation.room_id
+        assert reservation_db.client_id == reservation.client_id
+        assert reservation_db.nombre_personnes == reservation.nombre_personnes
+        assert reservation_db.start_date == reservation.start_date
+        assert reservation_db.end_date == reservation.end_date
+        assert reservation_db.spa == reservation.spa
+        assert reservation_db.petit_dejeuner == reservation.petit_dejeuner
+        assert reservation_db.parking == reservation.parking
+        assert reservation_db.wifi == reservation.wifi
+
+    modifier_reservation(reservation.reservation_id,chambre.room_id, 1, date(2026,9,4), date(2026,9,15), False, True, False, True, Session=sessiontest)
+
+    with sessiontest() as session:
+        reservation_db=session.get(ReservationDB,reservation.reservation_id)
+        assert reservation_db.reservation_id == reservation.reservation_id
+        assert reservation_db.room_id == reservation.room_id
+        assert reservation_db.client_id == reservation.client_id
+        assert reservation_db.nombre_personnes == 1
+        assert reservation_db.start_date == date(2026,9,4)
+        assert reservation_db.end_date == date(2026,9,15)
+        assert reservation_db.spa == False
+        assert reservation_db.petit_dejeuner == reservation.petit_dejeuner
+        assert reservation_db.parking == reservation.parking
+        assert reservation_db.wifi == reservation.wifi
+
+    
