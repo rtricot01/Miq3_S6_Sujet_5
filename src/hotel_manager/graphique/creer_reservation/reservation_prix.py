@@ -1,3 +1,4 @@
+import math
 from PySide6.QtWidgets import  QWidget, QLabel, QSlider, QHBoxLayout, QVBoxLayout
 from PySide6.QtGui import  Qt
 
@@ -7,11 +8,12 @@ class Prix (QWidget):
     def __init__(self, prix_journee_maximal:float, parent=None):
         super().__init__(parent)
 
+        prix_journee_maximal = math.ceil(prix_journee_maximal)
         self.label_prix_maximal = QLabel(f"Prix maximal :  {prix_journee_maximal}", self)
         self.label_prix_maximal.resize(270, 30)
         self.slider_prix_maximal = QSlider(Qt.Horizontal, self)
         self.slider_prix_maximal.setRange(0,prix_journee_maximal)
-        self.slider_prix_maximal.setValue(0.8 * prix_journee_maximal)
+        self.slider_prix_maximal.setValue(prix_journee_maximal)
         self.slider_prix_maximal.setFixedWidth(400)
         
 
