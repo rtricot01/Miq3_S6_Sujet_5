@@ -56,10 +56,6 @@ class VuePrincipale(QMainWindow):
     def ouvrir_liste_reservations(self):
         self.fenetre_secondaire = VueReservationTotal()
         self.fenetre_secondaire.show()
-
-    @Slot()
-    def ouvrir_prendre_reservation(self):
-        print("Bouton 'Prendre réservation' cliqué. (Classe vue à créer)")
        
     @Slot()
     def ouvrir_liste_chambres(self):

@@ -1,5 +1,4 @@
-import sys
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QTableWidget, QTableWidgetItem, QApplication, QMainWindow, QHeaderView
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QTableWidget, QTableWidgetItem, QMainWindow, QHeaderView
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from hotel_manager.modele.gestion_db import session_db, ChambreDB

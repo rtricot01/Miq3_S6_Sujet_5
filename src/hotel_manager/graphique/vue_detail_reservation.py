@@ -78,6 +78,10 @@ class VueDetailReservation(QWidget):
         btn_layout.addWidget(btn_save)
         btn_layout.addWidget(btn_del)
         layout_principal.addLayout(btn_layout)
+        self.comp_calendrier.date_debut.setText(self.res.start_date.strftime("%d/%m/%Y"))
+        self.comp_calendrier.date_fin.setText(self.res.end_date.strftime("%d/%m/%Y"))
+        self.comp_calendrier.calendrier_debut.showSelectedDate()
+        self.comp_calendrier.calendrier_fin.showSelectedDate()
 
     def sauvegarder(self):
         try:
