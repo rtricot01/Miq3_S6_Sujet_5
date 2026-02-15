@@ -148,3 +148,15 @@
 2026-02-15 12:21:04,742 - INFO - Réservation 2 mise à jour.
 2026-02-15 12:21:19,327 - INFO - Réservation 2 mise à jour.
 2026-02-15 12:25:07,970 - INFO - Réservation 2 mise à jour.
+2026-02-15 13:16:15,199 - INFO - START recuperer_chambre_libre
+2026-02-15 13:16:15,203 - INFO - Récupération des chambres libres pour la période 2026-02-11/2026-02-14
+2026-02-15 13:16:40,610 - INFO - START recuperer_chambre_libre
+2026-02-15 13:16:40,612 - INFO - Récupération des chambres libres pour la période 2026-02-11/2026-02-14
+2026-02-15 13:17:31,843 - INFO - START recuperer_chambre_libre
+2026-02-15 13:17:31,844 - INFO - Récupération des chambres libres pour la période 2026-02-10/2026-02-19
+2026-02-15 15:21:19,050 - INFO - Réservation 1 mise à jour.
+2026-02-15 15:21:32,093 - INFO - START recuperer_chambre_libre
+2026-02-15 15:21:32,096 - INFO - Récupération des chambres libres pour la période 2026-02-18/2026-02-20
+2026-02-15 15:22:02,535 - INFO - Recuperation de la liste des clients.
+2026-02-15 15:22:02,557 - INFO - Ajout de <Client(client_id=2, client_firstname=QUENTIN, client_lastname=LEVEQUE, client_tel=05644464646, client_mail=jlkfjkefz.dps@hmfo.co)> dans la bdd
+2026-02-15 15:22:02,557 - INFO - Client cree, id:2
