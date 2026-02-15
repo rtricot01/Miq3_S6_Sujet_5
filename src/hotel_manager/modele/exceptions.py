@@ -23,3 +23,21 @@ class EmailException(Exception):
     def __init__(self, message ="L'adresse email renseignee n'est pas valide"):
         logging.warning(message)
         super().__init__(message)
+
+class TooManyPeopleException(Exception):
+    """Exception qui se lève si la chambre demandée ne peut pas contenir autant de clients"""
+    def __init__(self, message ="Le nombre de personnes est superieur à la capacite de la chambre"):
+        logging.warning(message)
+        super().__init__(message)
+
+class NotEnoughAdultsException(Exception):
+    """Exception qui se lève si une reservation ne contient pas au moins 1 adulte"""
+    def __init__(self, message ="Le nombre d'adultes est insuffisant pour effectuer la reservation"):
+        logging.warning(message)
+        super().__init__(message)
+    
+class ReservationNotFoundException(Exception):
+    """Exception qui se lève si la reservation demandee est introuvable """
+    def __init__(self, message ="La reservation voulue n'a pas ete trouvee"):
+        logging.warning(message)
+        super().__init__(message)

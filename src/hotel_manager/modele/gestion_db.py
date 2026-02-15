@@ -73,6 +73,8 @@ def init_reservation(Session = session_db) -> None:
     """Creation des réservations présents au lancement de l'application"""
     reservation = ReservationDB(room_id=1,client_id=1,nombre_personnes=2,start_date=date(2026,1,8),end_date=date(2026,2,5), spa=True, petit_dejeuner =True, parking = True, wifi = False)
     add_to_db(reservation, Session)
+    reservation = ReservationDB(room_id=1,client_id=2,nombre_personnes=2,start_date=date(2026,2,7),end_date=date(2026,2,14), spa=True, petit_dejeuner =False, parking = True, wifi = False)
+    add_to_db(reservation, Session)
 
 class ClientDB(Base):
     """Table Client"""
@@ -88,5 +90,7 @@ class ClientDB(Base):
     
 def init_client(Session = session_db) -> None:
     """Creation des clients présents au lancement de l'application"""
-    client = ClientDB(client_firstname = "Quentin", client_lastname= "LEVEQUE",client_tel="0102030405",client_mail="bogoss@gmail.com")
+    client = ClientDB(client_firstname = "Ahmet", client_lastname= "TUNC",client_tel="01020304054",client_mail="bogoss2.0@gmail.com")
+    add_to_db(client, Session)
+    client = ClientDB(client_firstname = "Quentin", client_lastname= "LEVEQUE",client_tel="01020454054",client_mail="bogoss.0@gmail.com")
     add_to_db(client, Session)

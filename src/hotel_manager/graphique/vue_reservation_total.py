@@ -2,8 +2,6 @@ from PySide6.QtWidgets import (QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxL
                                QScrollArea, QMainWindow)
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QIcon
-import sys
-import os
 
 from hotel_manager.modele.gestion_db import session_db, ReservationDB, ClientDB
 from hotel_manager.graphique.vue_detail_reservation import VueDetailReservation
@@ -47,7 +45,8 @@ class VueReservationTotal(QMainWindow):
     def initUI(self):
         for i in reversed(range(self.scroll_layout.count())): 
             widget = self.scroll_layout.itemAt(i).widget()
-            if widget: widget.setParent(None)
+            if widget: 
+                widget.setParent(None)
 
         for res, client in self.listItem:
             row_widget = QWidget()

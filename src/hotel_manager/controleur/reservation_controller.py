@@ -1,7 +1,8 @@
 from datetime import date
 from hotel_manager.modele.gestion_db import session_db,ReservationDB,add_to_db
 import logging
-from hotel_manager.modele.classe_objet import Reservation, supprimer_reservation_db, toutes_les_reservations
+from hotel_manager.modele.classe_objet import Reservation, supprimer_reservation_db, toutes_les_reservations, modifier_reservation_db
+from hotel_manager.controleur.controle_saisie import controler_max_personnes, controler_dates
 
 
 def creer_reservation(id_room:int,id_client:int, nombres_personnes:int, date_start:date, date_end:date, spa:bool, petit_dejeuner:bool, parking:bool, wifi:bool, Session = session_db) -> Reservation:
@@ -22,20 +23,8 @@ def afficher_toutes_les_reservations(Session = session_db) -> list[Reservation]:
     """Fonction qui permet d'afficher toutes les réservations"""
     return toutes_les_reservations(Session)
 
-def modifier_reservation(id_res, id_room, nombre_pers, date_start, date_end, spa, petit_dej, parking, wifi, Session = session_db):
+def modifier_reservation(id_res: int, id_room: int, nombre_pers: int, date_debut: date, date_fin: date, spa: bool, petit_dej: bool, parking: bool, wifi: bool, Session = session_db):
     """Fonction qui met à jour les informations d'une réservation existante"""
-    with Session() as session:
-        res_db = session.query(ReservationDB).filter(ReservationDB.reservation_id == id_res).first()
-        if res_db:
-            res_db.room_id = id_room
-            res_db.nombre_personnes = nombre_pers
-            res_db.start_date = date_start
-            res_db.end_date = date_end
-            res_db.spa = spa
-            res_db.petit_dejeuner = petit_dej
-            res_db.parking = parking
-            res_db.wifi = wifi
-            session.commit()
-            logging.info(f"Réservation {id_res} mise à jour.")
-        else:
-            raise Exception("Réservation non trouvée")
+    controler_dates(date_debut, date_fin, id_room, id_res, Session)
+    controler_max_personnes(id_room, nombre_pers, Session)
+    modifier_reservation_db(id_res, id_room, nombre_pers, date_debut, date_fin, spa, petit_dej, parking, wifi, Session)

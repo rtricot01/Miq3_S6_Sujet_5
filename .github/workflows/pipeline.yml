@@ -1,0 +1,62 @@
+name: CI/CD Hotel Manager
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  quality-check:
+    name: Vérification Qualité et Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+          
+      - name: Vérification du formatage (Ruff)
+        run: |
+          # On vérifie les erreurs de syntaxe et les imports inutiles
+          pip install ruff
+          ruff check src/
+
+      - name: Exécuter les tests unitaires (Pytest)
+        run: |
+          pytest tests/
+
+  build:
+    name: Build du Package
+    needs: quality-check
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Build du package (.whl et .tar.gz)
+        run: |
+          pip install build
+          python -m build
+
+      - name: Sauvegarder les artefacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: hotel-manager-dist
+          path: dist/
