@@ -34,7 +34,7 @@ Lancement de l'application
 Une fois installé, vous pouvez lancer l'interface graphique avec la commande suivante :
 
 Bash
-python -m hotel_manager.
+python -m src.hotel_manager
 
 Fonctionnalités principales
 Gestion des chambres : Ajouter, modifier ou supprimer des chambres (prix, capacité, équipements).

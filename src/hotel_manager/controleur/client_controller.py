@@ -1,7 +1,7 @@
-from hotel_manager.modele.gestion_db import session_db,ClientDB,add_to_db
-from hotel_manager.controleur.controle_saisie import controler_mail, controler_telephone
+from src.hotel_manager.modele.gestion_db import session_db,ClientDB,add_to_db
+from src.hotel_manager.controleur.controle_saisie import controler_mail, controler_telephone
 import logging
-from hotel_manager.modele.classe_objet import Client, supprimer_client_db, tous_les_clients
+from src.hotel_manager.modele.classe_objet import Client, supprimer_client_db, tous_les_clients
 
 
 def creer_client(firstname_client:str,lastname_client:str,tel_client:str,mail_client:str, Session = session_db) -> Client:

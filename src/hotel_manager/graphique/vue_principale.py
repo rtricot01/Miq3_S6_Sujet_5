@@ -2,10 +2,10 @@ import sys
 from PySide6.QtCore import Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushButton
-from hotel_manager.graphique.vue_reservation_total import VueReservationTotal 
-from hotel_manager.graphique.vue_creer_chambre import VueCreerChambre
-from hotel_manager.graphique.vue_chambre_tot import VueChambreTot
-from hotel_manager.graphique.creer_reservation.vue_reservation import FenetreReservation
+from src.hotel_manager.graphique.vue_reservation_total import VueReservationTotal 
+from src.hotel_manager.graphique.vue_creer_chambre import VueCreerChambre
+from src.hotel_manager.graphique.vue_chambre_tot import VueChambreTot
+from src.hotel_manager.graphique.creer_reservation.vue_reservation import FenetreReservation
 
 class VuePrincipale(QMainWindow):
 

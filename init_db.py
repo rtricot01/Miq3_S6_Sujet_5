@@ -1,5 +1,5 @@
 import os
-from hotel_manager.modele.gestion_db import Base, db, init_db, session_db
+from src.hotel_manager.modele.gestion_db import Base, db, init_db, session_db
 
 def setup_database() -> None:
     if os.path.exists("hotel.db"):
