@@ -3,17 +3,17 @@ from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QP
 
 from datetime import datetime
 
-from hotel_manager.controleur.reservation_controller import creer_reservation
-from hotel_manager.graphique.creer_reservation.chambre_select import ChambreSelect
-from hotel_manager.modele import classe_objet
+from src.hotel_manager.controleur.reservation_controller import creer_reservation
+from src.hotel_manager.graphique.creer_reservation.chambre_select import ChambreSelect
+from src.hotel_manager.modele import classe_objet
 
 from .reservation_calendrier import Calendrier
 from .reservation_prix import Prix
 from .reservation_personne import NombrePersonne
 from .reservation_services import Services
 
-from hotel_manager.controleur.client_controller import afficher_tous_les_clients, creer_client
-from hotel_manager.modele.gestion_db import session_db, ChambreDB 
+from src.hotel_manager.controleur.client_controller import afficher_tous_les_clients, creer_client
+from src.hotel_manager.modele.gestion_db import session_db, ChambreDB 
 
 class FenetreReservation (QMainWindow):
 
@@ -26,7 +26,6 @@ class FenetreReservation (QMainWindow):
         self.setWindowIcon(QIcon("icone_chambre.png"))
         # self.showMaximized()
 
-        
         fenetre_principale = QWidget()
         fenetre_principale.setStyleSheet("background: #C6B7D1")
         self.setCentralWidget(fenetre_principale)
@@ -102,8 +101,12 @@ class FenetreReservation (QMainWindow):
             self.date_fin_obj = datetime.strptime(texte_fin, "%d/%m/%Y").date()
 
             nombre_adulte = int(self.personne.textBox_nbr_adulte.text() or 0)
+
+            # TODO : exception nombre_adulte sup 0
             nombre_enfant = int(self.personne.textBox_nbr_enfant.text() or 0)
             self.min_personne_total = nombre_adulte + nombre_enfant
+            # TODO : exception min people sup 0
+
 
             fumeur = self.services.checkBox_fumeur.isChecked()
             animaux = self.services.checkBox_animaux.isChecked()
@@ -202,7 +205,7 @@ class FenetreReservation (QMainWindow):
             creer_reservation(
                 id_room=self.chambre_selectionnee.data.room_id,
                 id_client=id_client_final,
-                nombre_personnes=self.min_people_total, 
+                nombres_personnes=self.min_personne_total, 
                 date_start=self.date_debut_obj,
                 date_end=self.date_fin_obj,
                 spa=self.etat_spa, 
@@ -211,7 +214,7 @@ class FenetreReservation (QMainWindow):
                 wifi=self.etat_wifi
             )
 
-            prix_total = self.chambre_selectionnee.data.price * (self.date_fin_obj - self.date_debut_obj).days + (8*self.min_people_total if self.etat_spa else 0) + (5*self.min_people_total if self.etat_petit_dej else 0) + (3 if self.etat_wifi else 0) + (10 if self.etat_parking else 0)
+            prix_total = self.chambre_selectionnee.data.price * (self.date_fin_obj - self.date_debut_obj).days + (8*self.min_personne_total if self.etat_spa else 0) + (5*self.min_personne_total if self.etat_petit_dej else 0) + (3 if self.etat_wifi else 0) + (10 if self.etat_parking else 0)
             prix_total = round(prix_total, 2)
             QMessageBox.information(self, "Succès", f"Réservation confirmée pour M./Mme {nom} !\nPrix total : {prix_total} €")
             self.close() 

@@ -3,8 +3,8 @@ from PySide6.QtWidgets import (QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxL
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QIcon
 
-from hotel_manager.modele.gestion_db import session_db, ReservationDB, ClientDB
-from hotel_manager.graphique.vue_detail_reservation import VueDetailReservation
+from src.hotel_manager.modele.gestion_db import session_db, ReservationDB, ClientDB
+from src.hotel_manager.graphique.vue_detail_reservation import VueDetailReservation
 
 class VueReservationTotal(QMainWindow):
     changeItem = Signal(list)

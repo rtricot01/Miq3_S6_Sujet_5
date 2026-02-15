@@ -1,7 +1,7 @@
 import re
 from src.hotel_manager.modele.exceptions import TelephoneNumberException, EmailException, TooManyPeopleException, NotEnoughAdultsException, ReservationDateException
 from init_db import session_db
-from hotel_manager.modele.gestion_db import ChambreDB, ReservationDB
+from src.hotel_manager.modele.gestion_db import ChambreDB, ReservationDB
 from datetime import date
 
 EMAIL_REGEX= r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"

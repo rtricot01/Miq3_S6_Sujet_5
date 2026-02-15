@@ -1,8 +1,8 @@
 from datetime import date
-from hotel_manager.modele.gestion_db import session_db,ReservationDB,add_to_db
+from src.hotel_manager.modele.gestion_db import session_db,ReservationDB,add_to_db
 import logging
-from hotel_manager.modele.classe_objet import Reservation, supprimer_reservation_db, toutes_les_reservations, modifier_reservation_db
-from hotel_manager.controleur.controle_saisie import controler_max_personnes, controler_dates
+from src.hotel_manager.modele.classe_objet import Reservation, supprimer_reservation_db, toutes_les_reservations, modifier_reservation_db
+from src.hotel_manager.controleur.controle_saisie import controler_max_personnes, controler_dates
 
 
 def creer_reservation(id_room:int,id_client:int, nombres_personnes:int, date_start:date, date_end:date, spa:bool, petit_dejeuner:bool, parking:bool, wifi:bool, Session = session_db) -> Reservation:

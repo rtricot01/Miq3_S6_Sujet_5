@@ -2,10 +2,10 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QLabel, QPushButton,
                                QMessageBox, QHBoxLayout, QLineEdit, QComboBox)
 from PySide6.QtCore import Signal, QDate, Qt
 from PySide6.QtGui import QIcon
-from hotel_manager.modele.exceptions import ReservationDateException, TooManyPeopleException
-from hotel_manager.graphique.creer_reservation.reservation_calendrier import Calendrier
-from hotel_manager.controleur.reservation_controller import suppression_reservation, modifier_reservation
-from hotel_manager.modele.gestion_db import session_db, ChambreDB
+from src.hotel_manager.modele.exceptions import ReservationDateException, TooManyPeopleException
+from src.hotel_manager.graphique.creer_reservation.reservation_calendrier import Calendrier
+from src.hotel_manager.controleur.reservation_controller import suppression_reservation, modifier_reservation
+from src.hotel_manager.modele.gestion_db import session_db, ChambreDB
 
 class VueDetailReservation(QWidget):
     demande_rafraichissement = Signal()
