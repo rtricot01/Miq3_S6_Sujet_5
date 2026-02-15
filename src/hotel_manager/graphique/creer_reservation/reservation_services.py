@@ -19,13 +19,13 @@ class Services(QWidget):
     def __init__(self):
         super().__init__()
 
-        label_spa = self.label_creation("Spa") 
+        label_spa = self.label_creation("Spa (8€/pers/jour)") 
         self.checkbox_spa = self.checkbox_creation()     
-        label_petit_dej = self.label_creation("Petit Déjeuner") 
+        label_petit_dej = self.label_creation("Petit Déjeuner (5€/pers/jour)") 
         self.checkBox_petit_dej = self.checkbox_creation()       
-        label_wifi = self.label_creation("Wifi") 
+        label_wifi = self.label_creation("Wifi (3€/jour)") 
         self.checkBox_wifi = self.checkbox_creation()        
-        label_parking = self.label_creation("Parking") 
+        label_parking = self.label_creation("Parking (10€/jour)") 
         self.checkBox_parking = self.checkbox_creation()
         label_fumeur = self.label_creation("Fumeur") 
         self.checkBox_fumeur = self.checkbox_creation()

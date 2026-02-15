@@ -1,4 +1,4 @@
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QGuiApplication
 from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton, QScrollArea, QLabel, QLineEdit, QMessageBox
 
 from datetime import datetime
@@ -18,13 +18,15 @@ from hotel_manager.modele.gestion_db import session_db, ChambreDB
 class FenetreReservation (QMainWindow):
 
     def __init__(self,parent=None):
-        self.PRIX_MAX_HOTEL = float(self.get_max_price_from_db())
+        self.prix_chambre_max = float(self.get_max_price_from_db())
 
         super(FenetreReservation, self).__init__(parent)
 
         self.setWindowTitle("Réservation d'une Chambre")
         self.setWindowIcon(QIcon("icone_chambre.png"))
-        self.showMaximized()
+        # self.showMaximized()
+
+        
         fenetre_principale = QWidget()
         fenetre_principale.setStyleSheet("background: #C6B7D1")
         self.setCentralWidget(fenetre_principale)
@@ -36,7 +38,7 @@ class FenetreReservation (QMainWindow):
         bouton_valider.clicked.connect(self.action_bouton)
 
         self.calendrier = Calendrier()
-        self.prix = Prix(self.PRIX_MAX_HOTEL)
+        self.prix = Prix(self.prix_chambre_max)
         self.personne = NombrePersonne()
         self.services = Services()
 
@@ -91,6 +93,7 @@ class FenetreReservation (QMainWindow):
             self.layout_global.addWidget(self.bouton_reserver)
 
     def action_bouton(self):
+
         try:
             texte_debut = self.calendrier.date_debut.text()
             texte_fin = self.calendrier.date_fin.text()
@@ -98,19 +101,19 @@ class FenetreReservation (QMainWindow):
             self.date_debut_obj = datetime.strptime(texte_debut, "%d/%m/%Y").date()
             self.date_fin_obj = datetime.strptime(texte_fin, "%d/%m/%Y").date()
 
-            nb_a = int(self.personne.textBox_nbr_adulte.text() or 0)
-            nb_e = int(self.personne.textBox_nbr_enfant.text() or 0)
-            self.min_people_total = nb_a + nb_e
+            nombre_adulte = int(self.personne.textBox_nbr_adulte.text() or 0)
+            nombre_enfant = int(self.personne.textBox_nbr_enfant.text() or 0)
+            self.min_personne_total = nombre_adulte + nombre_enfant
 
             fumeur = self.services.checkBox_fumeur.isChecked()
             animaux = self.services.checkBox_animaux.isChecked()
             clim = self.services.checkBox_climatisation.isChecked()
-            p_min = self.prix.slider_prix_minimal.value()
-            p_max = self.prix.slider_prix_maximal.value()
+            prix_min = self.prix.slider_prix_minimal.value()
+            prix_max = self.prix.slider_prix_maximal.value()
 
             chambres_disponibles = classe_objet.recuperer_chambre_libre_db(
-                self.date_debut_obj, self.date_fin_obj, self.min_people_total, 
-                fumeur, animaux, clim, p_min, p_max
+                self.date_debut_obj, self.date_fin_obj, self.min_personne_total, 
+                fumeur, animaux, clim, prix_min, prix_max
             )
 
             self.etat_wifi = self.services.checkBox_wifi.isChecked()
@@ -125,17 +128,21 @@ class FenetreReservation (QMainWindow):
             self.bouton_reserver = None 
             self.chambre_selectionnee = None
 
-            form_client = QHBoxLayout()
-            self.input_nom = QLineEdit(); self.input_nom.setPlaceholderText("Nom")
-            self.input_prenom = QLineEdit(); self.input_prenom.setPlaceholderText("Prénom")
-            self.input_tel = QLineEdit(); self.input_tel.setPlaceholderText("Téléphone")
-            self.input_mail = QLineEdit(); self.input_mail.setPlaceholderText("Email")
+            informations_client = QHBoxLayout()
+            self.nom = QLineEdit()
+            self.nom.setPlaceholderText("Nom")
+            self.prenom = QLineEdit()
+            self.prenom.setPlaceholderText("Prénom")
+            self.telephone = QLineEdit()
+            self.telephone.setPlaceholderText("Téléphone")
+            self.mail = QLineEdit()
+            self.mail.setPlaceholderText("Email")
             
-            for w in [self.input_nom, self.input_prenom, self.input_tel, self.input_mail]:
-                w.setStyleSheet("padding: 8px; background: white; border-radius: 5px; color: black;")
-                form_client.addWidget(w)
+            for i in [self.nom, self.prenom, self.telephone, self.mail]:
+                i.setStyleSheet("padding: 8px; background: white; border-radius: 5px; color: black;")
+                informations_client.addWidget(i)
             
-            self.layout_global.addLayout(form_client)
+            self.layout_global.addLayout(informations_client)
 
             scroll = QScrollArea()
             scroll.setWidgetResizable(True)
@@ -155,7 +162,7 @@ class FenetreReservation (QMainWindow):
             scroll.setWidget(conteneur)
             self.layout_global.addWidget(scroll)
 
-        except ValueError as e:
+        except ValueError:
             QMessageBox.warning(self, "Erreur de saisie", "Vérifiez le format des dates (JJ/MM/AAAA) ou des nombres.")
         except Exception as e:
             print(f"Erreur : {e}")
@@ -167,30 +174,29 @@ class FenetreReservation (QMainWindow):
             QMessageBox.warning(self, "Erreur", "Veuillez sélectionner une chambre.")
             return
 
-        # 1. Récupération des saisies
-        nom = self.input_nom.text().strip().upper() # On normalise en majuscules pour la comparaison
-        prenom = self.input_prenom.text().strip()
-        tel = self.input_tel.text().strip()
-        mail = self.input_mail.text().strip()
+        nom = self.nom.text().strip().upper() 
+        prenom = self.prenom.text().strip()
+        telephone = self.telephone.text().strip()
+        mail = self.mail.text().strip()
 
-        if not all([nom, prenom, tel, mail]):
-            QMessageBox.warning(self, "Erreur", "Veuillez remplir toutes les informations client (Nom, Prénom, Tel, Mail).")
+        if not all([nom, prenom, telephone, mail]):
+            QMessageBox.warning(self, "Erreur", "Veuillez remplir toutes les informations client (Nom, Prénom, Téléphone, Mail).")
             return
 
         try:
             id_client_final = None
             clients_existants = afficher_tous_les_clients()
         
-            for c in clients_existants:
-                if (c.client_lastname.upper() == nom and 
-                    c.client_firstname == prenom and 
-                    c.client_tel == tel and 
-                    c.client_mail == mail):
-                    id_client_final = c.client_id
+            for i in clients_existants:
+                if (i.client_lastname.upper() == nom and 
+                    i.client_firstname == prenom and 
+                    i.client_tel == telephone and 
+                    i.client_mail == mail):
+                    id_client_final = i.client_id
                     break
         
             if id_client_final is None:
-                nouveau_client = creer_client(prenom, nom, tel, mail)
+                nouveau_client = creer_client(prenom, nom, telephone, mail)
                 id_client_final = nouveau_client.client_id
 
             creer_reservation(
@@ -205,7 +211,9 @@ class FenetreReservation (QMainWindow):
                 wifi=self.etat_wifi
             )
 
-            QMessageBox.information(self, "Succès", f"Réservation confirmée pour M./Mme {nom} !")
+            prix_total = self.chambre_selectionnee.data.price * (self.date_fin_obj - self.date_debut_obj).days + (8*self.min_people_total if self.etat_spa else 0) + (5*self.min_people_total if self.etat_petit_dej else 0) + (3 if self.etat_wifi else 0) + (10 if self.etat_parking else 0)
+            prix_total = round(prix_total, 2)
+            QMessageBox.information(self, "Succès", f"Réservation confirmée pour M./Mme {nom} !\nPrix total : {prix_total} €")
             self.close() 
 
         except Exception as e:
