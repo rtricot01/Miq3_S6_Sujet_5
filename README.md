@@ -37,11 +37,11 @@ Bash
 python -m src.hotel_manager
 
 Fonctionnalités principales
-Gestion des chambres : Ajouter, modifier ou supprimer des chambres (prix, capacité, équipements).
+Gestion des chambres : Ajouter et consulter des chambres (prix, capacité, équipements).
 
 Gestion des clients : Enregistrer de nouveaux clients avec validation des coordonnées.
 
-Réservations : Créer une réservation en sélectionnant un client, une chambre et une période.
+Réservations : Ajouter, modifier ou supprimer des réservations. Créer une réservation en sélectionnant un client, une chambre et une période.
 
 - Tests et Qualité
 Exécuter les tests unitaires

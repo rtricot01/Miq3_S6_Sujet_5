@@ -142,7 +142,7 @@ def test_creer_client_erreur_tel(tel,sessiontest):
         client=creer_client("Ahmet", "TUNC", tel, "ahmet.tunc@insa-strasbourg.fr", Session=sessiontest)
 
 def test_creer_reservation(sessiontest):
-    """Fonction qui teste la fonction de création de reservation qui créer l'objet et le sauvgardedans la base de donnée. 
+    """Fonction qui teste la fonction de création de reservation qui créer l'objet et le sauvgarde dans la base de donnée. 
     Le test compare l'instance de reservation créée par la fonction 'creer_reservation' et l'instance de reservation créée en récuperant l'objet dans la base de donnée"""
     chambre=creer_chambre(2,50.09,35,True, True,True,Session=sessiontest)
     client=creer_client("Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr", Session=sessiontest)
@@ -340,13 +340,13 @@ def test_egalite_chambre(c1, c2, expected):
 
 
 
-@pytest.mark.parametrize("cl1, cl2, expected", [(Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),True),
+@pytest.mark.parametrize("c1, c2, expected", [(Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),True),
                                                 (Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),Client(2, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),False),
-                                                (Client(1, "Ahmet", "TUNC", "0102030405", "ahmet@insa.fr"),Client(1, "Amhet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),False),
+                                                (Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),Client(1, "Amhet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),False),
                                                 (Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),Client(1, "Ahmet", "TUNC", "0", "ahmet.tunc@insa-strasbourg.fr"),False)])
-def test_egalite_client(cl1, cl2, expected):
+def test_egalite_client(c1, c2, expected):
     """Fonction qui teste la méthode de classe '__eq__' pour la classe Client."""
-    assert (cl1 == cl2) == expected
+    assert (c1 == c2) == expected
 
 
 @pytest.mark.parametrize("r1, r2, expected", [(Reservation(1, 1, 1, 2, date(2026,9,1), date(2026,9,7), True, True, False, True),
@@ -363,7 +363,6 @@ def test_egalite_client(cl1, cl2, expected):
                                                 Reservation(1, 1, 1, 2, date(2026,9,1), date(2026,9,7), False, True, False, True),False) ])
 def test_egalite_reservation(r1, r2, expected):
     """Fonction qui teste la méthode de classe '__eq__' pour la classe Reservation."""
-
     assert (r1 == r2) == expected
 
 def test_modifier_reservation(sessiontest):

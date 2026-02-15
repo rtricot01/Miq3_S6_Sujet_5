@@ -25,7 +25,7 @@ def add_to_db(object, Session = session_db) -> object:
         session.add(object)
         session.commit()
     logging.info(f"Ajout de {object} dans la bdd")
-#on retourne l'objet qui continent l'id de l'objet créé
+#permet de retourner l'objet qui continent l'id de l'objet créé
     return object
          
 class ChambreDB(Base):
