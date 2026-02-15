@@ -1,4 +1,4 @@
-from PySide6.QtGui import QIcon, QGuiApplication
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton, QScrollArea, QLabel, QLineEdit, QMessageBox
 
 from datetime import datetime

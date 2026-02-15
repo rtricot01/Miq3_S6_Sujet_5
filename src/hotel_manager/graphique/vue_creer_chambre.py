@@ -1,8 +1,7 @@
-import sys
 from hotel_manager.controleur.chambre_controller import creer_chambre
 from PySide6.QtCore import Slot
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushButton, QCheckBox, QLineEdit, QVBoxLayout
+from PySide6.QtWidgets import QMainWindow, QWidget, QLabel, QPushButton, QCheckBox, QLineEdit, QVBoxLayout
 
 
 class VueCreerChambre(QMainWindow):
