@@ -340,7 +340,7 @@ def test_egalite_chambre(c1, c2, expected):
 
 
 
-@pytest.mark.parametrize("cl1, cl2, expected", [(Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),True),
+@pytest.mark.parametrize("c1, c2, expected", [(Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),True),
                                                 (Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),Client(2, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),False),
                                                 (Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),Client(1, "Amhet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),False),
                                                 (Client(1, "Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr"),Client(1, "Ahmet", "TUNC", "0", "ahmet.tunc@insa-strasbourg.fr"),False)])
