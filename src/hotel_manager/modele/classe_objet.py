@@ -102,12 +102,12 @@ class Chambre:
 
 
 def recuperer_chambre_libre_db(date_start:date, date_end:date, min_people:int, fumeur: bool, animaux_toleres: bool , climatisation: bool , price_min: float , price_max: float, Session = session_db) -> list[Chambre]:     
-    
+    """Fonction permettant de récuperer une liste de chambres libres pour une période souhaité et en fonction de plusieurs critère, 
+    notamment le prix, le nombre de voyageur, chambre pour fumeur, chambre avec animaux, ou chambre avec climatisation."""
     logging.info("START recuperer_chambre_libre")
 
     room_list = []
     with Session() as session:
-        # Base de la requête : chambres qui n'ont pas de réservation sur ces dates
         chambres = (session.query(ChambreDB).filter( 
                     ~session.query(ReservationDB).filter(
                         ReservationDB.room_id == ChambreDB.room_id,
@@ -115,7 +115,6 @@ def recuperer_chambre_libre_db(date_start:date, date_end:date, min_people:int, f
                         ReservationDB.end_date >= date_start,
                     ).exists()))
 
-        # --- FILTRES OBLIGATOIRES (Capacité et Prix) ---
         if min_people:
             chambres = chambres.filter(ChambreDB.max_people >= min_people)
         
@@ -125,9 +124,6 @@ def recuperer_chambre_libre_db(date_start:date, date_end:date, min_people:int, f
         if price_max is not None:
             chambres = chambres.filter(ChambreDB.prize <= price_max)
 
-        # --- FILTRES OPTIONS (Logique : "Si coché, alors obligatoire") ---
-        # Si 'fumeur' est True, on ne veut QUE des chambres fumeurs.
-        # Si 'fumeur' est False (décoché), on ne filtre pas du tout (on montre tout).
         if fumeur:
             chambres = chambres.filter(ChambreDB.fumeur.is_(True))
         
@@ -182,7 +178,6 @@ def supprimer_chambre_db(id_chambre: int, Session = session_db) -> None:
     """Fonction permettant la suppression de la chambre ainsi que des réservations qui en dépendent à partir de son id"""
     try:
         with Session() as session:
-            #Suppression des dépéendances de la chambre
             session.query(ReservationDB).filter(ReservationDB.room_id == id_chambre).delete()
             chambre_a_supprimer = session.query(ChambreDB).filter(ChambreDB.room_id == id_chambre).first()
             if chambre_a_supprimer:
@@ -198,7 +193,6 @@ def supprimer_client_db(id_client: int, Session = session_db) -> None:
     """Fonction permettant la suppression d'un client ainsi que des réservations qui en dépendent à partir de son id"""
     try:
         with Session() as session:
-            #Suppression des dépéendances du client
             session.query(ReservationDB).filter(ReservationDB.client_id == id_client).delete()
             client_a_supprimer = session.query(ClientDB).filter(ClientDB.client_id == id_client).first()
             if client_a_supprimer:

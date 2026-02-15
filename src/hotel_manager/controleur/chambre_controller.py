@@ -10,9 +10,8 @@ def creer_chambre(max_person:int, price:float, room_area:int, fumeur:bool, anima
         chambre=add_to_db(chambre, Session)
         logging.info(f"Chambre cree, id:{chambre.room_id}")
         return Chambre(chambre.room_id, chambre.max_people, chambre.prize, chambre.room_size, fumeur, animaux_toleres, climatisation)
-    #TODO Exception à changer
-    except :
-        raise 
+    except Exception as e:
+        raise e
 
 def suppression_chambre(id_chambre, Session = session_db) -> None:
     """Fonction permettant de supprimer une chambre à partir de son id"""

@@ -12,10 +12,3 @@ def sessiontest():
     Base.metadata.create_all(db_test)
     return sessionmaker(bind=db_test, expire_on_commit=False)
 
-# if __name__ == "__main__":
-#     Base.metadata.create_all(db_test)
-#     init_db(session_test)
-#     with session_test() as session:
-#         print(session.query(ChambreDB).all())
-#         print(session.query(ClientDB).all())
-#         print(session.query(ReservationDB).all())

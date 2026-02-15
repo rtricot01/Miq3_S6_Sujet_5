@@ -14,7 +14,6 @@ def creer_client(firstname_client:str,lastname_client:str,tel_client:str,mail_cl
         client=add_to_db(client, Session)
         logging.info(f"Client cree, id:{client.client_id}")
         return Client(client.client_id, client.client_firstname, client.client_lastname, client.client_tel, client.client_mail)
-    #TODO Exception à changer
     except Exception as e :
         raise e
 
