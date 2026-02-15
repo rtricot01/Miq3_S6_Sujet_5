@@ -100,7 +100,7 @@ class VueDetailReservation(QWidget):
             nb_nuits = (d_fin - d_debut).days
             try:
                 nb_pers = int(self.input_pers.text())
-            except:
+            except Exception:
                 nb_pers = 0
 
             total = self.prix_nuit_chambre * nb_nuits
