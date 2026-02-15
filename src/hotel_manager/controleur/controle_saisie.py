@@ -1,5 +1,5 @@
 import re
-from src.hotel_manager.modele.exceptions import TelephoneNumberException, EmailException, TooManyPeopleException, NotEnoughAdultsException, ReservationDateException
+from src.hotel_manager.modele.exceptions import TelephoneNumberException, EmailException, TooManyPeopleException, NotEnoughAdultsException, ReservationDateException, NotEnoughClientsException
 from init_db import session_db
 from src.hotel_manager.modele.gestion_db import ChambreDB, ReservationDB
 from datetime import date
@@ -48,3 +48,10 @@ def controler_nombre_adultes(nombre_adultes: int) -> None:
         raise NotEnoughAdultsException
     else:
         pass
+
+def controler_nombre_personnes(nombre_personnes: int) -> None:
+    """Fonction permettant de vérifier que le nombre de personnes est non nul pour une reservation"""
+    if nombre_personnes > 0:
+        pass
+    else:
+        raise NotEnoughClientsException

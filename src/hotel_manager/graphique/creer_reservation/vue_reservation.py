@@ -6,14 +6,18 @@ from datetime import datetime
 from src.hotel_manager.controleur.reservation_controller import creer_reservation
 from src.hotel_manager.graphique.creer_reservation.chambre_select import ChambreSelect
 from src.hotel_manager.modele import classe_objet
+from src.hotel_manager.modele.exceptions import ClientMissingDataException, RoomNotSelectedException
 
 from .reservation_calendrier import Calendrier
 from .reservation_prix import Prix
 from .reservation_personne import NombrePersonne
 from .reservation_services import Services
 
+import logging
+
 from src.hotel_manager.controleur.client_controller import afficher_tous_les_clients, creer_client
 from src.hotel_manager.modele.gestion_db import session_db, ChambreDB 
+from src.hotel_manager.controleur.controle_saisie import controler_nombre_personnes, controler_nombre_adultes
 
 class FenetreReservation (QMainWindow):
 
@@ -78,18 +82,20 @@ class FenetreReservation (QMainWindow):
                     self.nettoyer_layout(item.layout())
     
     def selectionner_chambre(self, widget):
-
-        if self.chambre_selectionnee:
-            self.chambre_selectionnee.set_normal_style()
+        try:
+            if self.chambre_selectionnee:
+                self.chambre_selectionnee.set_normal_style()
         
-        self.chambre_selectionnee = widget
-        self.chambre_selectionnee.set_selected_style()
+            self.chambre_selectionnee = widget
+            self.chambre_selectionnee.set_selected_style()
         
-        if not self.bouton_reserver:
-            self.bouton_reserver = QPushButton("Confirmer la Réservation")
-            self.bouton_reserver.setStyleSheet("background-color: #4CAF50; color: white; height: 50px; font-weight: bold;")
-            self.bouton_reserver.clicked.connect(self.finaliser_reservation)
-            self.layout_global.addWidget(self.bouton_reserver)
+            if not self.bouton_reserver:
+                self.bouton_reserver = QPushButton("Confirmer la Réservation")
+                self.bouton_reserver.setStyleSheet("background-color: #4CAF50; color: white; height: 50px; font-weight: bold;")
+                self.bouton_reserver.clicked.connect(self.finaliser_reservation)
+                self.layout_global.addWidget(self.bouton_reserver)
+        except Exception as e:
+            QMessageBox.warning(self, "Erreur", f"Reservation impossible : {e}")
 
     def action_bouton(self):
 
@@ -102,10 +108,10 @@ class FenetreReservation (QMainWindow):
 
             nombre_adulte = int(self.personne.textBox_nbr_adulte.text() or 0)
 
-            # TODO : exception nombre_adulte sup 0
+            controler_nombre_adultes(nombre_adulte)
             nombre_enfant = int(self.personne.textBox_nbr_enfant.text() or 0)
             self.min_personne_total = nombre_adulte + nombre_enfant
-            # TODO : exception min people sup 0
+            controler_nombre_personnes(self.min_personne_total)
 
 
             fumeur = self.services.checkBox_fumeur.isChecked()
@@ -168,25 +174,23 @@ class FenetreReservation (QMainWindow):
         except ValueError:
             QMessageBox.warning(self, "Erreur de saisie", "Vérifiez le format des dates (JJ/MM/AAAA) ou des nombres.")
         except Exception as e:
-            print(f"Erreur : {e}")
+            QMessageBox.warning(self, "Erreur", f"Reservation impossible : {e}")
 
     
 
     def finaliser_reservation(self):
-        if not self.chambre_selectionnee:
-            QMessageBox.warning(self, "Erreur", "Veuillez sélectionner une chambre.")
-            return
-
-        nom = self.nom.text().strip().upper() 
-        prenom = self.prenom.text().strip()
-        telephone = self.telephone.text().strip()
-        mail = self.mail.text().strip()
-
-        if not all([nom, prenom, telephone, mail]):
-            QMessageBox.warning(self, "Erreur", "Veuillez remplir toutes les informations client (Nom, Prénom, Téléphone, Mail).")
-            return
-
         try:
+            if not self.chambre_selectionnee:
+                raise RoomNotSelectedException
+
+            nom = self.nom.text().strip().upper() 
+            prenom = self.prenom.text().strip()
+            telephone = self.telephone.text().strip()
+            mail = self.mail.text().strip()
+
+            if not all([nom, prenom, telephone, mail]):
+                raise ClientMissingDataException
+        
             id_client_final = None
             clients_existants = afficher_tous_les_clients()
         
@@ -214,9 +218,10 @@ class FenetreReservation (QMainWindow):
                 wifi=self.etat_wifi
             )
 
-            prix_total = self.chambre_selectionnee.data.price * (self.date_fin_obj - self.date_debut_obj).days + (8*self.min_personne_total if self.etat_spa else 0) + (5*self.min_personne_total if self.etat_petit_dej else 0) + (3 if self.etat_wifi else 0) + (10 if self.etat_parking else 0)
+            prix_total = self.chambre_selectionnee.data.price * (self.date_fin_obj - self.date_debut_obj).days + (8*self.min_personne_total if self.etat_spa else 0).days + (5*self.min_personne_total if self.etat_petit_dej else 0).days + (3 if self.etat_wifi else 0).days + (10 if self.etat_parking else 0).days
             prix_total = round(prix_total, 2)
             QMessageBox.information(self, "Succès", f"Réservation confirmée pour M./Mme {nom} !\nPrix total : {prix_total} €")
+            logging.info("Succès", f"Réservation confirmée pour M./Mme {nom} !\nPrix total : {prix_total} €")
             self.close() 
 
         except Exception as e:

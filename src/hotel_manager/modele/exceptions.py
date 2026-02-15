@@ -41,3 +41,21 @@ class ReservationNotFoundException(Exception):
     def __init__(self, message ="La reservation voulue n'a pas ete trouvee"):
         logging.warning(message)
         super().__init__(message)
+
+class NotEnoughClientsException(Exception):
+    """Exception qui se lève si le nombre de clients est nul"""
+    def __init__(self, message ="Le nombre de clients ne peut être nul"):
+        logging.warning(message)
+        super().__init__(message)
+
+class RoomNotSelectedException(Exception):
+    """Exception qui se lève si aucune chambre n'a été selectionnée pour la reservation"""
+    def __init__(self, message ="Veuillez selectionner une chambre pour la reservation"):
+        logging.warning(message)
+        super().__init__(message)
+
+class ClientMissingDataException(Exception):
+    """Exception qui se lève si le nombre de clients est nul"""
+    def __init__(self, message ="Les informations du client n'ont pas ete renseignees"):
+        logging.warning(message)
+        super().__init__(message)
