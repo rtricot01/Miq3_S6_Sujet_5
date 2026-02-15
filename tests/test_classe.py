@@ -403,14 +403,27 @@ def test_modifier_reservation(sessiontest):
 def test_controler_max_personnes(sessiontest):
     """Fonction qui teste qu'une exception soit bien levé avec la fonction 'controler_max_personnes' qui se trouve dans la fonction 'modifier_reservation'.
     On vérifie cela en modifiant une réservation et en inscrivant un nombre de personne supérieur au nombre de personne max dans une chambre."""
+    client=creer_client("Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr", Session=sessiontest)
+    chambre=creer_chambre(2,50.09,35,True, False,True,Session=sessiontest)
+    reservation=creer_reservation(chambre.room_id,client.client_id,2,date(2026,9,1),date(2026,9,7),True, True, False, True, Session=sessiontest)
     with pytest.raises(TooManyPeopleException):
-        client=creer_client("Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr", Session=sessiontest)
-        chambre=creer_chambre(2,50.09,35,True, False,True,Session=sessiontest)
-        reservation=creer_reservation(chambre.room_id,client.client_id,2,date(2026,9,1),date(2026,9,7),True, True, False, True, Session=sessiontest)
         modifier_reservation(reservation.reservation_id,chambre.room_id, 3, date(2026,9,4), date(2026,9,15), False, True, False, True, Session=sessiontest)
 
 def test_controler_nombre_adultes():
-    """Fonction qui teste la fonction 'controler_nombre_adultes', car elle est appelé dans la partie vue. Le test vérifie qu'une exception soit bien levé 
+    """Fonction qui teste la fonction 'controler_nombre_adultes', car elle est appelée dans la partie vue. Le test vérifie qu'une exception soit bien levée 
     si le nombre d'adulte est strictement inférieur à 1."""
     with pytest.raises(NotEnoughAdultsException):
         controler_nombre_adultes(0)
+
+def test_controler_dates(sessiontest):
+    """Fonction qui teste la fonction 'controler_dates' appelée dans la fonction 'modifier_reservation'. Le test vérifie qu'une exception soit bien levée si la chambre 
+    est déja occupé pour les nouvelles dates saisies."""
+    client=creer_client("Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr", Session=sessiontest)
+    chambre=creer_chambre(2,50.09,35,True, False,True,Session=sessiontest)
+    reservation=creer_reservation(chambre.room_id,client.client_id,2,date(2026,9,1),date(2026,9,7),True, True, False, True, Session=sessiontest)
+    reservation_2=creer_reservation(chambre.room_id,client.client_id,2,date(2026,9,10),date(2026,9,15),True, True, False, True, Session=sessiontest)
+    with pytest.raises(ReservationDateException):
+        modifier_reservation(reservation.reservation_id,chambre.room_id, 2, date(2026,9,1), date(2026,9,12), False, True, False, True, Session=sessiontest)
+
+    
+        

@@ -25,6 +25,6 @@ def afficher_toutes_les_reservations(Session = session_db) -> list[Reservation]:
 
 def modifier_reservation(id_res: int, id_room: int, nombre_pers: int, date_debut: date, date_fin: date, spa: bool, petit_dej: bool, parking: bool, wifi: bool, Session = session_db):
     """Fonction qui met à jour les informations d'une réservation existante"""
-    controler_dates(date_debut, date_fin, id_room, id_res)
-    controler_max_personnes(id_room, nombre_pers)
+    controler_dates(date_debut, date_fin, id_room, id_res, Session)
+    controler_max_personnes(id_room, nombre_pers, Session)
     modifier_reservation_db(id_res, id_room, nombre_pers, date_debut, date_fin, spa, petit_dej, parking, wifi, Session)
