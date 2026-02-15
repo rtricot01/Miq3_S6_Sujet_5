@@ -27,4 +27,4 @@ def modifier_reservation(id_res: int, id_room: int, nombre_pers: int, date_debut
     """Fonction qui met à jour les informations d'une réservation existante"""
     controler_dates(date_debut, date_fin, id_room, id_res)
     controler_max_personnes(id_room, nombre_pers)
-    modifier_reservation_db(id_res, id_room, nombre_pers, date_debut, date_fin, spa, petit_dej, parking, wifi)
+    modifier_reservation_db(id_res, id_room, nombre_pers, date_debut, date_fin, spa, petit_dej, parking, wifi, Session)
