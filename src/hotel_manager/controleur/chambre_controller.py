@@ -1,6 +1,6 @@
-from hotel_manager.modele.gestion_db import session_db,ChambreDB,add_to_db
+from src.hotel_manager.modele.gestion_db import session_db,ChambreDB,add_to_db
 import logging
-from hotel_manager.modele.classe_objet import Chambre, supprimer_chambre_db, toutes_les_chambres, recuperer_chambre_libre_db
+from src.hotel_manager.modele.classe_objet import Chambre, supprimer_chambre_db, toutes_les_chambres, recuperer_chambre_libre_db
 
 
 def creer_chambre(max_person:int, price:float, room_area:int, fumeur:bool, animaux_toleres:bool, climatisation:bool, Session = session_db) -> Chambre:

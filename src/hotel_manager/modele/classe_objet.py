@@ -1,6 +1,6 @@
 from datetime import date
-from hotel_manager.modele.gestion_db import session_db,ChambreDB,ReservationDB,ClientDB
-from hotel_manager.modele.exceptions import ReservationDateException, ObjectNotFoundException
+from src.hotel_manager.modele.gestion_db import session_db,ChambreDB,ReservationDB,ClientDB
+from src.hotel_manager.modele.exceptions import ReservationDateException, ObjectNotFoundException
 import logging
 
 
@@ -15,6 +15,17 @@ class Client:
         self.client_mail=client_mail
 
     
+    def __eq__(self, other):
+            if not isinstance(other, Client):
+                return NotImplemented
+        
+            return (
+                self.client_id==other.client_id and
+                self.client_firstname==other.client_firstname and
+                self.client_lastname== other.client_lastname and
+                self.client_tel==other.client_tel and
+                self.client_mail==other.client_mail
+            )
 
 
     def __repr__(self) -> str:
@@ -38,6 +49,22 @@ class Reservation:
             raise ReservationDateException
             
 
+    def __eq__(self, other):
+        if not isinstance(other, Reservation):
+            return NotImplemented
+    
+        return (
+            self.reservation_id == other.reservation_id and
+            self.room_id == other.room_id and
+            self.client_id == other.client_id and
+            self.nombre_personnes == other.nombre_personnes and
+            self.start_date == other.start_date and
+            self.end_date == other.end_date and
+            self.spa == other.spa and
+            self.petit_dejeuner == other.petit_dejeuner and
+            self.parking == other.parking and
+            self.wifi == other.wifi
+            )
 
     def __repr__(self) -> str:
         return f"Reservation({self.reservation_id},{self.room_id},{self.client_id},{self.nombre_personnes},{self.start_date},{self.end_date},{self.spa},{self.petit_dejeuner},{self.parking},{self.wifi})"
@@ -58,6 +85,20 @@ class Chambre:
 
     def __repr__(self) -> str:
         return f"Chambre({self.room_id},{self.max_people},{self.price},{self.room_size},{self.fumeur},{self.animaux_toleres},{self.climatisation})"
+
+    def __eq__(self, other):
+        if not isinstance(other, Chambre):
+            return NotImplemented
+    
+        return (
+            self.room_id == other.room_id and
+            self.max_people == other.max_people and
+            self.price == other.price and
+            self.room_size == other.room_size and
+            self.fumeur == other.fumeur and
+            self.animaux_toleres == other.animaux_toleres and
+            self.climatisation == other.climatisation
+    )
 
 
 def recuperer_chambre_libre_db(date_start:date, date_end:date, min_people:int, fumeur: bool, animaux_toleres: bool , climatisation: bool , price_min: float , price_max: float, Session = session_db) -> list[Chambre]:     
