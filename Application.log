@@ -24,3 +24,117 @@
 2026-02-12 16:33:18,602 - INFO - Chambre créée, id:13
 2026-02-13 16:25:45,401 - INFO - Ajout de <Chambre(id=13, nblit=4, prix=72.0, superficie=44, animaux_toleres=True, fumeur=True, climatisation=True)> dans la bdd
 2026-02-13 16:25:45,401 - INFO - Chambre créée, id:13
+2026-02-14 16:31:39,687 - INFO - START recuperer_chambre_libre
+2026-02-14 16:31:39,695 - INFO - Récupération des chambres libres pour la période /
+2026-02-14 16:32:15,823 - INFO - START recuperer_chambre_libre
+2026-02-14 16:32:15,826 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:32:16,510 - INFO - START recuperer_chambre_libre
+2026-02-14 16:32:16,512 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:32:16,871 - INFO - START recuperer_chambre_libre
+2026-02-14 16:32:16,872 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:32:17,046 - INFO - START recuperer_chambre_libre
+2026-02-14 16:32:17,048 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:32:17,191 - INFO - START recuperer_chambre_libre
+2026-02-14 16:32:17,193 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:32:24,246 - INFO - START recuperer_chambre_libre
+2026-02-14 16:32:24,248 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:32:24,670 - INFO - START recuperer_chambre_libre
+2026-02-14 16:32:24,671 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:32:24,822 - INFO - START recuperer_chambre_libre
+2026-02-14 16:32:24,824 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:33:21,247 - INFO - START recuperer_chambre_libre
+2026-02-14 16:33:21,250 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:33:21,407 - INFO - START recuperer_chambre_libre
+2026-02-14 16:33:21,408 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:33:27,367 - INFO - START recuperer_chambre_libre
+2026-02-14 16:33:27,369 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:33:27,544 - INFO - START recuperer_chambre_libre
+2026-02-14 16:33:27,545 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:33:27,750 - INFO - START recuperer_chambre_libre
+2026-02-14 16:33:27,751 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:33:27,927 - INFO - START recuperer_chambre_libre
+2026-02-14 16:33:27,928 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:33:28,095 - INFO - START recuperer_chambre_libre
+2026-02-14 16:33:28,096 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:33:28,255 - INFO - START recuperer_chambre_libre
+2026-02-14 16:33:28,256 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:33:28,407 - INFO - START recuperer_chambre_libre
+2026-02-14 16:33:28,408 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:33:28,550 - INFO - START recuperer_chambre_libre
+2026-02-14 16:33:28,551 - INFO - Récupération des chambres libres pour la période 19/02/2026/21/02/2026
+2026-02-14 16:34:32,815 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:32,816 - INFO - Récupération des chambres libres pour la période /
+2026-02-14 16:34:33,071 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:33,072 - INFO - Récupération des chambres libres pour la période /
+2026-02-14 16:34:33,246 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:33,247 - INFO - Récupération des chambres libres pour la période /
+2026-02-14 16:34:33,398 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:33,399 - INFO - Récupération des chambres libres pour la période /
+2026-02-14 16:34:33,735 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:33,736 - INFO - Récupération des chambres libres pour la période /
+2026-02-14 16:34:33,895 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:33,896 - INFO - Récupération des chambres libres pour la période /
+2026-02-14 16:34:36,758 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:36,759 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:34:36,934 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:36,935 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:34:37,110 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:37,111 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:34:37,286 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:37,287 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:34:37,454 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:37,455 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:34:37,606 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:37,608 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:34:37,775 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:37,776 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:34:38,215 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:38,216 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:34:38,390 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:38,391 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:34:38,575 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:38,576 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:34:38,727 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:38,728 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:34:38,902 - INFO - START recuperer_chambre_libre
+2026-02-14 16:34:38,903 - INFO - Récupération des chambres libres pour la période 11/02/2026/28/02/2026
+2026-02-14 16:40:28,150 - INFO - Réservation 1 mise à jour.
+2026-02-14 16:41:17,942 - INFO - Réservation 1 mise à jour.
+2026-02-15 10:41:59,012 - INFO - START recuperer_chambre_libre
+2026-02-15 10:41:59,017 - INFO - Récupération des chambres libres pour la période 2026-02-11/2026-02-11
+2026-02-15 10:42:20,236 - INFO - START recuperer_chambre_libre
+2026-02-15 10:42:20,237 - INFO - Récupération des chambres libres pour la période 2026-02-13/2026-02-13
+2026-02-15 10:43:03,300 - INFO - START recuperer_chambre_libre
+2026-02-15 10:43:03,303 - INFO - Récupération des chambres libres pour la période 2026-02-18/2026-02-20
+2026-02-15 10:43:33,636 - INFO - START recuperer_chambre_libre
+2026-02-15 10:43:33,641 - INFO - Récupération des chambres libres pour la période 2026-02-10/2026-04-18
+2026-02-15 10:43:46,597 - INFO - START recuperer_chambre_libre
+2026-02-15 10:43:46,599 - INFO - Récupération des chambres libres pour la période 2026-02-17/2026-02-20
+2026-02-15 10:44:30,838 - INFO - Recuperation de la liste des clients.
+2026-02-15 10:44:30,838 - WARNING - L'adresse email renseignee n'est pas valide
+2026-02-15 10:44:36,173 - INFO - Recuperation de la liste des clients.
+2026-02-15 10:44:36,195 - INFO - Ajout de <Client(client_id=2, client_firstname=LEGOAT, client_lastname=QUENTIN, client_tel=0612121212, client_mail=coucou@gmail.com)> dans la bdd
+2026-02-15 10:44:36,195 - INFO - Client cree, id:2
+2026-02-15 10:47:10,365 - INFO - START recuperer_chambre_libre
+2026-02-15 10:47:10,367 - INFO - Récupération des chambres libres pour la période 2026-02-10/2026-02-13
+2026-02-15 10:47:34,325 - INFO - Recuperation de la liste des clients.
+2026-02-15 10:47:34,347 - INFO - Ajout de <Client(client_id=3, client_firstname=Coucoyu, client_lastname=QUENTIN, client_tel=06456642, client_mail=bgdu30@gmail.org)> dans la bdd
+2026-02-15 10:47:34,348 - INFO - Client cree, id:3
+2026-02-15 10:47:44,925 - INFO - START recuperer_chambre_libre
+2026-02-15 10:47:44,926 - INFO - Récupération des chambres libres pour la période 2026-02-02/2026-02-05
+2026-02-15 10:48:06,470 - INFO - Recuperation de la liste des clients.
+2026-02-15 10:48:06,491 - INFO - Ajout de <Client(client_id=4, client_firstname=LEGOAT, client_lastname=QUENTIN, client_tel=04346150, client_mail=lew@gmzi.vo)> dans la bdd
+2026-02-15 10:48:06,491 - INFO - Client cree, id:4
+2026-02-15 10:48:48,233 - INFO - START recuperer_chambre_libre
+2026-02-15 10:48:48,237 - INFO - Récupération des chambres libres pour la période 2026-02-04/2026-02-05
+2026-02-15 10:49:03,630 - INFO - Recuperation de la liste des clients.
+2026-02-15 10:49:03,652 - INFO - Ajout de <Client(client_id=5, client_firstname=fhfhfhfh, client_lastname=FHFYFHG, client_tel=066161312, client_mail=hjkhhlk@ghjgjgh.cu)> dans la bdd
+2026-02-15 10:49:03,652 - INFO - Client cree, id:5
+2026-02-15 10:50:25,588 - INFO - Réservation 1 mise à jour.
+2026-02-15 11:44:29,177 - INFO - Réservation 1 mise à jour.
+2026-02-15 11:44:47,500 - INFO - Réservation 1 mise à jour.
+2026-02-15 11:48:16,728 - INFO - Réservation 1 mise à jour.
+2026-02-15 11:48:30,605 - INFO - Réservation 1 mise à jour.
+2026-02-15 11:49:22,879 - WARNING - Le nombre de personnes est superieur à la capacite de la chambre
+2026-02-15 11:50:13,034 - WARNING - Le nombre de personnes est superieur à la capacite de la chambre
+2026-02-15 11:50:17,633 - INFO - Réservation 1 mise à jour.

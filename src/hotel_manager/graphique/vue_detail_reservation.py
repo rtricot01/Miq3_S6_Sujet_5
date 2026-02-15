@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QLabel, QPushButton, 
-                               QMessageBox, QHBoxLayout, QLineEdit, QComboBox, QScrollArea)
+                               QMessageBox, QHBoxLayout, QLineEdit, QComboBox)
 from PySide6.QtCore import Signal, QDate
-
+from hotel_manager.modele.exceptions import ReservationDateException, TooManyPeopleException
 from hotel_manager.graphique.creer_reservation.reservation_calendrier import Calendrier
 from hotel_manager.controleur.reservation_controller import suppression_reservation, modifier_reservation
 
@@ -88,8 +88,8 @@ class VueDetailReservation(QWidget):
                 id_res=self.res.reservation_id,
                 id_room=self.res.room_id,
                 nombre_pers=int(self.input_pers.text()),
-                date_start=d_debut,
-                date_end=d_fin,
+                date_debut=d_debut,
+                date_fin=d_fin,
                 spa=self.combos["spa"].currentIndex() == 1,
                 petit_dej=self.combos["petit_dejeuner"].currentIndex() == 1,
                 parking=self.combos["parking"].currentIndex() == 1,
@@ -102,6 +102,10 @@ class VueDetailReservation(QWidget):
             
         except ValueError:
             QMessageBox.warning(self, "Erreur", "Vérifiez le nombre de personnes.")
+        except TooManyPeopleException:
+            QMessageBox.warning(self, "Capacité", "Trop de personnes pour cette chambre !")
+        except ReservationDateException as e:
+            QMessageBox.warning(self, "Dates", str(e))
         except Exception as e:
             QMessageBox.critical(self, "Erreur", f"Une erreur est survenue : {e}")
 

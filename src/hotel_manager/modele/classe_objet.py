@@ -1,6 +1,6 @@
 from datetime import date
 from src.hotel_manager.modele.gestion_db import session_db,ChambreDB,ReservationDB,ClientDB
-from src.hotel_manager.modele.exceptions import ReservationDateException, ObjectNotFoundException
+from src.hotel_manager.modele.exceptions import ReservationDateException, ObjectNotFoundException, ReservationNotFoundException
 import logging
 
 
@@ -159,6 +159,24 @@ def supprimer_reservation_db(id_reservation: int, Session = session_db) -> None:
                 raise ObjectNotFoundException
     except Exception as e:
         raise e
+
+def modifier_reservation_db(id_res: int, id_room: int, nombre_pers: int, date_start: date, date_end: date, spa: bool, petit_dej: bool, parking: bool, wifi: bool, Session = session_db) -> None:
+    """Fonction qui met à jour les informations d'une réservation existante à partir de son id et des données à mettre à jour"""
+    with Session() as session:
+        res_db = session.query(ReservationDB).filter(ReservationDB.reservation_id == id_res).first()
+        if res_db:
+            res_db.room_id = id_room
+            res_db.nombre_personnes = nombre_pers
+            res_db.start_date = date_start
+            res_db.end_date = date_end
+            res_db.spa = spa
+            res_db.petit_dejeuner = petit_dej
+            res_db.parking = parking
+            res_db.wifi = wifi
+            session.commit()
+            logging.info(f"Réservation {id_res} mise à jour.")
+        else:
+            raise ReservationNotFoundException
 
 def supprimer_chambre_db(id_chambre: int, Session = session_db) -> None:
     """Fonction permettant la suppression de la chambre ainsi que des réservations qui en dépendent à partir de son id"""
