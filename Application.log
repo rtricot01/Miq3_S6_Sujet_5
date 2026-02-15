@@ -181,3 +181,39 @@
 2026-02-15 18:47:50,678 - INFO - Ajout de <Reservation(id=4, id_chambre=1, id_client=6, nombre de personnes=2, date_debut=2026-07-23, date_fin=2026-07-31, spa=False, petit déjeuner=False, parking=False,wifi=True)> dans la bdd
 2026-02-15 18:47:50,678 - INFO - Réservation cree, id:4
 2026-02-15 18:48:04,564 - INFO - Réservation 4 mise à jour.
+2026-02-15 19:10:43,840 - INFO - START recuperer_chambre_libre
+2026-02-15 19:10:43,842 - INFO - Récupération des chambres libres pour la période 2026-02-12/2026-02-14
+2026-02-15 19:11:10,682 - INFO - Recuperation de la liste des clients.
+2026-02-15 19:11:10,691 - INFO - Ajout de <Client(client_id=3, client_firstname=Raphael, client_lastname=TRICOT, client_tel=0506070504, client_mail=bogoss3.0@gmail.com)> dans la bdd
+2026-02-15 19:11:10,691 - INFO - Client cree, id:3
+2026-02-15 19:11:10,699 - INFO - Ajout de <Reservation(id=3, id_chambre=9, id_client=3, nombre de personnes=3, date_debut=2026-02-12, date_fin=2026-02-14, spa=True, petit déjeuner=True, parking=True,wifi=True)> dans la bdd
+2026-02-15 19:11:10,699 - INFO - Réservation cree, id:3
+2026-02-15 19:12:02,508 - INFO - Réservation 3 mise à jour.
+2026-02-15 19:14:49,273 - WARNING - La date choisie n'est pas valable
+2026-02-15 19:15:00,147 - INFO - Réservation 2 mise à jour.
+2026-02-15 19:15:07,650 - INFO - Réservation 2 mise à jour.
+2026-02-15 19:21:15,138 - WARNING - Le nombre de personnes est superieur à la capacite de la chambre
+2026-02-15 19:21:20,953 - INFO - Réservation 3 mise à jour.
+2026-02-15 19:23:08,715 - WARNING - Le nombre de personnes est superieur à la capacite de la chambre
+2026-02-15 19:29:59,173 - WARNING - Le nombre d'adultes est insuffisant pour effectuer la reservation
+2026-02-15 19:30:24,526 - INFO - START recuperer_chambre_libre
+2026-02-15 19:30:24,530 - INFO - Récupération des chambres libres pour la période 2026-02-04/2026-02-08
+2026-02-15 19:40:34,080 - INFO - START recuperer_chambre_libre
+2026-02-15 19:40:34,083 - INFO - Récupération des chambres libres pour la période 2026-02-04/2026-02-05
+2026-02-15 19:40:52,826 - WARNING - Les informations du client n'ont pas ete renseignees
+2026-02-15 19:44:01,169 - WARNING - Le nombre d'adultes est insuffisant pour effectuer la reservation
+2026-02-15 19:44:05,421 - INFO - START recuperer_chambre_libre
+2026-02-15 19:44:05,424 - INFO - Récupération des chambres libres pour la période 2026-02-11/2026-02-12
+2026-02-15 19:44:13,554 - WARNING - Les informations du client n'ont pas ete renseignees
+2026-02-15 19:44:39,298 - WARNING - Le nombre d'adultes est insuffisant pour effectuer la reservation
+2026-02-15 19:44:43,542 - INFO - START recuperer_chambre_libre
+2026-02-15 19:44:43,545 - INFO - Récupération des chambres libres pour la période 2026-02-04/2026-02-13
+2026-02-15 19:44:45,888 - WARNING - Les informations du client n'ont pas ete renseignees
+2026-02-15 19:46:30,730 - INFO - START recuperer_chambre_libre
+2026-02-15 19:46:30,733 - INFO - Récupération des chambres libres pour la période 2026-02-12/2026-02-13
+2026-02-15 19:46:31,949 - WARNING - Les informations du client n'ont pas ete renseignees
+2026-02-15 19:49:34,857 - INFO - START recuperer_chambre_libre
+2026-02-15 19:49:34,860 - INFO - Récupération des chambres libres pour la période 2026-02-11/2026-02-13
+2026-02-15 19:49:36,077 - WARNING - Les informations du client n'ont pas ete renseignees
+2026-02-15 19:51:57,503 - WARNING - Le nombre de clients ne peut être nul
+2026-02-15 19:52:08,615 - INFO - Réservation 1 mise à jour.
