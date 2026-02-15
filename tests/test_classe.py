@@ -1,12 +1,13 @@
 import pytest
 from datetime import date 
 from src.hotel_manager.modele.classe_objet import Client, Reservation, Chambre
-from src.hotel_manager.modele.exceptions import ReservationDateException, ObjectNotFoundException, EmailException, TelephoneNumberException
+from src.hotel_manager.modele.exceptions import ReservationDateException, ObjectNotFoundException, EmailException, TelephoneNumberException, TooManyPeopleException, NotEnoughAdultsException
 from src.hotel_manager.controleur.chambre_controller import creer_chambre, suppression_chambre, afficher_toutes_les_chambres, recuperer_chambre_libre
 from src.hotel_manager.controleur.reservation_controller import creer_reservation, suppression_reservation, afficher_toutes_les_reservations, modifier_reservation
 from src.hotel_manager.controleur.client_controller import creer_client, suppression_client, afficher_tous_les_clients
 from tests.db_test import sessiontest
 from src.hotel_manager.modele.gestion_db import ChambreDB, ReservationDB, ClientDB
+from src.hotel_manager.controleur.controle_saisie import controler_nombre_adultes
 
 
 
@@ -399,4 +400,17 @@ def test_modifier_reservation(sessiontest):
         assert reservation_db.parking == reservation.parking
         assert reservation_db.wifi == reservation.wifi
 
-    
+def test_controler_max_personnes(sessiontest):
+    """Fonction qui teste qu'une exception soit bien levé avec la fonction 'controler_max_personnes' qui se trouve dans la fonction 'modifier_reservation'.
+    On vérifie cela en modifiant une réservation et en inscrivant un nombre de personne supérieur au nombre de personne max dans une chambre."""
+    with pytest.raises(TooManyPeopleException):
+        client=creer_client("Ahmet", "TUNC", "0102030405", "ahmet.tunc@insa-strasbourg.fr", Session=sessiontest)
+        chambre=creer_chambre(2,50.09,35,True, False,True,Session=sessiontest)
+        reservation=creer_reservation(chambre.room_id,client.client_id,2,date(2026,9,1),date(2026,9,7),True, True, False, True, Session=sessiontest)
+        modifier_reservation(reservation.reservation_id,chambre.room_id, 3, date(2026,9,4), date(2026,9,15), False, True, False, True, Session=sessiontest)
+
+def test_controler_nombre_adultes():
+    """Fonction qui teste la fonction 'controler_nombre_adultes', car elle est appelé dans la partie vue. Le test vérifie qu'une exception soit bien levé 
+    si le nombre d'adulte est strictement inférieur à 1."""
+    with pytest.raises(NotEnoughAdultsException):
+        controler_nombre_adultes(0)
