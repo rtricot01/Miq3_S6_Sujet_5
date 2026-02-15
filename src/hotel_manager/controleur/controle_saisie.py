@@ -1,5 +1,5 @@
 import re
-from hotel_manager.modele.exceptions import TelephoneNumberException, EmailException, TooManyPeopleException, NotEnoughAdultsException, ReservationDateException
+from src.hotel_manager.modele.exceptions import TelephoneNumberException, EmailException, TooManyPeopleException, NotEnoughAdultsException, ReservationDateException
 from init_db import session_db
 from hotel_manager.modele.gestion_db import ChambreDB, ReservationDB
 from datetime import date
